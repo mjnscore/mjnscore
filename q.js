@@ -879,7 +879,6 @@ function quiz_check() {
 
 function quiz_gazo(){
   var hai_img =""
-  console.log()
     for(var j=0;j<S.length;j++){
         var img = S[j]
         hai_img = 
@@ -895,7 +894,6 @@ function quiz_gazo(){
     }
     hai_img = hai_img + " "
     if(NAKI != void 0){
-      console.log(NAKI)
         for(var j=0;j<NAKI.length;j++){
             for(var k=0;k<NAKI[j].length/2;k++){
                 var imgNAKI = NAKI[j].substr(k*2,2)
