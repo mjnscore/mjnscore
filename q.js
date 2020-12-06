@@ -762,10 +762,11 @@ function quiz() {
   //starttime=new Date()
   if($("#quiz_debug").is(':checked')){$("#yaku_list").show();$("#tensu").show();$("#kirimaehu").show()}
 
-  $('body').animate({ scrollTop: 0 }, 0)
+  //$('body').animate({ scrollTop: 0 }, 0)
 
 
 }
+
 $(function () {
   $("#quiz_ans").keypress(function (e) {
     if(e.which == 13){
@@ -818,7 +819,7 @@ function quiz_check() {
         $("#kirimaehu").show()
         $("#quiz_test").html("")
         $("#quiz_do").css("background-color","#F9BF98")
-        $('body').animate({ scrollTop: 0 }, 0)
+        //$('body').animate({ scrollTop: 0 }, 0)
       }
     }else{
       $("#quiz_test").html("違います")
@@ -827,7 +828,7 @@ function quiz_check() {
         duration:300,
         complete:function(){$("#quiz_test").css({"color":"black"})}
       })
-      $('body').animate({ scrollTop: 0 }, 0) 
+      //$('body').animate({ scrollTop: 0 }, 0) 
     }
   }
   //子のツモなら
@@ -861,7 +862,7 @@ function quiz_check() {
         $("#kirimaehu").show()
         $("#quiz_test").html("出題")
         $("#quiz_do").css("background-color","#F9BF98")
-        $('body').animate({ scrollTop: 0 }, 0)
+        //$('body').animate({ scrollTop: 0 }, 0)
       }
     }else{
       $("#quiz_test").html("違います")
@@ -870,7 +871,7 @@ function quiz_check() {
         duration:300,
         complete:function(){$("#quiz_test").css({"color":"black"})}
       })
-      $('body').animate({ scrollTop: 0 }, 0)
+      //$('body').animate({ scrollTop: 0 }, 0)
     }
   }
   
@@ -947,7 +948,7 @@ function quiz_checkauto(){
         duration:300,
         complete:function(){$("#quiz_test").text("出題").css({"color":"black"})}
       })
-      $('body').animate({ scrollTop: 0 }, 0)
+      //$('body').animate({ scrollTop: 0 }, 0)
     $("#quiz_ans").val("")
     return
   }
@@ -989,7 +990,7 @@ function quiz_checkauto(){
         $("#kirimaehu").show()
         $("#quiz_test").html("")
         $("#quiz_do").css("background-color","#F9BF98")
-        $('body').animate({ scrollTop: 0 }, 0)
+        //$('body').animate({ scrollTop: 0 }, 0)
       }
     }else{
       $("#quiz_test").html("違います")
@@ -998,7 +999,7 @@ function quiz_checkauto(){
         duration:300,
         complete:function(){$("#quiz_test").css({"color":"black"})}
       })
-      $('body').animate({ scrollTop: 0 }, 0)   
+      //$('body').animate({ scrollTop: 0 }, 0)   
     }
   }
   //子のツモなら
@@ -1033,7 +1034,7 @@ function quiz_checkauto(){
         $("#kirimaehu").show()
         $("#quiz_test").html("出題")
         $("#quiz_do").css("background-color","#F9BF98")
-        $('body').animate({ scrollTop: 0 }, 0)
+        //$('body').animate({ scrollTop: 0 }, 0)
       }
     }else{
       $("#quiz_test").html("違います")
@@ -1042,7 +1043,7 @@ function quiz_checkauto(){
         duration:300,
         complete:function(){$("#quiz_test").css({"color":"black"})}
       })
-      $('body').animate({ scrollTop: 0 }, 0)
+      //$('body').animate({ scrollTop: 0 }, 0)
     }
   }
 
