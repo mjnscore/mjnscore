@@ -409,13 +409,15 @@
     <!--テンパイの時だけ待ちを表示していた　下位互換なので非表示にしておく（処理は走る、処理は消した方がいい）
     <p id="mati_text" style="font-size: x-small;"></p>
     -->
-    <p id="shanten_text" style=""></a>
+    <p id="shanten_text"></a>
     
-    <p id="yuko_text" style="font-size: smaller;"></p>
+    <p id="yuko_text" style="font-size: smaller;background-color: #f5faff;" onclick="yuko_toggle('yuko_text','yuko_button')"></p>
+    <input type="button" id="yuko_button" style="display: none;" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){yuko_toggle('yuko_button','yuko_text')}" onmouseup="if(endY==''){yuko_toggle('yuko_button','yuko_text')}" value="聴牌候補牌表示">
 
     <p id="yuko_text3" style="font-size: smaller;"></p>
 
-    <p id="yuko_text2" style="font-size: smaller;"></p>
+    <p id="yuko_text2" style="font-size: smaller;background-color: #faf5ff;" onclick="yuko_toggle('yuko_text2','yuko_button2')"></p>
+    <input type="button" id="yuko_button2" style="display: none;" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){yuko_toggle('yuko_button2','yuko_text2')}" onmouseup="if(endY==''){yuko_toggle('yuko_button2','yuko_text2')}" value="和了候補牌表示">
   </div>
   <hr style="margin:2px 0 2px 0;">
 <div id ="quiz_hide2">

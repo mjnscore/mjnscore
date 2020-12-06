@@ -771,6 +771,9 @@ function yukohai(sakiyomi,uti,mati){
             */
         }
     }
+    $("#footer").text("テンパイ候補　牌画像クリックで非表示")
+    clear_footer()
+
 
     if(sakiyomi == void 0 ){
         for(var i=0;i<yuko_array.length;i++){
@@ -1267,4 +1270,9 @@ function yukohai13(){
     }
     */
     
+}
+
+function yuko_toggle(it,id){
+    $("#"+it).toggle()
+    $("#"+id).toggle()
 }
