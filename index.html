@@ -1,0 +1,812 @@
+<html>
+<!--
+    <html manifest="offline.appcache">
+-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery-ui.min.js"></script>
+<link rel="stylesheet" href="jquery-ui.min.css">
+<script type="text/javascript" src="mt.js"></script>
+<script type="text/javascript" src="shanten.js"></script>
+<script type="text/javascript" src="script3.js"></script>
+<script type="text/javascript" src="agari.js"></script>
+<script type="text/javascript" src="ten.js"></script>
+<script type="text/javascript" src="q.js"></script>
+<script type="text/javascript" src="localstorage.js"></script>
+<script type="text/javascript" src="mnd.js"></script>
+<script type="text/javascript" src="tenmemo.js"></script>
+
+<script type="text/javascript" src="modaal.min.js"></script>
+<link rel="stylesheet" href="modaal.min.css">
+<script type="text/javascript" src="ShantenTable.js"></script>
+
+<script type="text/javascript" src="velocity.min.js"></script>
+<script type="text/javascript" src="flowtype.js"></script>
+<script type="text/javascript" src="html2canvas.min.js"></script>
+<script type="text/javascript" src="jquery.magnific-popup.min.js"></script>
+<link rel="stylesheet" href="magnific-popup.css">
+<script type="text/javascript" src="./sweetalert/lib/sweet-alert.js"></script>
+<link rel="stylesheet" href="./sweetalert/lib/sweet-alert.css">
+
+<link rel="stylesheet" href="style.css">
+<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+<!--
+<link href='http://fonts.googleapis.com/css?family=Lato:900,400' rel='stylesheet' type='text/css'>
+-->
+<link href="intro.css" rel="stylesheet" type="text/css" media="screen" />
+<link rel="apple-touch-icon" href="icon.png" />
+<script src="intro.js" type="text/javascript"></script>
+<script src="transit.js" type="text/javascript"></script>
+<style>img[alt="www.000webhost.com"]{display:none;}</style>
+<!--
+<script>
+  if (navigator.serviceWorker) {
+    navigator.serviceWorker.register('./service-worker.js', { scope: '.' });
+
+  if (navigator.onLine) {
+    fetch("/site.appcache");
+  }
+}</script>
+-->
+<!--[if lt IE 9]>
+<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+<title>麻雀点数計算機</title>
+</head>
+
+<body onload="scroll();sns()">
+<h1 id="title">麻雀点数計算機</h1>
+<div style="line-height:5px"><br></div>
+<div id="ls_button">
+  <input type="button" onclick = "localstorage_toggle()" value = "表示"> <input type="button" onclick = "localstorage_save()" value = "保存"> <input type="button" onclick = "localstorage_reflect()" value = "反映"> <input type="button" onclick = "localstorage_delete()" value = "削除"> <input type="button" onclick = "localstorage_clear()" value = "全削除"> <input type="button" onclick = "localstorage_picture()" value = "画像">
+  <a id="modalclick" href="#modal" class="modal"></a>
+  <div style="line-height:5px"><br></div>
+  <div id="ls_div" style="display: none; background-color: mintcream;"></div>
+</div>
+<span id="hutenimg_span" style="display: none;"><img src="img2/oyaten.png" id="hutenimg" class="tenimg"><br></span>
+<div id="sutehai_div" style="display:none;"></div>
+<span><a id="quiz_test"></a></span>
+<a id="yaku_list" style="font-size:smaller;"></a>
+<span><a id="tensu"></a></span>
+<span><a id="kirimaehu" style="width:100%;"></a></span>
+<a id="hyouji" style="display: none;"></a>
+
+<div>
+    <img src="./img2/2j1.png" alt="" style="display: none">
+    <img src="./img2/2j2.png" alt="" style="display: none">
+    <img src="./img2/2j3.png" alt="" style="display: none">
+    <img src="./img2/2j4.png" alt="" style="display: none">
+    <img src="./img2/2j5.png" alt="" style="display: none">
+    <img src="./img2/2j6.png" alt="" style="display: none">
+    <img src="./img2/2j7.png" alt="" style="display: none">
+    <img src="./img2/2m1.png" alt="" style="display: none">
+    <img src="./img2/2m2.png" alt="" style="display: none">
+    <img src="./img2/2m3.png" alt="" style="display: none">
+    <img src="./img2/2m4.png" alt="" style="display: none">
+    <img src="./img2/2m5.png" alt="" style="display: none">
+    <img src="./img2/2m6.png" alt="" style="display: none">
+    <img src="./img2/2m7.png" alt="" style="display: none">
+    <img src="./img2/2m8.png" alt="" style="display: none">
+    <img src="./img2/2m9.png" alt="" style="display: none">
+    <img src="./img2/2p1.png" alt="" style="display: none">
+    <img src="./img2/2p2.png" alt="" style="display: none">
+    <img src="./img2/2p3.png" alt="" style="display: none">
+    <img src="./img2/2p4.png" alt="" style="display: none">
+    <img src="./img2/2p5.png" alt="" style="display: none">
+    <img src="./img2/2p6.png" alt="" style="display: none">
+    <img src="./img2/2p7.png" alt="" style="display: none">
+    <img src="./img2/2p8.png" alt="" style="display: none">
+    <img src="./img2/2p9.png" alt="" style="display: none">
+    <img src="./img2/2s1.png" alt="" style="display: none">
+    <img src="./img2/2s2.png" alt="" style="display: none">
+    <img src="./img2/2s3.png" alt="" style="display: none">
+    <img src="./img2/2s4.png" alt="" style="display: none">
+    <img src="./img2/2s5.png" alt="" style="display: none">
+    <img src="./img2/2s6.png" alt="" style="display: none">
+    <img src="./img2/2s7.png" alt="" style="display: none">
+    <img src="./img2/2s8.png" alt="" style="display: none">
+    <img src="./img2/2s9.png" alt="" style="display: none">
+    <img src="./img/none.png" alt="" style="display: none">
+</div>
+
+<div id="capture">
+  <table id="hai_tehai" class="blinkborder" data-step="1" data-intro="手牌を選択" style="width:100%;text-align: center;table-layout: fixed;">
+    <tr>
+      <td style="width: 7.1%;border-bottom:2px solid red;">
+        <img id="select1" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
+        <img id="select2" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
+        <img id="select3" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
+        <img id="select4" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
+        <img id="select5" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
+        <img id="select6" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
+        <img id="select7" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
+        <img id="select8" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
+        <img id="select9" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
+        <img id="select10" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
+        <img id="select11" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
+        <img id="select12" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
+        <img id="select13" src="./img/1j9.png" style="width:100%;" alt=""></td><td>　</td><td style="width: 7.1%;">
+        <img id="agari" src="./img/1j9.png" style="width:100%;" alt="">
+      </td>
+    </tr>
+  </table>
+  <div style="line-height:2px">
+  </div>
+  <table id="hai_naki" style="width:100%;text-align: center;table-layout: fixed;">
+    <tr>
+      <td style="width: 6%;vertical-align: bottom;border-bottom:0px solid transparent;">
+        <a id="naki1"><br></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="naki2"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="naki3"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="naki4"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="naki5"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="naki6"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="naki7"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="naki8"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="naki9"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="naki10"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="naki11"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="naki12"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="naki13"></a>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+<div id="game_show" style="display: none;">
+  <div id="gamemenudiv">
+    <div id="dorahaidiv">
+      ドラ牌
+    </div>
+    <ul>
+      <li id="game_menu1" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="" onmouseup="if(endY==''){}" style="color:rgba(0,0,0,0.1)">ポン</li><li id="game_menu2" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="" onmouseup="if(endY==''){}" style="color:rgba(0,0,0,0.1)">チー</li><li id="game_menu3" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="da_ankan()" onmouseup="if(endY==''){da_ankan()}" style="color:rgba(0,0,0,0.1)">暗槓</li><li id="game_menu4" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="game_agari()" onmouseup="if(endY==''){game_agari()}" style="color:rgba(0,0,0,0.1)">ツモ</li><li id="game_menu5" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="da_reach()" onmouseup="if(endY==''){da_reach()}" style="color:rgba(0,0,0,0.1)">立直</li><li id="game_menu6" class="calc button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="$('body').animate({ scrollTop: 0 }, 300);sute_hai();da_hai()" onmouseup="if(endY==''){sute_hai();da_hai()}">打牌</li></ul>
+      残:<a id="zan_hai_count">0</a>(自摸:<a id="tumo_hai_count">0</a>) <span id="riti_hai_text" style="display:none">(立直:<a id="riti_hai_count"></a>)</span><br><a id="guide_m"></a><br><a id="guide_r"></a>
+  </div>
+</div>
+
+
+
+<div id="quiz_show" style="display: none;font-family: ‘Lato’, sans-serif;font-weight:400;">
+  <a id="quiz_ba"></a>
+  <a id="quiz_yaku"></a>
+  <br>
+  <div style="text-align:left">
+    <input type="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="quizg_minus(),quiz()" onmouseup="if(endY==''){quizg_minus(),quiz()}" id="quiz_do" value="出題" style="margin-right:10px;height:50px;">
+    <input type="tel" id="quiz_ans" size=5 ontouchend="quiz_ans_click('')" onmouseup="if(endY==''){quiz_ans_click('')}">
+    <a id="quiz_ten" style="font-size:smaller"></a>
+  </div>
+
+  <div id="quizg_bar_parent" style="line-height:2px">
+    <br>
+  </div>
+  <li id="quizg_bar"></li>
+
+  <div id="quizg_area" class="quizg" >
+    <a id="quizg_count"></a>
+    <a id="quizg_time"></a>
+    <a id="quizg_pertime"></a>
+    <a id="quizg_score"></a>
+    <br>
+    <div id="qadiv" class="haidiv" style="font-family: ‘Lato’, sans-serif;font-weight:400;font-size:30px;">
+      <ul><li class="button" ontouchend="select_num('1')" onmouseup="if(endY==''){select_num('1')}">1</li><li class="button" ontouchend="select_num('2')" onmouseup="if(endY==''){select_num('2')}">2</li><li class="button" ontouchend="select_num('3')" onmouseup="if(endY==''){select_num('3')}">3</li></ul>
+      <ul><li class="button" ontouchend="select_num('4')" onmouseup="if(endY==''){select_num('4')}">4</li><li class="button" ontouchend="select_num('5')" onmouseup="if(endY==''){select_num('5')}">5</li><li class="button" ontouchend="select_num('6')" onmouseup="if(endY==''){select_num('6')}">6</li></ul>
+      <ul><li class="button" ontouchend="select_num('7')" onmouseup="if(endY==''){select_num('7')}">7</li><li class="button" ontouchend="select_num('8')" onmouseup="if(endY==''){select_num('8')}">8</li><li class="button" ontouchend="select_num('9')" onmouseup="if(endY==''){select_num('9')}">9</li></ul>
+      <!--<ul><li class="button" ontouchend="select_num_delete()" onmouseup="if(endY==''){select_num_delete()}">消</li><li class="button" ontouchend="select_num('0')" onmouseup="if(endY==''){select_num('0')}">0</li><li class="button" ontouchend="select_num_next()" onmouseup="if(endY==''){select_num_next()}">次</li></ul>-->
+    </div>
+    <div id="qadiv_wide" class="haidiv" style="font-family: ‘Lato’, sans-serif;font-weight:400;font-size:30px;">
+      <ul><!--<li class="button" ontouchend="select_num('0')" onmouseup="if(endY==''){select_num('0')}">0</li>--><li class="button" ontouchend="select_num('1')" onmouseup="if(endY==''){select_num('1')}">1</li><li class="button" ontouchend="select_num('2')" onmouseup="if(endY==''){select_num('2')}">2</li><li class="button" ontouchend="select_num('3')" onmouseup="if(endY==''){select_num('3')}">3</li><li class="button" ontouchend="select_num('4')" onmouseup="if(endY==''){select_num('4')}">4</li><li class="button" ontouchend="select_num('5')" onmouseup="if(endY==''){select_num('5')}">5</li><li class="button" ontouchend="select_num('6')" onmouseup="if(endY==''){select_num('6')}">6</li><li class="button" ontouchend="select_num('7')" onmouseup="if(endY==''){select_num('7')}">7</li><li class="button" ontouchend="select_num('8')" onmouseup="if(endY==''){select_num('8')}">8</li><li class="button" ontouchend="select_num('9')" onmouseup="if(endY==''){select_num('9')}">9</li><!--<li class="button" ontouchend="select_num_delete()" onmouseup="if(endY==''){select_num_delete()}">消</li><li class="button" ontouchend="select_num_next()" onmouseup="if(endY==''){select_num_next()}">次</li>--></ul>
+    </div>
+  </div>
+  <a id="quizg_prev">
+  <a id="quizg_yaku" style="font-size: small;"></a>
+  <a id="quizg_tensu" style="font-size: small;"></a>
+  <a id="quizg_kirimaehu" style="font-size: x-small;"></a>
+  <br>
+  <a id="quiz_img"></a>
+  <div style="line-height:5px">
+    <br>
+  </div>
+  <input type="button" onclick="confirm_quizg_start()" id="quizg_retry" value="リトライ" style="height:40px;">
+  <div style="line-height:5px">
+    <br>
+  </div>
+</div>
+
+<div id="quiz_hide">
+  <div style="line-height:2px">
+    <br>
+  </div>
+  <div id="selectmenudiv" data-step="2" data-intro="手牌 or 鳴牌の切替">
+    <ul>
+      <li id="menu1" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu1','select')" onmouseup="if(endY==''){select_menu_now('menu1','select')}" style="background:Palegreen">手牌</li><li id="menu2" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu2','pon')" onmouseup="if(endY==''){select_menu_now('menu2','pon')}">ポン</li><li id="menu3" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu3','chi')" onmouseup="if(endY==''){select_menu_now('menu3','chi')}">チー</li><li id="menu4" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu4','ankan')" onmouseup="if(endY==''){select_menu_now('menu4','ankan')}">暗槓</li><li id="menu5" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu5','minkan')" onmouseup="if(endY==''){select_menu_now('menu5','minkan')}">明槓</li><!--<li id="menu6" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu6','agari')" onmouseup="if(endY==''){select_menu_now('menu6','agari')}">上牌</li>--><li id="menu6" class="calc button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="agari_rekkyo();tensu();$('body').animate({ scrollTop: 0 }, 300);check_reach2();" onmouseup="if(endY==''){agari_rekkyo();tensu();$('body').animate({ scrollTop: 0 }, 300);check_reach2();}" data-step="8" data-intro="計算する" data-position="left">計算</li>
+    </ul>
+  </div>
+  <hr style="margin:2px 0 2px 0;">
+  <div id="mobilehaidiv" style="display: none;">
+    <div id="selecthaidiv">
+      <ul>
+        <li id="j" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){select_hai_now('j','jhaidiv')}" onmouseup="if(endY==''){select_hai_now('j','jhaidiv')}" style="background-image: url('./img2/1j1.png');background-size:cover;background-position: center center;background-repeat: no-repeat;"></li><li id="m" class="button"
+      ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){select_hai_now('m','mhaidiv')}" onmouseup="if(endY==''){select_hai_now('m','mhaidiv')}" style="border:1px solid red;background-image: url('./img2/1m.png');background-size:cover;background-position: center center;background-repeat: no-repeat;"></li><li id="p" class="button" 
+      ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){select_hai_now('p','phaidiv')}" onmouseup="if(endY==''){select_hai_now('p','phaidiv')}" style="background-image: url('./img2/1p.png');background-size:cover;background-position: center center;background-repeat: no-repeat;"></li><li id="s" class="button" 
+      ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){select_hai_now('s','shaidiv')}" onmouseup="if(endY==''){select_hai_now('s','shaidiv')}" style="background-image: url('./img2/1s.png');background-size:cover;background-position: center center;background-repeat: no-repeat;"></li><li id="erase1" class="button"  
+      ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_erase()" onmouseup="if(endY==''){select_erase()}" style="background-image: url('./img2/erase1.png');background-size:cover;background-position: center center;background-repeat: no-repeat;"></li><li id="eraseall" class="button"
+      ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="erase_all()" onmouseup="if(endY==''){erase_all()}" style="background-image: url('./img2/erase2.png');background-size:cover;background-position: center center;background-repeat: no-repeat;"></li>
+      </ul>
+    </div>
+    <div>
+      <div id="jhaidiv" class="haidiv" style="display: none;">
+        <ul><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j1','41')" onmouseup="if(endY==''){select_hai('1j1','41')}" style="background-image: url('./img2/1j1.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j2','43')" onmouseup="if(endY==''){select_hai('1j2','43')}" style="background-image: url('./img2/1j2.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j3','45')" onmouseup="if(endY==''){select_hai('1j3','45')}" style="background-image: url('./img2/1j3.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li></ul>
+        <ul><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j4','47')" onmouseup="if(endY==''){select_hai('1j4','47')}" style="background-image: url('./img2/1j4.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li></ul>
+        <ul><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j5','51')" onmouseup="if(endY==''){select_hai('1j5','51')}" style="background-image: url('./img2/1j5.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j6','53')" onmouseup="if(endY==''){select_hai('1j6','53')}" style="background-image: url('./img2/1j6.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j7','55')" onmouseup="if(endY==''){select_hai('1j7','55')}" style="background-image: url('./img2/1j7.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li></ul>
+      </div>
+      <div id="mhaidiv" class="haidiv">
+        <ul><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m1','11')" onmouseup="if(endY==''){select_hai('1m1','11')}" style="background-image: url('./img2/1m1.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m2','12')" onmouseup="if(endY==''){select_hai('1m2','12')}" style="background-image: url('./img2/1m2.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m3','13')" onmouseup="if(endY==''){select_hai('1m3','13')}" style="background-image: url('./img2/1m3.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li></ul>
+        <ul><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m4','14')" onmouseup="if(endY==''){select_hai('1m4','14')}" style="background-image: url('./img2/1m4.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m5','15')" onmouseup="if(endY==''){select_hai('1m5','15')}" style="background-image: url('./img2/1m5.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m6','16')" onmouseup="if(endY==''){select_hai('1m6','16')}" style="background-image: url('./img2/1m6.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li></ul>
+        <ul><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m7','17')" onmouseup="if(endY==''){select_hai('1m7','17')}" style="background-image: url('./img2/1m7.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m8','18')" onmouseup="if(endY==''){select_hai('1m8','18')}" style="background-image: url('./img2/1m8.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m9','19')" onmouseup="if(endY==''){select_hai('1m9','19')}" style="background-image: url('./img2/1m9.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li></ul>
+      </div>
+      <div id="phaidiv" class="haidiv" style="display: none;">
+        <ul><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p1','21')" onmouseup="if(endY==''){select_hai('1p1','21')}" style="background-image: url('./img2/1p1.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p2','22')" onmouseup="if(endY==''){select_hai('1p2','22')}" style="background-image: url('./img2/1p2.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p3','23')" onmouseup="if(endY==''){select_hai('1p3','23')}" style="background-image: url('./img2/1p3.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li></ul>
+        <ul><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p4','24')" onmouseup="if(endY==''){select_hai('1p4','24')}" style="background-image: url('./img2/1p4.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p5','25')" onmouseup="if(endY==''){select_hai('1p5','25')}" style="background-image: url('./img2/1p5.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p6','26')" onmouseup="if(endY==''){select_hai('1p6','26')}" style="background-image: url('./img2/1p6.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li></ul>
+        <ul><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p7','27')" onmouseup="if(endY==''){select_hai('1p7','27')}" style="background-image: url('./img2/1p7.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p8','28')" onmouseup="if(endY==''){select_hai('1p8','28')}" style="background-image: url('./img2/1p8.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p9','29')" onmouseup="if(endY==''){select_hai('1p9','29')}" style="background-image: url('./img2/1p9.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li></ul>
+      </div>
+      <div id="shaidiv" class="haidiv" style="display: none;">
+        <ul><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s1','31')" onmouseup="if(endY==''){select_hai('1s1','31')}" style="background-image: url('./img2/1s1.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s2','32')" onmouseup="if(endY==''){select_hai('1s2','32')}" style="background-image: url('./img2/1s2.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s3','33')" onmouseup="if(endY==''){select_hai('1s3','33')}" style="background-image: url('./img2/1s3.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li></ul>
+        <ul><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s4','34')" onmouseup="if(endY==''){select_hai('1s4','34')}" style="background-image: url('./img2/1s4.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s5','35')" onmouseup="if(endY==''){select_hai('1s5','35')}" style="background-image: url('./img2/1s5.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s6','36')" onmouseup="if(endY==''){select_hai('1s6','36')}" style="background-image: url('./img2/1s6.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li></ul>
+        <ul><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s7','37')" onmouseup="if(endY==''){select_hai('1s7','37')}" style="background-image: url('./img2/1s7.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s8','38')" onmouseup="if(endY==''){select_hai('1s8','38')}" style="background-image: url('./img2/1s8.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li><li class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s9','39')" onmouseup="if(endY==''){select_hai('1s9','39')}" style="background-image: url('./img2/1s9.png');background-size:contain;background-position: center center;background-repeat: no-repeat;"></li></ul>
+      </div>
+    </div>
+  </div>
+
+
+
+<!--
+<div class="haipai">
+  <li><input type="radio" name="menu" id="menu1" value="select" checked><label for="menu1">手牌</label></li>
+  <li><input type="radio" name="menu" id="menu2" value="pon"><label for="menu2">ポン</label></li>
+  <li><input type="radio" name="menu" id="menu3" value="chi"><label for="menu3">チー</label></li>
+  <li><input type="radio" name="menu" id="menu4" value="ankan"><label for="menu4">暗カン</label></li>
+  <li><input type="radio" name="menu" id="menu5" value="minkan"><label for="menu5">明カン</label></li>
+  <li><input type="radio" name="menu" id="menu6" value="agari"><label for="menu6">上牌</label></li>
+</div>
+-->
+
+  <!--牌全部選択式Div-->
+  <div id="webhaidiv" data-step="3" data-intro="牌を選択">
+    <table class="hai_all" style="width: 100%;text-align: center;">
+    <tr><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j1','41')" onmouseup="if(endY==''){select_hai('1j1','41')}">
+    <img src="./img2/1j1.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j2','43')" onmouseup="if(endY==''){select_hai('1j2','43')}">
+    <img src="./img2/1j2.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j3','45')" onmouseup="if(endY==''){select_hai('1j3','45')}">
+    <img src="./img2/1j3.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j4','47')" onmouseup="if(endY==''){select_hai('1j4','47')}">
+    <img src="./img2/1j4.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j5','51')" onmouseup="if(endY==''){select_hai('1j5','51')}">
+    <img src="./img2/1j5.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j6','53')" onmouseup="if(endY==''){select_hai('1j6','53')}">
+    <img src="./img2/1j6.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j7','55')" onmouseup="if(endY==''){select_hai('1j7','55')}">
+    <img src="./img2/1j7.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_erase()" onmouseup="if(endY==''){select_erase()}" data-step="4" data-intro="選択中の手牌 or 鳴牌を取消" data-position="left">
+    <img src="./img2/erase1.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touchend_check('erase_all()')" onmouseup="if(endY==''){erase_all()}" data-step="5" data-intro="全ての牌を取消" data-position="left">
+    <img src="./img2/erase2.png"></td></tr>
+    <tr><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m1','11')" onmouseup="if(endY==''){select_hai('1m1','11')}">
+    <img src="./img2/1m1.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m2','12')" onmouseup="if(endY==''){select_hai('1m2','12')}">
+    <img src="./img2/1m2.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m3','13')" onmouseup="if(endY==''){select_hai('1m3','13')}">
+    <img src="./img2/1m3.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m4','14')" onmouseup="if(endY==''){select_hai('1m4','14')}">
+    <img src="./img2/1m4.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m5','15')" onmouseup="if(endY==''){select_hai('1m5','15')}">
+    <img src="./img2/1m5.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m6','16')" onmouseup="if(endY==''){select_hai('1m6','16')}">
+    <img src="./img2/1m6.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m7','17')" onmouseup="if(endY==''){select_hai('1m7','17')}">
+    <img src="./img2/1m7.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m8','18')" onmouseup="if(endY==''){select_hai('1m8','18')}">
+    <img src="./img2/1m8.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1m9','19')" onmouseup="if(endY==''){select_hai('1m9','19')}">
+    <img src="./img2/1m9.png"></td></tr>
+    <tr><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p1','21')" onmouseup="if(endY==''){select_hai('1p1','21')}">
+    <img src="./img2/1p1.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p2','22')" onmouseup="if(endY==''){select_hai('1p2','22')}">
+    <img src="./img2/1p2.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p3','23')" onmouseup="if(endY==''){select_hai('1p3','23')}">
+    <img src="./img2/1p3.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p4','24')" onmouseup="if(endY==''){select_hai('1p4','24')}">
+    <img src="./img2/1p4.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p5','25')" onmouseup="if(endY==''){select_hai('1p5','25')}">
+    <img src="./img2/1p5.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p6','26')" onmouseup="if(endY==''){select_hai('1p6','26')}">
+    <img src="./img2/1p6.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p7','27')" onmouseup="if(endY==''){select_hai('1p7','27')}">
+    <img src="./img2/1p7.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p8','28')" onmouseup="if(endY==''){select_hai('1p8','28')}">
+    <img src="./img2/1p8.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1p9','29')" onmouseup="if(endY==''){select_hai('1p9','29')}">
+    <img src="./img2/1p9.png"></td></tr>
+    </table>
+    <table class="hai_all" style="width: 100%;text-align: center;">
+    <tr><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s1','31')" onmouseup="if(endY==''){select_hai('1s1','31')}">
+    <img src="./img2/1s1.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s2','32')" onmouseup="if(endY==''){select_hai('1s2','32')}">
+    <img src="./img2/1s2.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s3','33')" onmouseup="if(endY==''){select_hai('1s3','33')}">
+    <img src="./img2/1s3.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s4','34')" onmouseup="if(endY==''){select_hai('1s4','34')}">
+    <img src="./img2/1s4.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s5','35')" onmouseup="if(endY==''){select_hai('1s5','35')}">
+    <img src="./img2/1s5.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s6','36')" onmouseup="if(endY==''){select_hai('1s6','36')}">
+    <img src="./img2/1s6.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s7','37')" onmouseup="if(endY==''){select_hai('1s7','37')}">
+    <img src="./img2/1s7.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s8','38')" onmouseup="if(endY==''){select_hai('1s8','38')}">
+    <img src="./img2/1s8.png"></td><td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1s9','39')" onmouseup="if(endY==''){select_hai('1s9','39')}">
+    <img src="./img2/1s9.png"></td></tr>
+    </table>
+  </div>
+  <div style="display:none;">
+    <!--牌全部選択式Div-->
+    <input type="button" onclick="start_game();check_mentsu()">
+    <input type="button" onclick="check_mentsu()">
+    <a id="mnd_selecting_file"></a>
+    <a id="mnd_selecting_num"></a>
+    [配牌：<a id="mnd_last_count"></a>]
+    [手数：<a id="mnd_take_count"></a>]
+    [得点：<a id="mnd_siharaiten"></a>]
+
+    <table id="mnd_table" class="hai_all2" style="width: 100%;text-align: center;">
+      <tr style="background-color:rgba(124,124,124,0.5);">
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j1','41')" onmouseup="if(endY==''){select_hai('1j1','41')}">
+          <img src="./img2/1j1.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j2','43')" onmouseup="if(endY==''){select_hai('1j2','43')}">
+          <img src="./img2/1j2.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j3','45')" onmouseup="if(endY==''){select_hai('1j3','45')}">
+          <img src="./img2/1j3.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j4','47')" onmouseup="if(endY==''){select_hai('1j4','47')}">
+          <img src="./img2/1j4.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j5','51')" onmouseup="if(endY==''){select_hai('1j5','51')}">
+          <img src="./img2/1j5.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j6','53')" onmouseup="if(endY==''){select_hai('1j6','53')}">
+          <img src="./img2/1j6.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j7','55')" onmouseup="if(endY==''){select_hai('1j7','55')}">
+          <img src="./img2/1j7.png"></td>
+      </tr>
+      <tr style="background-color:rgba(124,124,124,0.5);">
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j1','41')" onmouseup="if(endY==''){select_hai('1j1','41')}">
+          <img src="./img2/1j1.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j2','43')" onmouseup="if(endY==''){select_hai('1j2','43')}">
+          <img src="./img2/1j2.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j3','45')" onmouseup="if(endY==''){select_hai('1j3','45')}">
+          <img src="./img2/1j3.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j4','47')" onmouseup="if(endY==''){select_hai('1j4','47')}">
+          <img src="./img2/1j4.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j5','51')" onmouseup="if(endY==''){select_hai('1j5','51')}">
+          <img src="./img2/1j5.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j6','53')" onmouseup="if(endY==''){select_hai('1j6','53')}">
+          <img src="./img2/1j6.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j7','55')" onmouseup="if(endY==''){select_hai('1j7','55')}">
+          <img src="./img2/1j7.png"></td>
+      </tr>  
+      <tr>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j1','41')" onmouseup="if(endY==''){select_hai('1j1','41')}" style="background-color:rgba(124,0,0,0.5);">
+          <img src="./img2/1j1.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j2','43')" onmouseup="if(endY==''){select_hai('1j2','43')}" style="background-color:rgba(124,0,0,0.5);">
+          <img src="./img2/1j2.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j3','45')" onmouseup="if(endY==''){select_hai('1j3','45')}" style="background-color:rgba(124,0,0,0.5);">
+          <img src="./img2/1j3.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j4','47')" onmouseup="if(endY==''){select_hai('1j4','47')}" style="background-color:rgba(0,124,0,0.5);">
+          <img src="./img2/1j4.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j5','51')" onmouseup="if(endY==''){select_hai('1j5','51')}" style="background-color:rgba(0,124,0,0.5);">
+          <img src="./img2/1j5.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j6','53')" onmouseup="if(endY==''){select_hai('1j6','53')}" style="background-color:rgba(0,124,0,0.5);">
+          <img src="./img2/1j6.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j7','55')" onmouseup="if(endY==''){select_hai('1j7','55')}" style="background-color:rgba(100,20,60,0.5);">
+          <img src="./img2/1j7.png"></td>
+      </tr>
+      <tr>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j1','41')" onmouseup="if(endY==''){select_hai('1j1','41')}" style="background-color:rgba(0,0,124,0.5);">
+          <img src="./img2/1j1.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j2','43')" onmouseup="if(endY==''){select_hai('1j2','43')}" style="background-color:rgba(0,0,124,0.5);">
+          <img src="./img2/1j2.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j3','45')" onmouseup="if(endY==''){select_hai('1j3','45')}" style="background-color:rgba(0,0,124,0.5);">
+          <img src="./img2/1j3.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j4','47')" onmouseup="if(endY==''){select_hai('1j4','47')}" style="background-color:rgba(62,62,0,0.5);">
+          <img src="./img2/1j4.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j5','51')" onmouseup="if(endY==''){select_hai('1j5','51')}" style="background-color:rgba(62,62,0,0.5);">
+          <img src="./img2/1j5.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j6','53')" onmouseup="if(endY==''){select_hai('1j6','53')}" style="background-color:rgba(62,62,0,0.5);">
+          <img src="./img2/1j6.png"></td>
+        <td ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_hai('1j7','55')" onmouseup="if(endY==''){select_hai('1j7','55')}" style="background-color:rgba(100,20,60,0.5);">
+          <img src="./img2/1j7.png"></td>
+      </tr>
+
+    </table>
+  </div>
+  <hr style="margin:2px 0 2px 0;">
+</div>
+
+
+  <div style="text-align: left">
+    <!--テンパイの時だけ待ちを表示していた　下位互換なので非表示にしておく（処理は走る、処理は消した方がいい）
+    <p id="mati_text" style="font-size: x-small;"></p>
+    -->
+    <p id="shanten_text" style=""></a>
+    
+    <p id="yuko_text" style="font-size: smaller;"></p>
+
+    <p id="yuko_text3" style="font-size: smaller;"></p>
+
+    <p id="yuko_text2" style="font-size: smaller;"></p>
+  </div>
+  <hr style="margin:2px 0 2px 0;">
+<div id ="quiz_hide2">
+  <!--
+  <a id="yaku_list" style="font-size:smaller;text-align:left;float:left;"></a>
+  <span><a id="tensu"></a></span>
+  <span><a id="kirimaehu" style=";width:100%;"></a></span>
+  <a id="mati_text" style="font-size: x-small;"></a>
+  -->
+
+
+
+  <!--
+  <div id="badiv" data-step="6" data-intro="場・アガリの状況を選択">
+    <ul>
+      <li class="button"><select id="oya"><option value="oya">親</option><option value="ko">子</option></select></li><li class="button"><select id="tumo"><option value="tumo">ツモ</option><option value="ron">ロン</option></select></li><li class="button"><select id="bakaze"><option value="41" selected>東場</option><option value="43">南場</option><option value="45">西場</option><option value="47">北場</option></select></li><li class="button"><select id="jikaze"><option value="41" selected>東家</option><option value="43">南家</option><option value="45">西家</option><option value="47">北家</option></select></li><li class="button"><input type="tel" id="dora" placeholder="ドラ" onclick="$('#dora').val('');"></li><li class="button"><input type="button" data-step="8" data-intro="計算を実行" data-position='left' id="calc" value="計算" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){agari_rekkyo();tensu();$('body').animate({ scrollTop: 0 }, 300)}" onmouseup="if(endY==''){agari_rekkyo();tensu();$('body').animate({ scrollTop: 0 }, 300)}"></li></ul>
+  </div>
+  -->
+  <table id="badiv" data-step="6" data-intro="場・アガリの状況を選択" style="margin-left: auto;margin-right: auto;">
+    <tr>    
+      <td class="baradio" style="border-top:1px solid gray;border-left:1px solid gray;border-right:1px solid gray;width:80px;text-align:center;padding:2px;">
+          <input type="radio" id="oya" name="oya" value="oya" checked>
+              <label for="oya" style="width:100%;">親</label>
+      </td>    
+      <td class="baradio" style="border-top: 1px solid gray;border-left:1px solid gray;border-right:1px solid gray;width:80px;text-align:center;padding:2px;">
+          <input type="radio" id="ba41" name="bakaze" value="41" checked>
+              <label for="ba41" style="width:100%;">東場</label>
+      </td>
+      <td class="baradio" style="border-top:1px solid gray;border-left:1px solid gray;border-right:1px solid gray;width:80px;text-align:center;padding:2px;">
+          <input type="radio" id="ji41" name="jikaze" value="41" checked>
+              <label for="ji41" style="width:100%;">東風</label>
+      </td>
+      <td rowspan="2" style="padding:8px;">
+          <input type="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){ri_hai();$('body').animate({ scrollTop: 0 }, 300);}" onmouseup="if(endY==''){ri_hai();$('body').animate({ scrollTop: 0 }, 300);}" value="理牌">
+      
+      </td>
+    </tr>
+      <td class="baradio" style="border-left:1px solid gray;border-right:1px solid gray;width:80px;text-align:center;padding:2px;">
+          <input type="radio" id="ko" name="oya" value="ko">
+              <label for="ko" style="width:100%;">子</label>
+      </td>
+      <td class="baradio" style="border-left:1px solid gray;border-right:1px solid gray;width:80px;text-align:center;padding:2px;">
+          <input type="radio" id="ba43" name="bakaze" value="43">
+              <label for="ba43" style="width:100%;">南場</label>
+      </td>
+      <td class="baradio" style="border-left:1px solid gray;border-right:1px solid gray;width:80px;text-align:center;padding:2px;">
+          <input type="radio" id="ji43" name="jikaze" value="43">
+              <label for="ji43" style="width:100%;">南風</label>
+      </td>
+    </tr>
+    <tr>
+      <td class="baradio" style="border-top:1px solid gray;border-left:1px solid gray;border-right:1px solid gray;width:80px;text-align:center;padding:2px;">
+          <input type="radio" id="tumo" name="tumo" value="tumo" checked>
+              <label for="tumo" style="width:100%;">ツモ</label>
+      </td>
+      <td class="baradio" style="border-left:1px solid gray;border-right:1px solid gray;width:80px;text-align:center;padding:2px;">
+          <input type="radio" id="ba45" name="bakaze" value="45">
+              <label for="ba45" style="width:100%;">西場</label>
+      </td>
+      <td class="baradio" style="border-left:1px solid gray;border-right:1px solid gray;width:80px;text-align:center;padding:2px;">
+          <input type="radio" id="ji45" name="jikaze" value="45">
+              <label for="ji45" style="width:100%;">西風</label>
+      </td>
+      <td rowspan="2" style="padding:8px;">
+          <input type="tel" id="dora" placeholder="ドラ" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){$('#dora').focus();$('#dora').val('');}" onmouseup="if(endY==''){$('#dora').focus();$('#dora').val('');}" onBlur="$('body').animate({ scrollTop: 0 }, 300)">
+      </td>
+    </tr>
+    <tr>
+      <td class="baradio" style="border-bottom:1px solid gray;border-left:1px solid gray;border-right:1px solid gray;width:70px;text-align:center;">
+          <input type="radio" id="ron" name="tumo" value="ron">
+              <label for="ron" style="width:100%;">ロン</label>
+      </td>
+      <td class="baradio" style="border-bottom:1px solid gray;border-left:1px solid gray;border-right:1px solid gray;width:80px;text-align:center;padding:2px;">
+          <input type="radio" id="ba47" name="bakaze" value="47">
+              <label for="ba47" style="width:100%;">北場</label>
+      </td>
+      <td class="baradio" style="border-bottom:1px solid gray;border-left:1px solid gray;border-right:1px solid gray;width:80px;text-align:center;padding:2px;">
+          <input type="radio" id="ji47" name="jikaze" value="47">
+              <label for="ji47" style="width:100%;">北風</label>
+      </td>
+      
+    </tr>
+    <tr>
+      
+      </tr>
+  </table>
+
+  <hr style="margin:5px 0 5px 0;">
+
+  <div id="yaku_table" data-step="7" data-intro="牌以外の上がり役を選択">
+    <ul><li style="width:94px;"><input type="checkbox" value=1 id="riti" onclick="return false"><label for="riti" style="width:100%;">立直</label></li><li style="width:94px;"><input type="checkbox" value=1 id="driti" onclick="return false"><label for="driti">二重立直</label></li><li style="width:94px;"><input type="checkbox" value=1 id="ippatu" onclick="return false"><label for="ippatu">一発</label></li></ul>
+    <ul><li style="width:94px;"><input type="checkbox" value=1 id="rinsyan" onclick="return false"><label for="rinsyan">嶺上開花</label></li><li style="width:94px;"><input type="checkbox" value=1 id="haitei" onclick="return false"><label for="haitei">海底摸月</label></li><li style="width:94px;"><input type="checkbox" value=1 id="hotei"><label for="hotei" onclick="return false">河底撈魚</label></li></ul>
+    <ul><li style="width:94px;"><input type="checkbox" value=1 id="tyankan" onclick="return false"><label for="tyankan">槍槓</label></li><li style="width:94px;"><input type="checkbox" value=1 id="tenho" onclick="return false"><label for="tenho">天和</label></li><li style="width:94px;"><input type="checkbox" value=1 id="tiho" onclick="return false"><label for="tiho">地和</label></li></ul>
+  </div>
+  <div style="line-height:5px"><br></div>
+    <input type="button" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){superreload()}" onmouseup="if(endY==''){superreload()}" value="リセット" data-step="9" data-intro="手牌・役・場の全てを取消">
+    <input type="button" onclick="$('#mobilehaidiv').toggle(),$('#webhaidiv').toggle(),$('body').animate({ scrollTop: 0 }, 300)" value="牌選択切替">
+    
+  <hr style="margin:5px 0 5px 0;">
+</div><!--quiz_toggleここまで->
+
+  <!--
+連風牌対子の符<select id="dabutonhu"><option value=2>2符</option><option value=4>4符</option></select>
+  -->
+
+<div style="display: none;">
+<a id="select_count" >0</a><!--手牌の牌数-->
+<a id="naki_count" >0</a><!--鳴牌の牌数-->
+<a id="on" >select</a><!--今選んでいるのが手牌なら"#on"がselect,"#off"がnaki-->
+<a id="off" >naki</a><!--今選んでいるのが鳴牌なら"#on"がnaki,"#off"がselect-->
+<a id="menu_select" >select</a><!--select/pon/chi/ankan/minkan/agari-->
+</div>
+
+<div style="line-height:5px"><br></div>
+  <input type="button" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){hutenimg_toggle('oya')}" onmouseup="if(endY==''){hutenimg_toggle('oya')}" value="点数表(親)">
+  <input type="button" id="hutenimg_ko" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){hutenimg_toggle('ko')}" onmouseup="if(endY==''){hutenimg_toggle('ko')}" value="点数表(子)">
+  <input type="button" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){hutenimg_toggle('hu')}" onmouseup="if(endY==''){hutenimg_toggle('hu')}" value="符表">
+  <!--
+  <input type="button" onclick="quiz_hint()" id="quiz_hint" value="点数表">
+  <input type="button" onclick="quiz_hinthu()" id="quiz_hinthu" value="符表">
+  -->
+  <input type="button" onclick="confirm_start_game()" id="start_game" value="配牌" style="display: none;">
+  <input type="button" onclick="auto_tumo()" id="auto_tumo_button" value="オートツモ" style="display: none;">
+  <div style="line-height:8px"><br></div>
+  <select id="quiz_mode" style="margin:0px -6px 0px 0px;height:40px;">
+    <option value="m">
+      まったり
+    </option>
+    <option value="g" selected>
+      がっつり
+    </option>
+  </select>
+  <input type="button" onclick="quiz_toggle()" id="quiz_button" value="クイズ">
+  <input type="button" onclick="quiz_scoreshow()" id="quiz_scoreshow" value="ハイスコア">
+  <!--<input type="button" onclick="quiz_scoreclear()" id="quiz_scoreclear" value="スコア消去">-->
+  <select id="quiz_input_mode" style="margin:0px -6px 0px 0px;height:40px;display: none;">
+    <option value="tel">
+      直接入力
+    </option>
+    <option value="a" selected>
+      テンキー入力
+    </option>
+  </select>
+  <div style="line-height:8px"><br></div>
+  <input type="button" onclick="game_toggle()" id="game_button" value="一人打ち麻雀">
+  <div style="text-align: left">
+    <a id="quiz_mati_text" style="font-size: x-small;"></a>
+    <br>
+    <a id="quiz_shanten_text" style=""></a>
+    <br>
+    <a id="quiz_yuko_text" style="font-size: smaller;"></a>
+  </div>
+  <!--
+  <input type="checkbox" id="quiz_debug">
+  -->
+<div style="line-height:5px"><br></div>
+<!--
+  <img src="img2/oyaten.png" id="oyatenimg" class="tenimg" style="display: none;">
+  <img src="img2/koten.png" id="kotenimg" class="tenimg" style="display: none;">
+  <img src="img2/hu.png" id="huimg" class="tenimg" style="display: none;">
+-->
+
+  
+  
+<hr style="margin:5px 0 10px 0;">
+
+<!--
+<h1>麻雀点数計算機</h1>
+<div style="line-height:2px"><br></div>
+  <input type="button" id="howtouse" onclick="introJs().start()" value="使い方">
+-->
+
+<div style="line-height:2px"><br></div>
+
+
+<div class="memo" style="text-decoration:underline;">点数メモ</div>
+<div style="line-height:2px"><br></div>
+<a id="scoreinfo" style="font-size: smaller;">
+<table id="scoreinfo_table">
+    <thead>
+    <tr>
+        <td style="border-left:1px solid gray;">
+          <input type="button" onclick="localstorage_tenmemoload()" value="読込">
+        </td>
+        <td>
+            <a>持ち点</a>
+        </td>
+        <td>
+            <a>返し</a>
+        </td>
+        <td>
+            <a>ウマ(3>2)</a>
+        </td>
+        <td>
+            <a>ウマ(4>1)</a>
+        </td>
+    </tr>
+    <tr>
+        <td style="border-right:1px solid gray; border-top:1px solid gray;"><a>配点</a></td>
+        <td>
+            <input type="tel" id="ten_moti" style="border-bottom:1px solid gray;" placeholder="例:25000" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touch_end()" value=25000>
+        </td>
+        <td>
+            <input type="tel" id="ten_kaesi" style="border-bottom:1px solid gray;" placeholder="例:30000" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touch_end()" value=30000>
+        </td>
+        <td>
+            <input type="tel" id="ten_oka32" style="border-bottom:1px solid gray;" placeholder="例:10000" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touch_end()" value=10000>
+        </td>
+        <td>
+            <input type="tel" id="ten_oka41" style="border-bottom:1px solid gray;" placeholder="例:20000" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touch_end()" value=20000>
+        </td>
+    </tr>
+    <tr><td style="height:4px"></td></tr>
+    <tr>
+        <td style="border-left:1px solid gray;">
+            <input type="button" onclick="reset_all()" id="scoreinfo_reset" value="初期化">
+        </td>
+        <td>
+            <input type="text" id="playerA_name" placeholder="東さん" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touch_end()">
+        </td>
+        <td>
+            <input type="text" id="playerB_name" placeholder="南さん" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touch_end()">
+        </td>
+        <td>
+            <input type="text" id="playerC_name" placeholder="西さん" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touch_end()">
+        </td>
+        <td>
+            <input type="text" id="playerD_name" placeholder="北さん" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touch_end()">
+        </td>
+    </tr>
+    <tr>
+        <td style="border-left:1px solid gray;"><input type="button" onclick="add_siha_ten()" id="scoreinfo_calc" value="支払い"></td>
+        <td>
+            <input type="tel" id="playerA_siha" placeholder="あがり" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY || Math.abs(startY-endY)<5){select_siha_ten('playerA_siha');}" onmouseup="if(endY==''){select_siha_ten('playerA_siha')}">
+        </td>
+        <td>
+            <input type="tel" id="playerB_siha" placeholder="あがり" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY || Math.abs(startY-endY)<5){select_siha_ten('playerB_siha');}" onmouseup="if(endY==''){select_siha_ten('playerB_siha')}">
+        </td>
+        <td>
+            <input type="tel" id="playerC_siha" placeholder="あがり" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY || Math.abs(startY-endY)<5){select_siha_ten('playerC_siha');}" onmouseup="if(endY==''){select_siha_ten('playerC_siha')}">
+        </td>
+        <td>
+            <input type="tel" id="playerD_siha" placeholder="あがり" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY || Math.abs(startY-endY)<5){select_siha_ten('playerD_siha');}" onmouseup="if(endY==''){select_siha_ten('playerD_siha')}">
+        </td>
+    </tr>
+    <tr>
+        <td style="border-top:1px solid gray;border-right:1px solid gray;border-bottom:1px solid gray;">現在の点</td>
+        <td style="border-bottom:1px solid gray;">
+            <input type="tel" id="playerA_gen" placeholder="現在の点" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touch_end()" value=25000>
+        </td>
+        <td style="border-bottom:1px solid gray;">
+            <input type="tel" id="playerB_gen" placeholder="現在の点" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touch_end()" value=25000>
+        </td>
+        <td style="border-bottom:1px solid gray;">
+            <input type="tel" id="playerC_gen" placeholder="現在の点" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touch_end()" value=25000>
+        </td>
+        <td style="border-bottom:1px solid gray;">
+            <input type="tel" id="playerD_gen" placeholder="現在の点" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="touch_end()" value=25000>
+        </td>
+    </tr>
+    <tr>
+        <td style="border-bottom:1px solid gray;border-left:1px solid gray;"><input type="button" style="border:none;border-right:1px solid gray;" onclick="calc_pura_ten()" id="scoreinfo_puracalc" value="±表記"></td>
+        <td style="border-right:1px solid gray;border-bottom:1px solid gray">
+            <a id="playerA_pura"></a>
+        </td>
+        <td style="border-right:1px solid gray;border-bottom:1px solid gray">
+            <a id="playerB_pura"></a>
+        </td>
+        <td style="border-right:1px solid gray;border-bottom:1px solid gray">
+            <a id="playerC_pura"></a>
+        </td>
+        <td style="border-right:1px solid gray;border-bottom:1px solid gray">
+            <a id="playerD_pura"></a>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>
+            履歴
+        </td>
+        <td>
+            <a id="playerA_rire1"></a>
+        </td>
+        <td>
+            <a id="playerB_rire1"></a>
+        </td>
+        <td>
+            <a id="playerC_rire1"></a>
+        </td>
+        <td>
+            <a id="playerD_rire1"></a>
+        </td>
+    </tr>
+    </thead>
+    <tbody id="rire">
+
+    </tbody>
+</table>
+<br>
+<br>
+</a>
+
+
+<div class="memo" onclick="$('#localinfo').toggle();" style="text-decoration:underline;">適用ルール</div>
+<div style="line-height:2px"><br></div>
+<li id="localinfo" style="font-size: smaller;">
+  全般：<br>
+    <a onclick="$(this).nextAll('.localdetail').slice(0,1).toggle();" style="text-decoration:underline;">一発</a>あり<br>
+    <p class="localdetail" style="font-size: smaller;display: none;color: blue;text-indent: 1em;"> 一発：立直後、一巡目までに、他家の鳴きが入らずに、ツモかロンであがった場合に成立する役<br></p>
+    <a onclick="$(this).nextAll('.localdetail').slice(0,1).toggle();" style="text-decoration:underline;">後付け</a>あり・<a onclick="$(this).nextAll('.localdetail').slice(0,1).toggle();" style="text-decoration:underline;">喰いタン</a>あり<br>
+    <p class="localdetail" style="font-size: smaller;display: none;color: blue;text-indent: 1em;"> 後付：ツモ・ロン牌によってあがり役が確定すること<br>喰いタン：鳴いてタンヤオを成立させること<br></p>
+    <a onclick="$(this).nextAll('.localdetail').slice(0,1).toggle();" style="text-decoration:underline;">平和ツモ</a>あり20符<br>
+    <p class="localdetail" style="font-size: smaller;display: none;color: blue;text-indent: 1em;"> 平和ツモ20符：平和と面前清自摸和の複合を認め、20符から計算する<br></p>
+    
+  赤ドラなし<br>
+    <a onclick="$(this).nextAll('.localdetail').slice(0,1).toggle();" style="text-decoration:underline;">連風牌対子</a>は4符<br>
+    <p class="localdetail" style="font-size: smaller;display: none;color: blue;text-indent: 1em;"> 連風牌対子は4符：自風と場風が重なった対子は2符でなく4符とする<br></p>
+    <a onclick="$(this).nextAll('.localdetail').slice(0,1).toggle();" style="text-decoration:underline;">嶺上ツモ</a>は2符加算<br>
+    <p class="localdetail" style="font-size: smaller;display: none;color: blue;text-indent: 1em;"> 嶺上ツモは2符：嶺上開花はツモ2符をつけない、としない<br></p>
+    <a onclick="$(this).nextAll('.localdetail').slice(0,1).toggle();" style="text-decoration:underline;">満貫切り上げ</a>なし<br>
+    <p class="localdetail" style="font-size: smaller;display: none;color: blue;text-indent: 1em;"> 満貫切り上げ：4飜30符（親11600点、子7700点）を切り上げて満貫（親12000点、子8000点）としない<br></p>
+  <input type="tel" id="kazoe" value=13 style="width:44px;text-align:center;">翻以上は数え役満<br>
+    <a onclick="$(this).nextAll('.localdetail').slice(0,1).toggle();" style="text-decoration:underline;">役満の複合</a>あり<br>
+    <p class="localdetail" style="font-size: smaller;display: none;color: blue;text-indent: 1em;"> 役満の複合：役満の複合成立を認める<br></p>
+    <br>
+</li>
+<div class="memo" onclick="$('#modeinfo').toggle();" style="text-decoration:underline;">各種モード</div>
+<div style="line-height:2px"><br></div>
+<a id="modeinfo" style="font-size: smaller;">
+  計算モード：<br>
+  入力されたあがり形の点数を計算するモードです<br>
+  テンパイ時はリーチ牌と待ち牌を表示します<br><br>
+  クイズモード：<br>
+  表示されたあがりが何点になるかを答えるモードです<br>
+  ※点数入力は末尾の0省略可（3900→39）<br><br>
+  一人打ち麻雀モード：<br>
+  東場東風、ツモのみで何手で上がれるかを競うモードです<br>
+  <br><br>
+</a>
+
+
+
+
+<div class="memo" onclick="$('#mjnrule').toggle()" style="text-decoration:underline;">配牌ルール</div>
+<div style="line-height:2px"><br></div>
+<a id="mjnrule" style="font-size: smaller;">
+  1. 席順の決定：<br>
+  東南西北の牌を伏せて混ぜ、東牌を引いた人が好きな席に座り、以下反時計回りで順番に座る<br>
+<input type="button" value="引く" style="height:34px;width:60px;vertical-align:middle;" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="t_bagime()" onmouseup="if(endY==''){t_bagime()}">
+<img src="img/1j9.png" id="t_bagime1" style="width:33px;vertical-align:middle;">
+<img src="img/1j9.png" id="t_bagime2" style="width:33px;vertical-align:middle;">
+<img src="img/1j9.png" id="t_bagime3" style="width:33px;vertical-align:middle;">
+<img src="img/1j9.png" id="t_bagime4" style="width:33px;vertical-align:middle;">
+<input type="button" value="戻す" style="height:34px;width:60px;vertical-align:middle;" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="t_bagime_reset()" onmouseup="if(endY==''){t_bagime_reset()}">
+  <br>
+  2. 仮親の決定：<br>
+  東牌を引いた人がサイコロ2個を振る<br>
+  東（自分）を1として反時計回りにサイコロの目の人が仮親になる<br>
+  <input type="button" value="振る" style="height:34px;width:60px;vertical-align:middle;" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="t_dice()" onmouseup="if(endY==''){t_dice()}">
+  <img src="img/1j9.png" id="t_dice1" style="width:33px;vertical-align:middle;">
+  <img src="img/1j9.png" id="t_dice2" style="width:33px;vertical-align:middle;">
+  <input type="button" value="戻す" style="height:34px;width:60px;vertical-align:middle;" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="t_dice_reset()" onmouseup="if(endY==''){t_dice_reset()}">
+  <br>
+  3. 親の決定：<br>
+  仮親がサイコロ2個を振り、仮親を1として反時計回りに出目の人が親になる<br>
+  <br>
+  4. 配牌：<br>
+  親がサイコロ2個を振り、親を1として反時計回りに出目の山を、右から出目列で分け、左側の4牌を取る<br>
+  反時計回りに4牌ずつ取り、12牌取ったら最後に1牌ずつ取り、親は第一ツモを取る<br>
+  <br>
+  5. ドラ牌の決定：<br>
+  最後から3番目の牌をめくり、ドラ表示牌とする<br>
+  ゲームスタート<br><br>
+</a>
+<div class="memo" onclick="$('#about').toggle()" style="text-decoration:underline;">about</div>
+
+<div style="line-height:2px"><br></div>
+<a id="about" style="font-size: smaller">
+<br style="height:30px;">
+</a>
+  <br>
+  <!--
+  <img src="qr.gif">
+  -->
+<div id="sns"></div>
+
+<div id="modal"><p><img id="modalimg"></p></div>
+
+  <hr>
+
+<div class="memo">ver1.0</div>
+<div id="footer"></div>
+
+</body>
+</html>
