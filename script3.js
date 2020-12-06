@@ -60,7 +60,7 @@ function update_info(text){
 
 //クイズモードで解答欄をクリックした時に実行するfunc
 function quiz_ans_click(num){
-  $('#quiz_ans'+num).val(''),scroll('quiz_test'),select_box(num)
+  //$('#quiz_ans'+num).val(''),scroll('quiz_test'),select_box(num)
 }
 
 
