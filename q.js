@@ -762,7 +762,7 @@ function quiz() {
   //starttime=new Date()
   if($("#quiz_debug").is(':checked')){$("#yaku_list").show();$("#tensu").show();$("#kirimaehu").show()}
 
-  scroll('quiz_test')
+  //scroll('quiz_test')
 
 
 }
