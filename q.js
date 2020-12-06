@@ -89,7 +89,7 @@ function quiz_toggle() {
       $("#quiz_test").html("")
       $("#quiz_button").val("クイズ")
       superreload()
-      $('html,body').animate({ scrollTop: quiz_test }, 'fast');
+      $('body').animate({ scrollTop: 0 }, 0)
     })
 
   }
@@ -97,7 +97,7 @@ function quiz_toggle() {
 }
 
 function confirm_quizg_start(){
-    $('body').animate({ scrollTop: quiz_test }, 500)
+  $('body').animate({ scrollTop: 0 }, 0)
     swal({
          title:"Ready?",
         text:"[全30問/1分間]"+"\n"+"(正答数×10,000)"+"\n"+"(残時間×1,000)"+"\n"+"(アガリ点×0.3)"+"\n"+"\n"+"[入力方法]"+"\n"+"3900→39"+"\n"+"4000オール→4"+"\n"+"2000,3900→239"
@@ -225,7 +225,7 @@ function hutenimg_toggle(str) {
     else if(str=="hu"){
         $("#hutenimg").show().attr("src","img2/hu.png")
     }
-    $('body').animate({ scrollTop: quiz_test }, 'fast');
+    $('body').animate({ scrollTop: 0 }, 0)
     $("#footer").text("画像クリックで閉じる")
     clear_footer()
 }
@@ -244,7 +244,7 @@ $(function(){
                     e.preventDefault();
                     $("#hutenimg_span").hide()
                     $("#hutenimg").hide()
-                    scroll('quiz_test')
+                    $('body').animate({ scrollTop: 0 }, 0)
                     }
                     }})
   //タッチデバイスならマウスを無効にする（要Winタブ検討）
@@ -762,7 +762,7 @@ function quiz() {
   //starttime=new Date()
   if($("#quiz_debug").is(':checked')){$("#yaku_list").show();$("#tensu").show();$("#kirimaehu").show()}
 
-  //scroll('quiz_test')
+  $('body').animate({ scrollTop: 0 }, 0)
 
 
 }
@@ -818,7 +818,7 @@ function quiz_check() {
         $("#kirimaehu").show()
         $("#quiz_test").html("")
         $("#quiz_do").css("background-color","#F9BF98")
-        $('html,body').animate({ scrollTop: quiz_test }, 'fast');
+        $('body').animate({ scrollTop: 0 }, 0)
       }
     }else{
       $("#quiz_test").html("違います")
@@ -827,7 +827,7 @@ function quiz_check() {
         duration:300,
         complete:function(){$("#quiz_test").css({"color":"black"})}
       })
-        scroll('quiz_test')   
+      $('body').animate({ scrollTop: 0 }, 0) 
     }
   }
   //子のツモなら
@@ -861,7 +861,7 @@ function quiz_check() {
         $("#kirimaehu").show()
         $("#quiz_test").html("出題")
         $("#quiz_do").css("background-color","#F9BF98")
-        scroll('quiz_test')
+        $('body').animate({ scrollTop: 0 }, 0)
       }
     }else{
       $("#quiz_test").html("違います")
@@ -870,7 +870,7 @@ function quiz_check() {
         duration:300,
         complete:function(){$("#quiz_test").css({"color":"black"})}
       })
-        scroll('quiz_test')
+      $('body').animate({ scrollTop: 0 }, 0)
     }
   }
   
@@ -947,7 +947,7 @@ function quiz_checkauto(){
         duration:300,
         complete:function(){$("#quiz_test").text("出題").css({"color":"black"})}
       })
-    scroll('quiz_test')
+      $('body').animate({ scrollTop: 0 }, 0)
     $("#quiz_ans").val("")
     return
   }
@@ -989,7 +989,7 @@ function quiz_checkauto(){
         $("#kirimaehu").show()
         $("#quiz_test").html("")
         $("#quiz_do").css("background-color","#F9BF98")
-        $('html,body').animate({ scrollTop: quiz_test }, 'fast');
+        $('body').animate({ scrollTop: 0 }, 0)
       }
     }else{
       $("#quiz_test").html("違います")
@@ -998,7 +998,7 @@ function quiz_checkauto(){
         duration:300,
         complete:function(){$("#quiz_test").css({"color":"black"})}
       })
-        scroll('quiz_test')   
+      $('body').animate({ scrollTop: 0 }, 0)   
     }
   }
   //子のツモなら
@@ -1033,7 +1033,7 @@ function quiz_checkauto(){
         $("#kirimaehu").show()
         $("#quiz_test").html("出題")
         $("#quiz_do").css("background-color","#F9BF98")
-        scroll('quiz_test')
+        $('body').animate({ scrollTop: 0 }, 0)
       }
     }else{
       $("#quiz_test").html("違います")
@@ -1042,7 +1042,7 @@ function quiz_checkauto(){
         duration:300,
         complete:function(){$("#quiz_test").css({"color":"black"})}
       })
-        scroll('quiz_test')
+      $('body').animate({ scrollTop: 0 }, 0)
     }
   }
 
