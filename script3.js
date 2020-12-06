@@ -989,33 +989,19 @@ function erase_all() {
 
 function sns() {
 
-var agent = navigator.userAgent
-if(agent.search(/iPhone/) != -1){
-  $('#quiz_input_mode').val("a")
-}
-else if(agent.search(/iPad/) != -1){
-  $('#quiz_input_mode').val("a")
-}
-else if(agent.search(/Android/) != -1){
-  $('#quiz_input_mode').val("a")
-}
-
-var cache = window.applicationCache;
-cache.addEventListener("updateready", function() {
-        cache.swapCache();
-        location.reload();
-        alert("バージョンを更新しました")
-});
-if (navigator.onLine) {
-    cache.update();
-}
+  var agent = navigator.userAgent
+  if(agent.search(/iPhone/) != -1){
+    $('#quiz_input_mode').val("a")
+  }
+  else if(agent.search(/iPad/) != -1){
+    $('#quiz_input_mode').val("a")
+  }
+  else if(agent.search(/Android/) != -1){
+    $('#quiz_input_mode').val("a")
+  }
 
   if (navigator.onLine) {
-    $("#sns").html('<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://mjnscore.herokuapp.com/" data-lang="ja">ツイート</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?"http":"https";if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document, "script", "twitter-wjs");</script>')
-    //$("#sns").html($("#sns").html()+'<span><script type="text/javascript" src="//media.line.naver.jp/js/line-button.js?v=20131101" ></script><script type="text/javascript">new jp.naver.line.media.LineButton({"pc":false,"lang":"ja","type":"a"});</script></span>')
-    $("#sns").html($("#sns").html()+'<a href="http://line.naver.jp/R/msg/text/?LINE%E3%81%A7%E9%80%81%E3%82%8B%0D%0Ahttp%3A%2F%2Fmjnscore.herokuapp.com%2F"><img src="./img/linebutton_88x20.png" width="88px" height="20px" alt="LINEで送る" /></a>')
-    //$("#sns").html($("#sns").html()+'<div class="g-plusone" data-size="medium" data-annotation="none" data-href="http://mjnscore.herokuapp.com/"></div><script type="text/javascript">window.___gcfg = {lang: "ja"};(function() {var po = document.createElement("script"); po.type = "text/javascript"; po.async = true;po.src = "https://apis.google.com/js/plusone.js";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(po, s);})();</script>')
-}
+  }
 
 }
 
