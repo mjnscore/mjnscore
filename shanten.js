@@ -60,12 +60,13 @@ function yuko_hyoji(){
     }
 }
 
-
 function tehai_shanten(tehai){
 
-
+    //手配配列 Array S [ "11", "12", "13", "27", "28", "29", "33", "34", "35", "36", … ] をコピーする
     var zenhai=$.merge([],S)
+    //アガリ牌（14牌目）も加える
     zenhai=$.merge(zenhai,A)
+    //外から14牌の手配配列tehaiを持ってきてたらそれに上書きする
     if(tehai != void 0){zenhai = tehai}
     
     var man_hai_count=new Array(0,0,0,0,0,0,0,0,0)
@@ -137,14 +138,12 @@ function tehai_shanten(tehai){
                 man_janto_array.push(String(man_janto_check.substr(0,1)*1-2) + man_janto_check.substr(1,8))
             }else{
                 man_janto_array.push(man_janto_check.substr(0,i) + String(man_janto_check.substr(i,1)*1-2) + man_janto_check.substr(i+1,8-i))
-            }
-            
+            }            
         }
     }
     
     var man_str = "0000"
     man_str = ("000" + ShantenTable[man_num]).slice(-4)
-
 
     var pin_num = 0
     for(var i=0;i<9;i++){
@@ -154,11 +153,9 @@ function tehai_shanten(tehai){
             pin_num = pin_num + pin_hai_count[i]*(10**(9-i))/10  
         }
     }
-    //console.log(pin_num)
     //man_hai_count[i]が二個以上あれば、雀頭を取り、配列に追加する
     var pin_janto_check ="000000000"
     pin_janto_check = ("000" + String(pin_num)).slice(-9)
-    //console.log(pin_janto_check)
     //雀頭を取るときの萬子の牌数連想配列
     var pin_janto_array = new Array()
     for(var i=0;i<9;i++){
@@ -167,20 +164,15 @@ function tehai_shanten(tehai){
                 pin_janto_array.push(String(pin_janto_check.substr(0,1)*1-2) + pin_janto_check.substr(1,8))
             }else{
                 pin_janto_array.push(pin_janto_check.substr(0,i) + String(pin_janto_check.substr(i,1)*1-2) + pin_janto_check.substr(i+1,8-i))
-                //console.log(pin_janto_array)
             }
-            
         }
-    }
-    
+    }    
 
     var pin_str = "0000"
     pin_str = ("000" + ShantenTable[pin_num]).slice(-4)
 
-
     var sou_num = 0
     for(var i=0;i<9;i++){
-        
         if(sou_hai_count[i] == 1 && (sou_hai_count[i-2] == 0 || sou_hai_count[i-2] == void 0) && (sou_hai_count[i-1] == 0 || sou_hai_count[i-1] == void 0) && (sou_hai_count[i+1] == 0 || sou_hai_count[i+1] == void 0) && (sou_hai_count[i+2] == 0 || sou_hai_count[i+2] == void 0)){
         }else{
             sou_num = sou_num + sou_hai_count[i]*(10**(9-i))/10  
@@ -199,19 +191,15 @@ function tehai_shanten(tehai){
             }else{
                 sou_janto_array.push(sou_janto_check.substr(0,i) + String(sou_janto_check.substr(i,1)*1-2) + sou_janto_check.substr(i+1,8-i))
             }
-            
         }
     }
-    //console.log(sou_janto_array)
     var sou_str = "0000"
     sou_str = ("000" + ShantenTable[sou_num]).slice(-4)
-
 
     var yakuhai_num = 0
     var yakuhai_koho_num = 0
     var yakuhai_janto_num = 0
     for(var i=0;i<7;i++){
-        
         if(yakuhai_hai_count[i] == 2){
             yakuhai_janto_num = 1
             yakuhai_koho_num = yakuhai_koho_num + 1
@@ -225,6 +213,8 @@ function tehai_shanten(tehai){
 
     var shanten = 0
     var janto_num = 0
+    var jantoA_num = 0
+    var jantoB_num = 0
     //面子＋面子候補が4位内、面子候補が順子かどうか
     var mentsuB_num = man_str.substr(0,1)*1+pin_str.substr(0,1)*1+sou_str.substr(0,1)*1
     var mentsuA_num = man_str.substr(2,1)*1+pin_str.substr(2,1)*1+sou_str.substr(2,1)*1
@@ -232,19 +222,20 @@ function tehai_shanten(tehai){
     var mentsu_kohoA_num = man_str.substr(3,1)*1+pin_str.substr(3,1)*1+sou_str.substr(3,1)*1
     if(mentsuA_num + mentsu_kohoA_num + yakuhai_num + yakuhai_koho_num + naki_num> 4){
         mentsu_kohoA_num = mentsu_kohoA_num - (mentsuA_num + mentsu_kohoA_num + yakuhai_num + yakuhai_koho_num + naki_num - 4)
-        if(yakuhai_janto_num == 1){janto_num = 1}
+        if(yakuhai_janto_num == 1){jantoA_num = 1}
     }
     if(mentsuB_num + mentsu_kohoB_num + yakuhai_num + yakuhai_koho_num + naki_num > 4){
         mentsu_kohoB_num = mentsu_kohoB_num - (mentsuB_num + mentsu_kohoB_num + yakuhai_num + yakuhai_koho_num + naki_num - 4)
-        if(yakuhai_janto_num == 1){janto_num = 1}
+        if(yakuhai_janto_num == 1){jantoB_num = 1}
     }
-
-    shanten = Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num), 8 - (mentsuB_num)*2 - (mentsu_kohoB_num)) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - janto_num
-    
+    shanten = Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num) - jantoA_num, 8 - (mentsuB_num)*2 - (mentsu_kohoB_num) - jantoB_num) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num
+    //if(tehai == void 0){console.log("janto mae "+mentsuA_num,mentsu_kohoA_num,mentsuB_num,mentsu_kohoB_num,yakuhai_num,naki_num,yakuhai_koho_num,janto_num+" shanten "+shanten)}
     
     //雀頭を考慮した
     for(var i=0;i<man_janto_array.length;i++){
         janto_num = 0
+        var jantoA_num = 0
+        var jantoB_num = 0
         var man_janto_num = 0
         for(var j=0;j<9;j++){
             //[i]が孤立牌の場合はスキップする
@@ -253,7 +244,6 @@ function tehai_shanten(tehai){
                 man_janto_num = man_janto_num + man_janto_array[i].substr(j,1)*(10**(9-j))/10  
             }
         }
-        //console.log(man_janto_num)
         var mentsuB_num = (("000" + ShantenTable[Number(man_janto_num)]).slice(-4).substr(0,1) | 0)*1+pin_str.substr(0,1)*1+sou_str.substr(0,1)*1
         var mentsuA_num = (("000" + ShantenTable[Number(man_janto_num)]).slice(-4).substr(2,1) | 0)*1+pin_str.substr(2,1)*1+sou_str.substr(2,1)*1
         var mentsu_kohoB_num = (("000" + ShantenTable[Number(man_janto_num)]).slice(-4).substr(1,1) | 0)*1+pin_str.substr(1,1)*1+sou_str.substr(1,1)*1
@@ -261,21 +251,23 @@ function tehai_shanten(tehai){
         //雀頭が一つは確実にあるので面子＋面子候補は3つまでで比較する
         if(mentsuA_num + mentsu_kohoA_num + yakuhai_num + yakuhai_koho_num + naki_num > 3){
             mentsu_kohoA_num = mentsu_kohoA_num - (mentsuA_num + mentsu_kohoA_num + yakuhai_num + yakuhai_koho_num + naki_num - 3)
-            janto_num = 1
+            jantoA_num = 1
         }
         if(mentsuB_num + mentsu_kohoB_num + yakuhai_num + yakuhai_koho_num + naki_num > 3){
             mentsu_kohoB_num = mentsu_kohoB_num - (mentsuB_num + mentsu_kohoB_num + yakuhai_num + yakuhai_koho_num + naki_num - 3)
-            janto_num = 1
+            jantoB_num = 1
         }
 
-        if(shanten > Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num), 8 - (mentsuB_num)*2 - (mentsu_kohoB_num)) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - janto_num - 1){
-            shanten = Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num), 8 - (mentsuB_num)*2 - (mentsu_kohoB_num)) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - janto_num - 1
+        if(shanten > Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num) - jantoA_num, 8 - (mentsuB_num)*2 - (mentsu_kohoB_num) - jantoB_num) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - 1){
+            shanten = Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num) - jantoA_num, 8 - (mentsuB_num)*2 - (mentsu_kohoB_num) - jantoB_num) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - 1
         }
-        //console.log(shanten)
     }
+    //if(tehai == void 0){console.log("janto go1 "+mentsuA_num,mentsu_kohoA_num,mentsuB_num,mentsu_kohoB_num,yakuhai_num,naki_num,yakuhai_koho_num,janto_num+" shanten "+shanten)}
 
     for(var i=0;i<pin_janto_array.length;i++){
         janto_num = 0
+        var jantoA_num = 0
+        var jantoB_num = 0
         var pin_janto_num = 0
         for(var j=0;j<9;j++){
             //[i]が孤立牌の場合はスキップする
@@ -291,22 +283,22 @@ function tehai_shanten(tehai){
         //雀頭が一つは確実にあるので面子＋面子候補は3つまでで比較する
         if(mentsuA_num + mentsu_kohoA_num + yakuhai_num + yakuhai_koho_num + naki_num > 3){
             mentsu_kohoA_num = mentsu_kohoA_num - (mentsuA_num + mentsu_kohoA_num + yakuhai_num + yakuhai_koho_num + naki_num - 3)
-            janto_num = 1
+            jantoA_num = 1
         }
         if(mentsuB_num + mentsu_kohoB_num + yakuhai_num + yakuhai_koho_num + naki_num > 3){
             mentsu_kohoB_num = mentsu_kohoB_num - (mentsuB_num + mentsu_kohoB_num + yakuhai_num + yakuhai_koho_num + naki_num - 3)
-            janto_num = 1
+            jantoB_num = 1
         }
 
-        if(shanten > Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num), 8 - (mentsuB_num)*2 - (mentsu_kohoB_num)) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - janto_num - 1){
-            shanten = Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num), 8 - (mentsuB_num)*2 - (mentsu_kohoB_num)) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - janto_num - 1
+        if(shanten > Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num) - jantoA_num, 8 - (mentsuB_num)*2 - (mentsu_kohoB_num) - jantoB_num) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - 1){
+            shanten = Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num) - jantoA_num, 8 - (mentsuB_num)*2 - (mentsu_kohoB_num) - jantoB_num) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - 1
         }
-        //console.log(shanten)
     }
-    //console.log(pin_janto_array)
-    //console.log(mentsuB_num)
+    //if(tehai == void 0){console.log("janto go2 "+mentsuA_num,mentsu_kohoA_num,mentsuB_num,mentsu_kohoB_num,yakuhai_num,naki_num,yakuhai_koho_num,janto_num+" shanten "+shanten)}
     for(var i=0;i<sou_janto_array.length;i++){
         janto_num = 0
+        var jantoA_num = 0
+        var jantoB_num = 0
         var sou_janto_num = 0
         for(var j=0;j<9;j++){
             //[i]が孤立牌の場合はスキップする
@@ -322,22 +314,19 @@ function tehai_shanten(tehai){
         //雀頭が一つは確実にあるので面子＋面子候補は3つまでで比較する
         if(mentsuA_num + mentsu_kohoA_num + yakuhai_num + yakuhai_koho_num + naki_num > 3){
             mentsu_kohoA_num = mentsu_kohoA_num - (mentsuA_num + mentsu_kohoA_num + yakuhai_num + yakuhai_koho_num + naki_num - 3)
-            janto_num = 1
+            jantoA_num = 1
         }
         if(mentsuB_num + mentsu_kohoB_num + yakuhai_num + yakuhai_koho_num + naki_num > 3){
             mentsu_kohoB_num = mentsu_kohoB_num - (mentsuB_num + mentsu_kohoB_num + yakuhai_num + yakuhai_koho_num + naki_num - 3)
-            janto_num = 1
+            jantoB_num = 1
         }
 
-        if(shanten > Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num), 8 - (mentsuB_num)*2 - (mentsu_kohoB_num)) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - janto_num -1){
-            shanten = Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num), 8 - (mentsuB_num)*2 - (mentsu_kohoB_num)) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - janto_num - 1
+        if(shanten > Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num) - jantoA_num, 8 - (mentsuB_num)*2 - (mentsu_kohoB_num) - jantoB_num) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - 1){
+            shanten = Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num) - jantoA_num, 8 - (mentsuB_num)*2 - (mentsu_kohoB_num) - jantoB_num) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - 1
         }
     }
-        
 
-
-
-
+    //if(tehai == void 0){console.log("janto go3 "+mentsuA_num,mentsu_kohoA_num,mentsuB_num,mentsu_kohoB_num,yakuhai_num,naki_num,yakuhai_koho_num,janto_num+" shanten "+shanten)}
     return shanten    
 
 }
@@ -367,7 +356,7 @@ function yukohai(sakiyomi,uti,mati){
         //有効牌の表示HTML
         $("#yuko_text").html("")
         //シャンテン数は減らないが有効牌は増えるの表示HTML
-        $("#yuko_text3").html("")
+        //$("#yuko_text3").html("")
         var zenhai=$.merge($.merge([],S),A)
         $("#yuko_text2").html("")
         //SとAをコピーしておく
@@ -504,7 +493,6 @@ function yukohai(sakiyomi,uti,mati){
     if($("#game_show").css("display") != "none"){
         for(var i=0;i<arrayHaiSute.length;i++){
             yamahai[hai_count_map.indexOf(arrayHaiSute[i])]=yamahai[hai_count_map.indexOf(arrayHaiSute[i])]+1
-
         }
     }
 
@@ -709,7 +697,6 @@ function yukohai(sakiyomi,uti,mati){
             }
         }
         if(sakiyomi != void 0){
-            
 
             if(glb_uti_record == ""){
                 glb_uti_record = uti
@@ -724,28 +711,18 @@ function yukohai(sakiyomi,uti,mati){
                 //glb_sakiyomi_count = 0
                 glb_uti_record = uti
             }
-            
 
             //$("#yuko_text2").html($("#yuko_text2").html() + "打:"+"<img src='./img2/"+haimap2[String(uti)]+".png' style='width:20px;'>" + " 待:"+"<img src='./img2/"+haimap2[String(mati)]+".png' style='width:20px;'>" + " > 次打:"+"<img src='./img2/"+haimap2[String(yuko_array[i].substr(0,2))]+".png' style='width:20px;'>"+" 和了:"+ text + " " + yuko_array[i].substr(2,3)*1 + "種" + yuko_array[i].substr(5,3)*1 + "枚 " + text2 + "<br>")
-            
-
 
             //単純な昇順でsakiyomiを表示するならこれでいい
             //glb_yuko_text2 = glb_yuko_text2 + "打:"+"<img src='./img2/"+haimap2[String(uti)]+".png' style='width:20px;'>" + " 待:"+"<img src='./img2/"+haimap2[String(mati)]+".png' style='width:20px;'>" + " > 次打:"+"<img src='./img2/"+haimap2[String(yuko_array[i].substr(0,2))]+".png' style='width:20px;'>"+" 和了:"+ text + " " + yuko_array[i].substr(2,3)*1 + "種" + yuko_array[i].substr(5,3)*1 + "枚 " + text2 + "<br>"
             
-
-
             //yuko_arrayの順番でsakiyomiを表示するために配列に入れる
             if(glb_yuko_text2_array[uti] == void 0){
                 glb_yuko_text2_array[uti] = "<br>" + "打:"+"<img src='./img2/"+haimap2[String(uti)]+".png' style='width:20px;'>" + " 待:"+"<img src='./img2/"+haimap2[String(mati)]+".png' style='width:20px;'>" + " > 次打:"+"<img src='./img2/"+haimap2[String(yuko_array[i].substr(0,2))]+".png' style='width:20px;'>"+" 和了:"+ text + " " + yuko_array[i].substr(2,3)*1 + "種" + yuko_array[i].substr(5,3)*1 + "枚 " + text2 + "<br>"
             }else{
                 glb_yuko_text2_array[uti] = glb_yuko_text2_array[uti] + "打:"+"<img src='./img2/"+haimap2[String(uti)]+".png' style='width:20px;'>" + " 待:"+"<img src='./img2/"+haimap2[String(mati)]+".png' style='width:20px;'>" + " > 次打:"+"<img src='./img2/"+haimap2[String(yuko_array[i].substr(0,2))]+".png' style='width:20px;'>"+" 和了:"+ text + " " + yuko_array[i].substr(2,3)*1 + "種" + yuko_array[i].substr(5,3)*1 + "枚 " + text2 + "<br>"
-
             }
-
-
-
-            
             
             //glb_sakiyomi_kind = glb_sakiyomi_kind + yuko_array[i].substr(2,3)*1
             //glb_sakiyomi_count = glb_sakiyomi_count + yuko_array[i].substr(5,3)*1
@@ -942,9 +919,6 @@ function tehai_kokusi_shanten(tehai){
             shanten_kokusi = shanten_kokusi - 1
         }
 
-    
-    
-
     return shanten_kokusi
 
 }
@@ -954,7 +928,6 @@ function yukohai13(){
     //手牌が13牌でなければFunctionを抜ける
     if(S.length + A.length + NAKI.length*3 + ANKAN.length*3 != 13){return}
 
-    
     //有効牌の配列
     //yuko_arrayは、[置き換え前の牌番号][候補牌の種類数][候補牌の枚数][候補牌の牌番号],
     var yuko_array = new Array()
@@ -1232,6 +1205,7 @@ function yukohai13(){
             //var yuko_array_max_count = 0
             //yuko_array_max_count = yuko_array[0].substr(5,3)*1
             //console.log(yuko_array_max_count)
+
             $("#yuko_text").html($("#yuko_text").html() + "待:"+ text + " " + yuko_array[0].substr(2,3)*1 + "種" + yuko_array[0].substr(5,3)*1 + "枚" +"<br>")
             /*
             if(glb_sakiyomi_kind != void 0){
@@ -1243,7 +1217,6 @@ function yukohai13(){
             */
             
     }
-
 
     
     /*
