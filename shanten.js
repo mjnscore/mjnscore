@@ -2424,7 +2424,7 @@ function yukohai_array_rank(arraylist){
             max = arraylist[i].substr(5,3)*1
             rank[arraylist[i].substr(0,2)] = max
         }
-        else if(shanten_base > 1 && shanten_base < 4){
+        else if(shanten_base == 2){
             var rank2 = {}
             var rank2max = 0
             
