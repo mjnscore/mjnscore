@@ -73,14 +73,15 @@ haimap2={
     "39":"1s9"
 }
 
-yamahai = new Array(
+yamahai = [
 	11,11,11,11,12,12,12,12,13,13,13,13,14,14,14,14,15,15,15,15,16,16,16,16,17,17,17,17,18,18,18,18,19,19,19,19,
 	21,21,21,21,22,22,22,22,23,23,23,23,24,24,24,24,25,25,25,25,26,26,26,26,27,27,27,27,28,28,28,28,29,29,29,29,
 	31,31,31,31,32,32,32,32,33,33,33,33,34,34,34,34,35,35,35,35,36,36,36,36,37,37,37,37,38,38,38,38,39,39,39,39,
 	41,41,41,41,42,42,42,42,43,43,43,43,44,44,44,44,45,45,45,45,46,46,46,46,47,47,47,47
-)
+]
 
 yamahai_mt = new Array()
+glb_yamahai_mt = new Array()
 
 function game_toggle() {
     startY=endY
@@ -100,9 +101,12 @@ function game_toggle() {
     $("#quiz_input_mode").hide()
     $("#sutehai_div").show()
     $("#game_show").show()
-    $("#start_game").show()
+	$("#start_game").show()
+	$("#retry_game").show()
     $("#auto_tumo_button").show()
 	$("#game_button").val("一人打ち終了")
+	$("#doramoji").hide()
+	$("#hai_dora").hide()
 
     erase_all()
     start_game()
@@ -131,9 +135,12 @@ function game_toggle() {
 	    $("#quiz_input_mode").show()
 	    $("#sutehai_div").hide()
 	    $("#game_show").hide()
-	    $("#start_game").hide()
+		$("#start_game").hide()
+		$("#retry_game").hide()
 	    $("#auto_tumo_button").hide()
-	    $("#game_button").val("一人打ち麻雀")
+		$("#game_button").val("一人打ち麻雀")
+		$("#doramoji").show()
+		$("#hai_dora").show()
 	    superreload()
 	    $('body').animate({ scrollTop: 0 }, 'fast');
   	})
@@ -142,6 +149,7 @@ function game_toggle() {
 }
 
 function confirm_start_game(){
+
     swal({
          title:"麻雀点数計算機",
          text:"配牌しますか？",
@@ -155,9 +163,26 @@ function confirm_start_game(){
     })
 }
 
+function retry_start_game(){
+	if(glb_yamahai_mt != void 0){
+		swal({
+			title:"麻雀点数計算機",
+			text:"同じ配牌でやり直しますか？",
+			type:"warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "OK!",
+			},
+			function(){
+			   start_game("retry!")
+			})
+
+	}
+}
+
 var arrayHaiSute=new Array()
 
-function start_game(){
+function start_game(retry){
 	$('body').animate({ scrollTop: 0 }, 200)
 	$("#riti").attr("checked", false )
 	$("#driti").attr("checked", false )
@@ -176,6 +201,8 @@ function start_game(){
 	$("#sutehai_div").html("")
 	$("#dorahaidiv").html("ドラ牌")
 	arrayDora=new Array()
+	DORA = new Array()
+	DORA_hyoji = new Array()
 	$("#guide_m").html("東一局、親番です")
 	$("#guide_r").html("")
 	erase_all()
@@ -188,18 +215,28 @@ function start_game(){
 	//上がり牌の種類
 	arrayHaiA=[0]
 	S=new Array()
-	//ランダムな山牌を生成する
-	var mt = new MersenneTwister()
-	var j
-	var k
-	yamahai_mt = yamahai.concat()
-	for(var i = 135; i>0; i--){
-		j = mt.nextInt(0,135)
-		k = yamahai_mt[i]
-		yamahai_mt[i] = yamahai_mt[j]
-		yamahai_mt[j] = k
+	
+	if(retry != void 0){
+		yamahai_mt = glb_yamahai_mt.concat()
+	}
+	else{
+		//ランダムな山牌を生成する
+		var mt = new MersenneTwister()
+		var j
+		var k
+		yamahai_mt = yamahai.concat()
+		for(var i = 135; i>0; i--){
+			j = mt.nextInt(0,135)
+			k = yamahai_mt[i]
+			yamahai_mt[i] = yamahai_mt[j]
+			yamahai_mt[j] = k
+		}
+		glb_yamahai_mt = yamahai_mt.concat()
 	}
 
+	//test用 yamahai_mt = [11,11,12,13,14,16,17,22,23,24,34,35,36,15,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28,29]
+	//yamahai_mt = [11,11,11,11,12,13,14,16,17,18,22,23,24,35,35,35,35,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28,29]
+   
 
 	//手牌を配る
 	for(i=0;i<13;i++){
@@ -267,6 +304,7 @@ function start_game(){
     $("#riti_hai_count").text("").css("color","black")
     
 	dora()
+	check_reach()
 	shanten_hyoji()
 	yukohai()
 	yuko2_hyoji()
@@ -501,6 +539,7 @@ function mes(){
 } 
 
 function da_hai(){
+	console.log(yamahai_mt)
 	if(startY!=endY){return}
 	if($("#tensu").is(":visible")==true){
 		$("#guide_m").html("既にあがっています")
@@ -574,6 +613,7 @@ function da_hai(){
 
 				//1牌を削除
 				yamahai_mt.splice(0, 1)
+				
 
 		  }
 		}
@@ -685,9 +725,9 @@ function game_agari(){
             }
         }
         
-
-        
-        $("#dora").val(dora_count)
+		//ドラはHTMLに書き残さずに、DORA配列に入れることにする
+		//HTMLは赤ドラだけにする
+		//$("#dora").val(dora_count)
         //再度計算する
         agari_rekkyo()
         tensu()
@@ -772,7 +812,7 @@ function check_reach(){
 						dora_count2=dora_count2*1+1
 					}
 				}
-				$("#dora").val(dora_count2)
+				//$("#dora").val(dora_count2)
 
 			  agari_rekkyo()
 			  tensu()
@@ -796,7 +836,7 @@ function check_reach(){
 		}
 		if(mati!=""){
 			//console.log("打"+ti+":"+mati)
-			$("#guide_r").html($("#guide_r").html()+"打"+"<img src='./img2/"+haimap2[Sti]+".png' style='width:20px;'>"+":"+mati+"<br>")
+			//$("#guide_r").html($("#guide_r").html()+"打"+"<img src='./img2/"+haimap2[Sti]+".png' style='width:20px;'>"+":"+mati+"<br>")
 			
 			$("#game_menu5").css("color","rgba(0,0,0,1)")
 			$("#game_menu5").css("border","1px solid gray")
@@ -807,7 +847,7 @@ function check_reach(){
     set_S()
 	//if($("#tensu").text()==""){
 		if($.inArray(A[0],arrayDora)>-1){
-			$("#dora").val($("#dora").val()-1)
+			//$("#dora").val($("#dora").val()-1)
 		}
     
 		x=1
@@ -840,7 +880,7 @@ function check_reach(){
 		if(mati!=""){
 				//console.log("打"+ti+":"+mati)
 				//$("#guide_m").html($("#guide_m").html()+"打"+ti+":"+mati+"<br>")
-				$("#guide_r").html($("#guide_r").html()+"打"+"<img src='./img2/"+haimap2[A[0]]+".png' style='width:20px;'>"+":"+mati+"<br>")
+				//$("#guide_r").html($("#guide_r").html()+"打"+"<img src='./img2/"+haimap2[A[0]]+".png' style='width:20px;'>"+":"+mati+"<br>")
 				$("#game_menu5").css("color","rgba(0,0,0,1)")
 			  $("#game_menu5").css("border","1px solid gray")
 		}
@@ -859,6 +899,7 @@ function da_reach(){
 		$("#guide_m").html("既にリーチしています")
 	}else{
 		if($("#select_count").text()=="13"){
+			
 			x=1
 			y=1
 			for(dri=0;dri<34;dri++){
@@ -869,38 +910,37 @@ function da_reach(){
 				}
 				else{
 					A[0]=haimap[hai]
-				  agari_rekkyo()
-				  tensu()
-				  A[0]=arrayHaiA[0]
-				  if($("#tensu").text()!=""){
-				  	//console.log("reach")
-				  	$("#guide_m").html("リーチ!")
-					  $("#game_menu5").css("color","rgba(0,0,255,1)")
-					  $("#game_menu5").css("border","1px solid blue")
-					  $("#ippatu").prop({'checked':'checked'})
-					  ippatu_count=1
-					  sute_hai("reach")
-					  da_hai()
-					  if($("#tumo_hai_count").text()==1 && NAKI.length==0 && ANKAN.length==0){
-						  $("#driti").prop({'checked':'checked'})
-                          $("#riti_hai_count").text($("#tumo_hai_count").text())
-                          $("#riti_hai_text").show()
-                          if($("#riti_hai_count").text()>18){
-                              $("#riti_hai_count").css("color","red")
-                          }
-                          //$("#riti_hai_count").text("(立直:"+$("#tumo_hai_count").text()+")")
+					agari_rekkyo()
+					tensu()
+					A[0]=arrayHaiA[0]
+					if($("#tensu").text()!=""){
+						$("#guide_m").html("リーチ!")
+						$("#game_menu5").css("color","rgba(0,0,255,1)")
+						$("#game_menu5").css("border","1px solid blue")
+						$("#ippatu").prop({'checked':'checked'})
+						ippatu_count=1
+						sute_hai("reach")
+						da_hai()
+						if($("#tumo_hai_count").text()==1 && NAKI.length==0 && ANKAN.length==0){
+							$("#driti").prop({'checked':'checked'})
+							$("#riti_hai_count").text($("#tumo_hai_count").text())
+							$("#riti_hai_text").show()
+							if($("#riti_hai_count").text()>18){
+								$("#riti_hai_count").css("color","red")
+							}
+							//$("#riti_hai_count").text("(立直:"+$("#tumo_hai_count").text()+")")
 						}
 						else{
 							$("#riti").prop({'checked':'checked'})
-                            //$("#riti_hai_count").text("(立直:"+$("#tumo_hai_count").text()+")")
-                            $("#riti_hai_count").text($("#tumo_hai_count").text())
-                            $("#riti_hai_text").show()
-                            if($("#riti_hai_count").text()>18){
-                                $("#riti_hai_count").css("color","red")
-                            }
+							//$("#riti_hai_count").text("(立直:"+$("#tumo_hai_count").text()+")")
+							$("#riti_hai_count").text($("#tumo_hai_count").text())
+							$("#riti_hai_text").show()
+							if($("#riti_hai_count").text()>18){
+								$("#riti_hai_count").css("color","red")
+							}
 						}
-					  $("#tensu").text("")
-				  	break;
+						$("#tensu").text("")
+						break;
 				  }
 				}
 				if(y<9){y=y+1}else{x=x+1,y=1}
@@ -940,7 +980,6 @@ function da_reach(){
 					A[0]=arrayHaiA[0]
 					//console.log(haimap[hai])
 					if($("#tensu").text()!=""){
-					  //console.log("reach")
 					  $("#guide_m").html("リーチ!")
 					  $("#game_menu5").css("color","rgba(0,0,255,1)")
 					  $("#game_menu5").css("border","1px solid blue")
@@ -965,7 +1004,12 @@ function da_reach(){
 			//$("#tensu").text("")
 		}
 	}
+	//kore = window.prompt("",0)
+	//yamahai_mt[1] = kore*1
 }
+
+
+
 
 function dora(){
 	arrayHaicount_count=0
@@ -979,8 +1023,6 @@ function dora(){
     }
 	if(arrayHaicount_count>135){console.log("牌数オーバー")}
 	else{
-		
-
 		//ドラ牌を引く
 
 		//ドラ表示牌
@@ -1016,12 +1058,11 @@ function dora(){
 			arrayHaicount[hai]=arrayHaicount[hai]*1+1
 		}
 		arrayDora.push(haimap[hai2])
+		DORA.push(haimap[hai2])
 
 		//1牌を削除
 		yamahai_mt.splice(0, 1)
-
 	}
-
 }
 
 /*
@@ -1265,4 +1306,32 @@ function game_mentsu_rekkyo() {
 	        if(T.length==6){
   	//console.log("1st")
   }
+}
+
+function test(){
+
+	const starttime = performance.now()
+	for(i=0;i<100000;i++){
+		var a = 1
+    	var b = 2
+		c = Math.min(a,b)
+	}
+	const endtime = performance.now()
+    console.log(endtime - starttime)
+
+}
+
+function test2(){
+
+	const starttime = performance.now()
+	for(i=0;i<100000;i++){
+		var a = 1
+    	var b = 2
+		if(a>b){c=b}else{c=a}
+	}
+	const endtime = performance.now()
+    console.log(endtime - starttime)
+
+
+
 }

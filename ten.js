@@ -613,10 +613,23 @@ function tensu() {
         }
       //ハンが1以上ならドラを数える
       if(han>0){
-        var dora=Math.max(Math.round($("#dora").val()),0)
+        //var dora=Math.max(Math.round($("#dora").val()),0)
+        
+
+        var dora_length=DORA.length
+        var dora = 0
+        for(var i=0;i<dora_length;i++){
+          dora = dora + zenhai.filter(function(value){
+            return value == DORA[i]
+          }).length
+        }
+        dora = dora +Math.max(Math.round($("#dora").val()),0)
+
         han=han+dora
-        if($("#dora").val()>0){agariyaku=agariyaku+"ドラ"+dora+"/"}
+        if(dora>0){agariyaku=agariyaku+"ドラ"+dora+"/"}
+
       }
+
     }
   
 
@@ -732,17 +745,46 @@ function tensu() {
   //上がり形の候補数だけ繰り返すのforここまで
   }
 
-  dcount=1
+  var dcount=1
+  var d_dcount = 1
   zenhai_length=zenhai.length
-    for(i=0;i<zenhai_length;i++){
-      for(j=i+1;j<zenhai_length;j++){
-        if(zenhai[i]==""){continue;}
-        if(zenhai[i]==zenhai[j]){dcount=dcount+1}
-          }
-        if(dcount>4){break}
-        else{dcount=1}
+  for(i=0;i<zenhai_length;i++){
+    for(j=i+1;j<zenhai_length;j++){
+      if(zenhai[i]==""){
+        continue;
+      }
+      if(zenhai[i]==zenhai[j]){
+        dcount=dcount+1
+      }
     }
-  if(dcount>4){$("#yaku_list").html(agariyaku+"(※牌数オーバー)"+"<br>")}
+    var d_dora = 0
+
+    d_dora = d_dora + DORA_hyoji.filter(function(value){
+      return value == zenhai[i]
+    }).length
+
+      
+    dcount = dcount + d_dora
+    if(dcount>4){
+      break
+    }
+    else{
+      dcount=1
+    }
+  }
+  for(i=0;i<dora_length;i++){
+    d_dcount = DORA_hyoji.filter(function(value){
+      return value == DORA_hyoji[i]
+    }).length
+    if(d_dcount > 4){
+      break
+    }
+    else{
+      d_dcount = 1
+    }
+  }
+  
+  if(dcount>4 || d_dcount>4){$("#yaku_list").html(agariyaku+"(※牌数オーバー)"+"<br>")}
 
   /*
   aaaaa=""
@@ -801,7 +843,19 @@ function check_reach2(){
   
   $("#mati_text").html("")
   S_length=S.length
-  dora_count=$("#dora").val()
+  //dora_count=$("#dora").val()
+
+  /*
+  var dora_length=DORA.length
+  var dora_count = 0
+  for(var i=0;i<dora_length;i++){
+    _count = _count + zenhai.filter(function(value){
+      return value == DORA[i]
+    }).length
+  }
+  */
+
+
   //14枚の牌の種類（0～34）
   arrayHai=new Array()
   arrayHai=[0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -1548,9 +1602,19 @@ function tensu_return() {
       }
       //ハンが1以上ならドラを数える
       if(han>0){
-        var dora=Math.max(Math.round($("#dora").val()),0)
+        //var dora=Math.max(Math.round($("#dora").val()),0)
+
+        var dora_length=DORA.length
+        var dora = 0
+        for(var i=0;i<dora_length;i++){
+          dora = dora + zenhai.filter(function(value){
+            return value == DORA[i]
+          }).length
+        }
+        dora = dora +Math.max(Math.round($("#dora").val()),0)
+
         han=han+dora
-        if($("#dora").val()>0){agariyaku=agariyaku+"ドラ"+dora+"/"}
+        if(dora>0){agariyaku=agariyaku+"ドラ"+dora+"/"}
       }
     }
   

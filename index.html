@@ -115,22 +115,22 @@
 </div>
 
 <div id="capture">
-  <table id="hai_tehai" class="blinkborder" data-step="1" data-intro="手牌を選択" style="width:100%;text-align: center;table-layout: fixed;">
+  <table id="hai_tehai" data-step="1" data-intro="手牌を選択" style="width:100%;text-align: center;table-layout: fixed;">
     <tr>
-      <td style="width: 7.1%;border-bottom:2px solid red;">
-        <img id="select1" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
-        <img id="select2" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
-        <img id="select3" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
-        <img id="select4" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
-        <img id="select5" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
-        <img id="select6" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
-        <img id="select7" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
-        <img id="select8" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
-        <img id="select9" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
-        <img id="select10" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
-        <img id="select11" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
-        <img id="select12" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7.1%;">
-        <img id="select13" src="./img/1j9.png" style="width:100%;" alt=""></td><td>　</td><td style="width: 7.1%;">
+      <td style="width: 7%;border-bottom:2px solid red;">
+        <img id="select1" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7%;">
+        <img id="select2" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7%;">
+        <img id="select3" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7%;">
+        <img id="select4" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7%;">
+        <img id="select5" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7%;">
+        <img id="select6" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7%;">
+        <img id="select7" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7%;">
+        <img id="select8" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7%;">
+        <img id="select9" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7%;">
+        <img id="select10" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7%;">
+        <img id="select11" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7%;">
+        <img id="select12" src="./img/1j9.png" style="width:100%;" alt=""></td><td style="width: 7%;">
+        <img id="select13" src="./img/1j9.png" style="width:100%;" alt=""></td><td>　</td><td style="width: 7%;">
         <img id="agari" src="./img/1j9.png" style="width:100%;" alt="">
       </td>
     </tr>
@@ -154,6 +154,27 @@
         <a id="naki12"></a></td><td style="width: 6%;vertical-align: bottom;">
         <a id="naki13"></a>
       </td>
+    </tr>
+  </table>
+  <div style="line-height:2px">
+  </div>
+  <a id="doramoji">ドラ</a>
+  <br>
+  <table id="hai_dora" style="width:100%;text-align: center;table-layout: fixed;">
+    <tr>
+      <td style="width: 6%;vertical-align: bottom;border-bottom:0px solid transparent;">
+        <a id="dora1"><br></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="dora2"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="dora3"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="dora4"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="dora5"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="dora6"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="dora7"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="dora8"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="dora9"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="dora10"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="dora11"></a></td><td style="width: 6%;vertical-align: bottom;">
+        <a id="dora12"></a></td>
     </tr>
   </table>
 </div>
@@ -224,7 +245,7 @@
   </div>
   <div id="selectmenudiv" data-step="2" data-intro="手牌 or 鳴牌の切替">
     <ul>
-      <li id="menu1" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu1','select')" onmouseup="if(endY==''){select_menu_now('menu1','select')}" style="background:Palegreen">手牌</li><li id="menu2" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu2','pon')" onmouseup="if(endY==''){select_menu_now('menu2','pon')}">ポン</li><li id="menu3" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu3','chi')" onmouseup="if(endY==''){select_menu_now('menu3','chi')}">チー</li><li id="menu4" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu4','ankan')" onmouseup="if(endY==''){select_menu_now('menu4','ankan')}">暗槓</li><li id="menu5" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu5','minkan')" onmouseup="if(endY==''){select_menu_now('menu5','minkan')}">明槓</li><!--<li id="menu6" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu6','agari')" onmouseup="if(endY==''){select_menu_now('menu6','agari')}">上牌</li>--><li id="menu6" class="calc button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="agari_rekkyo();tensu();$('body').animate({ scrollTop: 0 }, 300);check_reach2();" onmouseup="if(endY==''){agari_rekkyo();tensu();$('body').animate({ scrollTop: 0 }, 300);check_reach2();}" data-step="8" data-intro="計算する" data-position="left">計算</li>
+      <li id="menu1" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu1','select')" onmouseup="if(endY==''){select_menu_now('menu1','select')}" style="background:Palegreen">手牌</li><li id="menu2" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu2','pon')" onmouseup="if(endY==''){select_menu_now('menu2','pon')}">ポン</li><li id="menu3" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu3','chi')" onmouseup="if(endY==''){select_menu_now('menu3','chi')}">チー</li><li id="menu4" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu4','ankan')" onmouseup="if(endY==''){select_menu_now('menu4','ankan')}">暗槓</li><li id="menu5" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu5','minkan')" onmouseup="if(endY==''){select_menu_now('menu5','minkan')}">明槓</li><li id="menu6" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="select_menu_now('menu6','dora')" onmouseup="if(endY==''){select_menu_now('menu6','dora')}">ドラ</li><li id="menu7" class="calc button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="agari_rekkyo();tensu();$('body').animate({ scrollTop: 0 }, 300);check_reach2();" onmouseup="if(endY==''){agari_rekkyo();tensu();$('body').animate({ scrollTop: 0 }, 300);check_reach2();}" data-step="8" data-intro="計算する" data-position="left">計算</li>
     </ul>
   </div>
   <hr style="margin:2px 0 2px 0;">
@@ -482,7 +503,7 @@
               <label for="ji45" style="width:100%;">西風</label>
       </td>
       <td rowspan="2" style="padding:8px;">
-          <input type="tel" id="dora" placeholder="ドラ" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){$('#dora').focus();$('#dora').val('');}" onmouseup="if(endY==''){$('#dora').focus();$('#dora').val('');}" onBlur="$('body').animate({ scrollTop: 0 }, 300)">
+          <input type="tel" id="dora" placeholder="赤ドラ" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){$('#dora').focus();$('#dora').val('');}" onmouseup="if(endY==''){$('#dora').focus();$('#dora').val('');}" onBlur="$('body').animate({ scrollTop: 0 }, 300)">
       </td>
     </tr>
     <tr>
@@ -526,6 +547,7 @@
 <div style="display: none;">
 <a id="select_count" >0</a><!--手牌の牌数-->
 <a id="naki_count" >0</a><!--鳴牌の牌数-->
+<a id="dora_count" >0</a><!--ドラ牌の牌数-->
 <a id="on" >select</a><!--今選んでいるのが手牌なら"#on"がselect,"#off"がnaki-->
 <a id="off" >naki</a><!--今選んでいるのが鳴牌なら"#on"がnaki,"#off"がselect-->
 <a id="menu_select" >select</a><!--select/pon/chi/ankan/minkan/agari-->
@@ -540,6 +562,7 @@
   <input type="button" onclick="quiz_hinthu()" id="quiz_hinthu" value="符表">
   -->
   <input type="button" onclick="confirm_start_game()" id="start_game" value="配牌" style="display: none;">
+  <input type="button" onclick="retry_start_game()" id="retry_game" value="リトライ" style="display: none;">
   <input type="button" onclick="auto_tumo()" id="auto_tumo_button" value="オートツモ" style="display: none;">
   <div style="line-height:8px"><br></div>
   <select id="quiz_mode" style="margin:0px -6px 0px 0px;height:40px;">
@@ -566,13 +589,20 @@
   <div style="text-align: left">
     <a id="quiz_mati_text" style="font-size: x-small;"></a>
     <br>
-    <a id="quiz_shanten_text" style=""></a>
+    <a id="quiz_shanten_text"></a>
     <br>
     <a id="quiz_yuko_text" style="font-size: smaller;"></a>
   </div>
   <!--
+    <input type="button" onclick="test()" value="test">
+  -->
+  <!--
   <input type="checkbox" id="quiz_debug">
   -->
+<hr style="margin:5px 0 10px 0;">
+<div id="calc_table">
+  <ul><li style="width:141px;"><input type="checkbox" value=1 id="titoi_calc" onclick="return false;"><label for="titoi_calc" style="width:100%;">七対子 除く</label></li><li style="width:141px;"><input type="checkbox" value=1 id="kokusi_calc" onclick="return false;" checked><label for="kokusi_calc">国士 除く</label></li></ul>
+</div>
 <div style="line-height:5px"><br></div>
 <!--
   <img src="img2/oyaten.png" id="oyatenimg" class="tenimg" style="display: none;">

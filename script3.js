@@ -21,6 +21,9 @@ A_copy=new Array()
 NAKI=new Array()
 //暗槓配列
 ANKAN=new Array()
+//ドラ配列
+DORA=new Array()
+DORA_hyoji=new Array()
 G=new Array()
 touchid=""
 //touchstartした時のY座標と、touchmoveした時のY座標
@@ -30,6 +33,7 @@ endY=""
 startObj=""
 //全牌選択モードで、タッチ移動した牌画像のsrc(./img2/???.png)を保存する
 endObj=""
+hai_border_color = "rgba(200,225,250,0.5)"
 
 
 //タッチデバイスかどうか確認する
@@ -254,7 +258,10 @@ $(function(){
 
 
 function scroll(id){
-  $('#hai_naki').css("height", $('#hai_tehai').height())
+
+  //+4はborderの厚さ*2
+  $('#hai_naki').css("height", $('#select1').height()/$('#select1').width()*$('#naki1').parent("td").width()+4)
+  $('#hai_dora').css("height", $('#select1').height()/$('#select1').width()*$('#dora1').parent("td").width()+4)
   if(window.navigator.standalone || $("#"+id).offset() == void 0) {
     return
   }
@@ -279,14 +286,13 @@ function select_menu_now(id,str) {
     $("#menu_select").text(str)
     $("#selectmenudiv li:not('.calc')").css("background", "")
     if(str=="select"){
-        
         $("#"+id).css("background", "Palegreen")
     }else{
         $("#"+id).css("background", "#fb98fb")
     }
-          if($("#"+id).css("transform")=="none"){
-              bordercss="1px solid gray"
-          }
+    if($("#"+id).css("transform")=="none"){
+        bordercss="1px solid gray"
+    }
           /*
           if($("#"+id).css("transform")=="none"){
             bordercss="1px solid gray"
@@ -320,6 +326,13 @@ function select_menu_now(id,str) {
         }
         */
         $("#agari").parents("td").css("border-bottom","2px solid red")
+        $("#hai_tehai").css({"border":"2px solid transparent"})
+        if($("#doramoji").is(':visible')){
+          $("#hai_tehai").css({"border":"2px solid " + hai_border_color})
+          $("#hai_dora").css({"border":"2px solid transparent"})
+          $("#hai_naki").css({"border":"2px solid transparent"})
+        }
+        $("#"+"dora"+(parseInt($("#"+"dora"+"_count").html())+1)).parents("td").css("border-bottom","none")
         $("#"+"select"+(parseInt($("#"+"select"+"_count").html())+1)).parents("td").css("border-bottom","none")
         $("#select_count").html(13)
         for(i=0;i<13;i++){
@@ -346,11 +359,28 @@ function select_menu_now(id,str) {
       $("#"+"select"+(parseInt($("#"+"select"+"_count").html())+1)).parents("td").css("border-bottom","none")
       $("#agari").parents("td").css("border-bottom","2px solid red")
     }
+    else if(str=="dora"){
+      $("#"+"naki"+(parseInt($("#"+"naki"+"_count").html())+1)).parents("td").css("border-bottom","none")
+      $("#"+"select"+(parseInt($("#"+"select"+"_count").html())+1)).parents("td").css("border-bottom","2px solid transparent")
+      $("#agari").parents("td").css("border-bottom","none")
+
+      $("#"+"dora"+(parseInt($("#"+"dora"+"_count").html())+1)).parents("td").css({"border-bottom":"2px solid red"})
+      $("#hai_tehai").css({"border":"2px solid transparent"})
+      $("#hai_dora").css({"border":"2px solid " + hai_border_color})
+      $("#hai_naki").css({"border":"2px solid transparent"})
+
+
+    }
     else{
       //if(parseInt($("#"+"select"+"_count").html())+parseInt($("#"+"naki"+"_count").html())<10){
-        $("#"+"select"+(parseInt($("#"+"select"+"_count").html())+1)).parents("td").css("border-bottom","none")
+        $("#"+"select"+(parseInt($("#"+"select"+"_count").html())+1)).parents("td").css("border-bottom","2px solid transparent")
         $("#agari").parents("td").css("border-bottom","none")
+        $("#"+"dora"+(parseInt($("#"+"dora"+"_count").html())+1)).parents("td").css("border-bottom","none")
+
         $("#"+"naki"+(parseInt($("#"+"naki"+"_count").html())+1)).parents("td").css({"border-bottom":"2px solid red"})
+        $("#hai_tehai").css({"border":"2px solid transparent"})
+        $("#hai_dora").css({"border":"2px solid transparent"})
+        $("#hai_naki").css({"border":"2px solid " + hai_border_color})
         if(NAKI==""){
             $("#"+"naki"+(parseInt($("#naki_count").html())+1)).html('<br>')
         }
@@ -359,6 +389,7 @@ function select_menu_now(id,str) {
     }
   }
 }
+
 /*
 $(function () {
   $("#selectmenudiv li").bind("touchend", function () {
@@ -396,7 +427,14 @@ $(function(){
   })
   $("#hai_tehai td").on({'touchend mouseup': function(e) {
     if(startY==endY || Math.abs(startY-endY)<5){
+      $("#hai_tehai").css({"border":"2px solid transparent"})
+      if($("#doramoji").is(':visible')){
+        $("#hai_tehai").css({"border":"2px solid " + hai_border_color})
+        $("#hai_dora").css({"border":"2px solid transparent"})
+        $("#hai_naki").css({"border":"2px solid transparent"})
+      }
       $("#naki"+($("#naki_count").text()*1+1)).parents("td").css("border-bottom","none")
+      $("#dora"+($("#dora_count").text()*1+1)).parents("td").css("border-bottom","none")
       $("#selectmenudiv li:not('.calc')").css("background", "")
       $("#menu1").css("background", "Palegreen")
       if($(this).children("img").attr("id")=="agari"){
@@ -535,6 +573,7 @@ function select_hai_touchstart(name,n){
 
 function select_hai(name,n){
   if(Math.abs(startY-endY)<10 && startObj == endObj){
+
   //if(startObj == endObj){
     //今手牌が何枚あるか
     //今鳴き牌が何牌分あるか
@@ -656,7 +695,7 @@ function select_hai(name,n){
         h_test()
       }
     }
-  else if($("#menu_select").text()==="chi" && parseInt(name.substring(2,3))<8 && name.substring(1,2)!="j"){
+    else if($("#menu_select").text()==="chi" && parseInt(name.substring(2,3))<8 && name.substring(1,2)!="j"){
       on="naki"
       off="select"
       //牌番号をカウントする
@@ -686,8 +725,7 @@ function select_hai(name,n){
           count=count+2
       }
     }
-
-  else if($("#menu_select").text()==="pon"){
+    else if($("#menu_select").text()==="pon"){
       on="naki"
       off="select"
       //牌番号をカウントする
@@ -715,9 +753,8 @@ function select_hai(name,n){
           }
           count=count+2
       }
-  }
-
-  else if($("#menu_select").text()==="ankan"){
+    }
+    else if($("#menu_select").text()==="ankan"){
       on="naki"
       off="select"
       //牌番号をカウントする
@@ -744,9 +781,8 @@ function select_hai(name,n){
           }
           count=count+2
       }
-  }
-
-  else if($("#menu_select").text()==="minkan"){
+    }
+    else if($("#menu_select").text()==="minkan"){
       on="naki"
       off="select"
       //牌番号をカウントする
@@ -777,66 +813,181 @@ function select_hai(name,n){
           }
           count=count+2
       }
-  }
+    }
+    else if($("#menu_select").text()==="dora"){
+      on="dora"
+      //牌番号をカウントする
+      count=parseInt($("#"+on+"_count").html())
+      
+      if(count < 12){
+        count=count+1
+      }
+      if(count < 12){  
+        $("#"+on+count).html('<img src="./img2/'+name+'.png" style="width:100%;">').parents("td").css("width","6%")
+        $("#"+on+count).parents("td").css("border-style","none")
+        $("#"+on+(count+1)).parents("td").css("border-bottom","2px solid red")
+        DORA.push(n)
+      }
+      else{
+        $("#"+on+count).html('<img src="./img2/'+name+'.png" style="width:100%;">').parents("td").css("width","6%")
+        $("#"+on+count).parents("td").css("border-bottom","2px solid red")
+        if(DORA.length < 12){
+          DORA.push(n)
+        }
+        else{
+          DORA.pop()
+          DORA.push(n)
+        }
+        
+      }
 
-  if($("#menu_select").text()==="select" || ($("#menu_select").text()==="chi" && (parseInt(name.substring(2,3))>7 || name.substring(1,2)=="j"))){}
-  else{
-    
-    $("#"+on+"_count").html(count)
-    /*
-    count=parseInt($("#select_count").html())
-    rS_count=0
-    for(var j in rS){
-      rS_count=rS_count+1
+      var dora_length=DORA.length
+      DORA_hyoji = new Array()
+      for(var i=0;i<dora_length;i++){
+          if(DORA[i]==11){DORA_hyoji.push(19)}
+          else if(DORA[i]==12){DORA_hyoji.push(11)}
+          else if(DORA[i]==13){DORA_hyoji.push(12)}
+          else if(DORA[i]==14){DORA_hyoji.push(13)}
+          else if(DORA[i]==15){DORA_hyoji.push(14)}
+          else if(DORA[i]==16){DORA_hyoji.push(15)}
+          else if(DORA[i]==17){DORA_hyoji.push(16)}
+          else if(DORA[i]==18){DORA_hyoji.push(17)}
+          else if(DORA[i]==19){DORA_hyoji.push(18)}
+          else if(DORA[i]==21){DORA_hyoji.push(29)}
+          else if(DORA[i]==22){DORA_hyoji.push(21)}
+          else if(DORA[i]==23){DORA_hyoji.push(22)}
+          else if(DORA[i]==24){DORA_hyoji.push(23)}
+          else if(DORA[i]==25){DORA_hyoji.push(24)}
+          else if(DORA[i]==26){DORA_hyoji.push(25)}
+          else if(DORA[i]==27){DORA_hyoji.push(26)}
+          else if(DORA[i]==28){DORA_hyoji.push(27)}
+          else if(DORA[i]==29){DORA_hyoji.push(28)}
+          else if(DORA[i]==31){DORA_hyoji.push(39)}
+          else if(DORA[i]==32){DORA_hyoji.push(31)}
+          else if(DORA[i]==33){DORA_hyoji.push(32)}
+          else if(DORA[i]==34){DORA_hyoji.push(33)}
+          else if(DORA[i]==35){DORA_hyoji.push(34)}
+          else if(DORA[i]==36){DORA_hyoji.push(35)}
+          else if(DORA[i]==37){DORA_hyoji.push(36)}
+          else if(DORA[i]==38){DORA_hyoji.push(37)}
+          else if(DORA[i]==39){DORA_hyoji.push(38)}
+          else if(DORA[i]==41){DORA_hyoji.push(47)}
+          else if(DORA[i]==43){DORA_hyoji.push(41)}
+          else if(DORA[i]==45){DORA_hyoji.push(43)}
+          else if(DORA[i]==47){DORA_hyoji.push(45)}
+          else if(DORA[i]==51){DORA_hyoji.push(55)}
+          else if(DORA[i]==53){DORA_hyoji.push(51)}
+          else if(DORA[i]==55){DORA_hyoji.push(53)}
+          /*
+          if(DORA[i]==11){DORA_hyoji.push(8)}
+          else if(DORA[i]==12){DORA_hyoji.push(0)}
+          else if(DORA[i]==13){DORA_hyoji.push(1)}
+          else if(DORA[i]==14){DORA_hyoji.push(2)}
+          else if(DORA[i]==15){DORA_hyoji.push(3)}
+          else if(DORA[i]==16){DORA_hyoji.push(4)}
+          else if(DORA[i]==17){DORA_hyoji.push(5)}
+          else if(DORA[i]==18){DORA_hyoji.push(6)}
+          else if(DORA[i]==19){DORA_hyoji.push(7)}
+          else if(DORA[i]==21){DORA_hyoji.push(17)}
+          else if(DORA[i]==22){DORA_hyoji.push(9)}
+          else if(DORA[i]==23){DORA_hyoji.push(10)}
+          else if(DORA[i]==24){DORA_hyoji.push(11)}
+          else if(DORA[i]==25){DORA_hyoji.push(12)}
+          else if(DORA[i]==26){DORA_hyoji.push(13)}
+          else if(DORA[i]==27){DORA_hyoji.push(14)}
+          else if(DORA[i]==28){DORA_hyoji.push(15)}
+          else if(DORA[i]==29){DORA_hyoji.push(16)}
+          else if(DORA[i]==31){DORA_hyoji.push(26)}
+          else if(DORA[i]==32){DORA_hyoji.push(18)}
+          else if(DORA[i]==33){DORA_hyoji.push(19)}
+          else if(DORA[i]==34){DORA_hyoji.push(20)}
+          else if(DORA[i]==35){DORA_hyoji.push(21)}
+          else if(DORA[i]==36){DORA_hyoji.push(22)}
+          else if(DORA[i]==37){DORA_hyoji.push(23)}
+          else if(DORA[i]==38){DORA_hyoji.push(24)}
+          else if(DORA[i]==39){DORA_hyoji.push(25)}
+          else if(DORA[i]==41){DORA_hyoji.push(30)}
+          else if(DORA[i]==43){DORA_hyoji.push(27)}
+          else if(DORA[i]==45){DORA_hyoji.push(28)}
+          else if(DORA[i]==47){DORA_hyoji.push(29)}
+          else if(DORA[i]==51){DORA_hyoji.push(33)}
+          else if(DORA[i]==53){DORA_hyoji.push(31)}
+          else if(DORA[i]==55){DORA_hyoji.push(32)}
+          */
+        }
+      
+
+
     }
-    rNAKI_count=0
-    for(var j in rNAKI){
-      rNAKI_count=rNAKI_count+1
-    }
-    
+
+    if($("#menu_select").text()==="select" || ($("#menu_select").text()==="chi" && (parseInt(name.substring(2,3))>7 || name.substring(1,2)=="j"))){}
+    else{
+      
+      $("#"+on+"_count").html(count)
+      /*
+      count=parseInt($("#select_count").html())
+      rS_count=0
+      for(var j in rS){
+        rS_count=rS_count+1
+      }
+      rNAKI_count=0
+      for(var j in rNAKI){
+        rNAKI_count=rNAKI_count+1
+      }
+      
+          $("#agari").parents("td").css("border-bottom","2px solid red")
+          $("#select_count").html(13)
+          for(i=1;i+count<14;i++){
+            if(rNAKI[parseInt(count+i)]==null){
+              $("#select_count").html(parseInt(count+i-1))
+              //$("#agari").parents("td").css("border-bottom","none")
+              $("#select"+(count+i)).parents("td").css("border-bottom","2px solid red")            
+              break
+            }
+          }
+      */
+        /*
         $("#agari").parents("td").css("border-bottom","2px solid red")
         $("#select_count").html(13)
-        for(i=1;i+count<14;i++){
-          if(rNAKI[parseInt(count+i)]==null){
-            $("#select_count").html(parseInt(count+i-1))
-            //$("#agari").parents("td").css("border-bottom","none")
-            $("#select"+(count+i)).parents("td").css("border-bottom","2px solid red")            
-            break
-          }
+        for(i=0;i<13;i++){
+            if(rNAKI[parseInt(i)]==null && rS[parseInt(i)]==null){
+                $("#select_count").html(parseInt(i))
+                $("#agari").parents("td").css("border-bottom","none")
+                $("#select"+(i+1)).parents("td").css("border-bottom","2px solid red")
+                break
+            }
         }
-    */
-      /*
-      $("#agari").parents("td").css("border-bottom","2px solid red")
-      $("#select_count").html(13)
-      for(i=0;i<13;i++){
-          if(rNAKI[parseInt(i)]==null && rS[parseInt(i)]==null){
-              $("#select_count").html(parseInt(i))
-              $("#agari").parents("td").css("border-bottom","none")
-              $("#select"+(i+1)).parents("td").css("border-bottom","2px solid red")
-              break
-          }
+        */
+      //手牌選択モードに戻す
+      startY=endY
+      if($("#menu_select").text() != "dora"){
+        select_menu_now('menu1','select')
+
+        if($("#menu1").css("transform")=="none"){
+          bordercss="1px solid gray"
+        }
+        else{
+          $("#menu1").velocity("stop")
+        }
+        $("#menu1").css({"border":"1px solid blue"})
+        .velocity({translateY: "-5px"},{duration: 0})
+        .velocity({translateY: "10px"},{duration: 60})
+        .velocity({translateY: "0px"},{duration: 300,complete: function(){$("#menu1").css({"border":bordercss})}})
       }
-       */
-    //手牌選択モードに戻す
-    startY=endY
-    select_menu_now('menu1','select')
 
-    if($("#menu1").css("transform")=="none"){
-      bordercss="1px solid gray"
-    }
-    else{
-      $("#menu1").velocity("stop")
-    }
-    $("#menu1").css({"border":"1px solid blue"})
-    .velocity({translateY: "-5px"},{duration: 0})
-    .velocity({translateY: "10px"},{duration: 60})
-    .velocity({translateY: "0px"},{duration: 300,complete: function(){$("#menu1").css({"border":bordercss})}})
-  }
 
-  shanten_hyoji()
-  yukohai()
-  yukohai13()
-  yuko2_hyoji()
+    }
+
+    
+    //setTimeout(function(){swal("loading...",{button: false,})},0)
+    
+    //document.body.style.backgroundColor = "black"
+    //setTimeout(function(){$("#shanten_text").text("読み込み中")},0)
+    shanten_hyoji()
+    //setTimeout(function(){yukohai()},0)
+    yukohai()
+    yukohai13()
+    yuko2_hyoji()
 
 
   }
@@ -887,9 +1038,9 @@ function select_erase(){
               $("#"+h+Math.max(1,(count-i+1))).parents("td").css("border-bottom","2px solid red")
               break
           }
-      }      
+      }
     }
-    if(h=="pon" || h=="chi" || h=="ankan" || h=="minkan"){
+    else if(h=="pon" || h=="chi" || h=="ankan" || h=="minkan"){
       count=parseInt($("#naki"+"_count").html())
       if(count!==0){
         $("#naki"+(count*1+1)).parents("td").css("border-bottom","none")
@@ -900,43 +1051,101 @@ function select_erase(){
         else{
           NAKI.pop()
         }
-      $("#naki"+count).html("")
-      $("#naki"+(count-1)).html("")
-      $("#naki"+(count-2)).html("")
+        $("#naki"+count).html("")
+        $("#naki"+(count-1)).html("")
+        $("#naki"+(count-2)).html("")
 
-      naki_count=0  
-      for(i=0;i<13;i++){
-        if(rS[parseInt(12-i)]==null && rNAKI[parseInt(12-i)]!=null){
-          $("#"+"select"+(13-i)).parents("td").attr("src","./img/1j9.png").show()
-          delete rNAKI[parseInt(12-i)]
-          naki_count=naki_count+1
-          if(naki_count>2){break}
+        naki_count=0  
+        for(i=0;i<13;i++){
+          if(rS[parseInt(12-i)]==null && rNAKI[parseInt(12-i)]!=null){
+            $("#"+"select"+(13-i)).parents("td").attr("src","./img/1j9.png").show()
+            delete rNAKI[parseInt(12-i)]
+            naki_count=naki_count+1
+            if(naki_count>2){break}
+          }
         }
+
+        $("#naki_count").html(count-3)
+
       }
 
-      $("#naki_count").html(count-3)
+      //手牌選択モードに戻す
+      startY=endY
+      select_menu_now('menu1','select')
 
+      if($("#menu1").css("transform")=="none"){
+        bordercss="1px solid gray"
       }
-
-    //手牌選択モードに戻す
-    startY=endY
-    select_menu_now('menu1','select')
-
-    if($("#menu1").css("transform")=="none"){
-      bordercss="1px solid gray"
-    }
-    else{
-      $("#menu1").velocity("stop")
-    }
-    $("#menu1").css({"border":"1px solid blue"})
-    .velocity({translateY: "-5px"},{duration: 0})
-    .velocity({translateY: "10px"},{duration: 60})
-    .velocity({translateY: "0px"},{duration: 300,complete: function(){$("#menu1").css({"border":bordercss})}})
+      else{
+        $("#menu1").velocity("stop")
+      }
+      $("#menu1").css({"border":"1px solid blue"})
+      .velocity({translateY: "-5px"},{duration: 0})
+      .velocity({translateY: "10px"},{duration: 60})
+      .velocity({translateY: "0px"},{duration: 300,complete: function(){$("#menu1").css({"border":bordercss})}})
         
     }
+    else if(h=="dora"){
+      count=parseInt($("#dora"+"_count").html())
+      if(count != 0){
+        if(count == 12){
+          $("#dora"+count).html("")
+          $("#dora"+count).parents("td").css("border-bottom","2px solid red")
+        }
+        else{
+          $("#dora"+count).html("")
+          $("#dora"+(count*1+1)).parents("td").css("border-bottom","none")
+          $("#dora"+count).parents("td").css("border-bottom","2px solid red")
+        }
+          
+        DORA.pop()
+        $("#dora_count").html(count-1)
+        var dora_length=DORA.length
+        DORA_hyoji = new Array()
+        for(var i=0;i<dora_length;i++){
+            if(DORA[i]==11){DORA_hyoji.push(19)}
+            else if(DORA[i]==12){DORA_hyoji.push(11)}
+            else if(DORA[i]==13){DORA_hyoji.push(12)}
+            else if(DORA[i]==14){DORA_hyoji.push(13)}
+            else if(DORA[i]==15){DORA_hyoji.push(14)}
+            else if(DORA[i]==16){DORA_hyoji.push(15)}
+            else if(DORA[i]==17){DORA_hyoji.push(16)}
+            else if(DORA[i]==18){DORA_hyoji.push(17)}
+            else if(DORA[i]==19){DORA_hyoji.push(18)}
+            else if(DORA[i]==21){DORA_hyoji.push(29)}
+            else if(DORA[i]==22){DORA_hyoji.push(21)}
+            else if(DORA[i]==23){DORA_hyoji.push(22)}
+            else if(DORA[i]==24){DORA_hyoji.push(23)}
+            else if(DORA[i]==25){DORA_hyoji.push(24)}
+            else if(DORA[i]==26){DORA_hyoji.push(25)}
+            else if(DORA[i]==27){DORA_hyoji.push(26)}
+            else if(DORA[i]==28){DORA_hyoji.push(27)}
+            else if(DORA[i]==29){DORA_hyoji.push(28)}
+            else if(DORA[i]==31){DORA_hyoji.push(39)}
+            else if(DORA[i]==32){DORA_hyoji.push(31)}
+            else if(DORA[i]==33){DORA_hyoji.push(32)}
+            else if(DORA[i]==34){DORA_hyoji.push(33)}
+            else if(DORA[i]==35){DORA_hyoji.push(34)}
+            else if(DORA[i]==36){DORA_hyoji.push(35)}
+            else if(DORA[i]==37){DORA_hyoji.push(36)}
+            else if(DORA[i]==38){DORA_hyoji.push(37)}
+            else if(DORA[i]==39){DORA_hyoji.push(38)}
+            else if(DORA[i]==41){DORA_hyoji.push(47)}
+            else if(DORA[i]==43){DORA_hyoji.push(41)}
+            else if(DORA[i]==45){DORA_hyoji.push(43)}
+            else if(DORA[i]==47){DORA_hyoji.push(45)}
+            else if(DORA[i]==51){DORA_hyoji.push(55)}
+            else if(DORA[i]==53){DORA_hyoji.push(51)}
+            else if(DORA[i]==55){DORA_hyoji.push(53)}
+        }
+      }
+      
+    }
+    
     shanten_hyoji()
     yukohai()
     yukohai13()
+    yuko2_hyoji()
   }
 }
 
@@ -949,8 +1158,11 @@ function erase_all() {
   A=new Array()
   NAKI=new Array()
   ANKAN=new Array()
+  DORA=new Array()
   $("#select_count").html(0)
   $("#naki_count").html(0)
+  $("#dora_count").html(0)
+  $("#dora").html("")
   $("#mati_text").html("")
   $("#shanten_text").html("")
   $("#yuko_text").html("")
@@ -983,7 +1195,20 @@ function erase_all() {
   $("#naki10").html("").parents("td").css("border","none")
   $("#naki11").html("").parents("td").css("border","none")
   $("#naki12").html("").parents("td").css("border","none")
+  $("#dora1").html("<br>").parents("td").css("border","none")
+  $("#dora2").html("").parents("td").css("border","none")
+  $("#dora3").html("").parents("td").css("border","none")
+  $("#dora4").html("").parents("td").css("border","none")
+  $("#dora5").html("").parents("td").css("border","none")
+  $("#dora6").html("").parents("td").css("border","none")
+  $("#dora7").html("").parents("td").css("border","none")
+  $("#dora8").html("").parents("td").css("border","none")
+  $("#dora9").html("").parents("td").css("border","none")
+  $("#dora10").html("").parents("td").css("border","none")
+  $("#dora11").html("").parents("td").css("border","none")
+  $("#dora12").html("").parents("td").css("border","none")
   //$("#naki1").html('<img src="./img/none.png" style="width:100%;border:white;">').parents("td").css("width","6%")
+  select_menu_now("menu1","select")
 
 }
 
@@ -1272,6 +1497,33 @@ $(function(){
   //タッチデバイスならマウスを無効にする（要Winタブ検討）
   if(isTouch==true){
   $("#yaku_table li").off("mouseup")
+  }
+  
+})
+
+$(function(){
+  $("#calc_table li").on({'touchstart': function(e) {
+                       if(isTouch==true){startY=e.originalEvent.touches[ 0 ].pageY}
+                       else{startY=""}
+                       endY = startY
+                       }})
+  $("#calc_table li").on({'touchmove': function(e) {
+                       endY = (isTouch ? e.originalEvent.touches[ 0 ].pageY : "")
+                       }})
+  $("#calc_table li").on({'touchend mouseup': function(e) {
+                       if(startY==endY){
+                            if ($("input:checkbox",this).prop('checked')) {
+                                $("input:checkbox",this).prop('checked', false);
+                            } else {
+                                $("input:checkbox",this).prop('checked', true);
+                            }
+                            yukohai()
+                            yukohai13()
+                       }
+                       }})
+  //タッチデバイスならマウスを無効にする（要Winタブ検討）
+  if(isTouch==true){
+  $("#calc_table li").off("mouseup")
   }
   
 })

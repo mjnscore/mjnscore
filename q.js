@@ -30,16 +30,18 @@ function quiz_toggle() {
     $("#tenho").attr("checked", false )
     $("#tiho").attr("checked", false )
     $("#quiz_show").show()
-      if($(window).width()>640){
-          $("#qadiv_wide").show()
-          $("#qadiv").hide()
-      }
-      else{
-          $("#qadiv_wide").hide()
-          $("#qadiv").show()
-      }
+    if($(window).width()>640){
+        $("#qadiv_wide").show()
+        $("#qadiv").hide()
+    }
+    else{
+        $("#qadiv_wide").hide()
+        $("#qadiv").show()
+    }
     $("#game_button").hide()
     $("#quiz_button").val("クイズ終了")
+    $("#doramoji").hide()
+    $("#hai_dora").hide()
     erase_all()
     //quiz()
     if($("#quiz_mode").val()=="g"){
@@ -88,6 +90,8 @@ function quiz_toggle() {
       $("#game_button").show()
       $("#quiz_test").html("")
       $("#quiz_button").val("クイズ")
+      $("#doramoji").show()
+      $("#hai_dora").show()
       superreload()
       $('body').animate({ scrollTop: 0 }, 0)
     })
@@ -100,7 +104,7 @@ function confirm_quizg_start(){
   $('body').animate({ scrollTop: 0 }, 0)
     swal({
          title:"Ready?",
-        text:"[全30問/1分間]"+"\n"+"(正答数×10,000)"+"\n"+"(残時間×1,000)"+"\n"+"(アガリ点×0.3)"+"\n"+"\n"+"[入力方法]"+"\n"+"3900→39"+"\n"+"4000オール→4"+"\n"+"2000,3900→239"
+        text:"[全30問/1分間]"+"\n"+"(正答数×10,000)"+"\n"+"(残時間×1,000)"+"\n"+"(アガリ点×0.3)"+"\n"+"\n"+"[入力方法]"+"\n"+"ロン：3900→39"+"\n"+"親ツモ：4000オール→4"+"\n"+"子ツモ：2000,3900→239"
          },
          function(){
             $("#quiz_do").attr("disabled",false)

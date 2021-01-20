@@ -58,6 +58,12 @@ img{
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
 }
+img::after{
+    border: 1px solid #eee;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
 
 
 /*全てにborder-boxを適用*/
@@ -152,9 +158,7 @@ body {
   /*border: 1px solid #fff;*/
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
 }
-#hai_tehai{
-    
-}
+
 #header{
     position: fixed;
     max-width: 100%;
@@ -176,17 +180,35 @@ body {
     background-color: rgba(70, 66, 232, 0.5);
     color: #fff;
 }
+
+#hai_tehai {
+  border: 2px solid transparent;
+  border-radius: 4px;
+}
+#hai_naki {
+  border: 2px solid transparent;
+  border-radius: 4px;
+}
+#hai_dora {
+  border: 2px solid transparent;
+  border-radius: 4px;
+}
+
 #hai_tehai td {
   padding: 0px;
   border-radius: 4px;
-  /*border: 1px solid #ccc;*/
+  
 }
 #hai_naki td {
   border-radius: 4px;
-  /*border: 1px solid #ccc;*/
+  border-bottom: 2px solid transparent;
+}
+#hai_dora td {
+  border-radius: 4px;
+  border-bottom: 2px solid transparent;
 }
 
-#yaku_table {
+#yaku_table,#calc_table {
   text-align:center;
   width: 100%;
   border-collapse:separate;
@@ -194,7 +216,7 @@ body {
   table-layout: fixed;
 }
 
-#yaku_table td {
+#yaku_table td,#calc_table td {
   border:1px solid #999;
   margin: 4px;
   height: 30px;
@@ -210,14 +232,14 @@ body {
   padding: 0;  
 }
 */
-#yaku_table input {
+#yaku_table input,#calc_table input {
   height: 30px;
 }
-#yaku_table ul {
+#yaku_table ul,#calc_table ul {
   padding: 0 0 0 0;
   /*text-align: left;*/
 }
-#yaku_table li {
+#yaku_table li,#calc_table li {
   display: inline-block;
   /*width: 78px;*/
   height: 40px;
@@ -229,12 +251,12 @@ body {
   /*background-color: rgba(255, 255, 255, 0.9);*/
 }
 
-#yaku_table input[type="checkbox"]:checked + label{
+#yaku_table input[type="checkbox"]:checked + label,#calc_table input[type="checkbox"]:checked + label{
   color: #fff;
   background: #9ea3ff;
 }
 
-#yaku_table input[type="checkbox"]:checked outline{  
+#yaku_table input[type="checkbox"]:checked outline,#calc_table input[type="checkbox"]:checked outline{  
   color: #fff;
   background: #9ea3ff;
 }

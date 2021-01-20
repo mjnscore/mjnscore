@@ -324,6 +324,7 @@ function localstorage_reflect(){
         $("#naki_count").html($("#naki_count").text()*1 + 3)
     }
     shanten_hyoji()
+    //setTimeout(function(){swal("loading...",{button: false,})},0)
     yukohai()
     yukohai13()
     yuko2_hyoji()
