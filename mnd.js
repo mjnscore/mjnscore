@@ -85,31 +85,42 @@ glb_yamahai_mt = new Array()
 
 function game_toggle() {
     startY=endY
-    erase_all()
+	erase_all()
+	
   if($("#game_show").css("display")=="none"){
-	$("#quiz_hide").hide()
-	$("#quiz_hide2").hide()
-	$("#ls_button").hide()
-    $("#yaku_list").hide()
-    $("#tensu").hide()
-    $("#kirimaehu").hide()
-    $("#mati_text").hide()
-    $("#howtouse").hide()
-    $("#hutenimg_ko").hide()
-    $("#quiz_mode").hide()
-    $("#quiz_button").hide()
-    $("#quiz_input_mode").hide()
-    $("#sutehai_div").show()
-    $("#game_show").show()
-	$("#start_game").show()
-	$("#retry_game").show()
-    $("#auto_tumo_button").show()
-	$("#game_button").val("一人打ち終了")
-	$("#doramoji").hide()
-	$("#hai_dora").hide()
+	swal({
+		title:"Ready?",
+		text:"[ルール]"+"\n\n"+"東場東風"+"\n"+"親番のみ"+"\n"+"鳴き なし"+"\n"+"ロンあがり なし",
+		type:"info",
+		showCancelButton: true,
+		confirmButtonText: "OK",
+	},
+	function(){
+		$("#quiz_hide").hide()
+		$("#quiz_hide2").hide()
+		$("#ls_button").hide()
+		$("#yaku_list").hide()
+		$("#tensu").hide()
+		$("#kirimaehu").hide()
+		$("#mati_text").hide()
+		$("#howtouse").hide()
+		$("#hutenimg_ko").hide()
+		$("#quiz_mode").hide()
+		$("#quiz_button").hide()
+		$("#quiz_input_mode").hide()
+		$("#quiz_scoreshow").hide()
+		$("#sutehai_div").show()
+		$("#game_show").show()
+		$("#start_game").show()
+		$("#retry_game").show()
+		$("#auto_tumo_button").show()
+		$("#game_button").val("一人打ち終了")
+		$("#doramoji").hide()
+		$("#hai_dora").hide()
 
-    erase_all()
-    start_game()
+		erase_all()
+		start_game()
+	})
   }
   else{
   	swal({
@@ -132,7 +143,8 @@ function game_toggle() {
         $("#hutenimg_ko").show()
 	    $("#quiz_mode").show()
 	    $("#quiz_button").show()
-	    $("#quiz_input_mode").show()
+		$("#quiz_input_mode").show()
+		$("#quiz_scoreshow").show()
 	    $("#sutehai_div").hide()
 	    $("#game_show").hide()
 		$("#start_game").hide()
