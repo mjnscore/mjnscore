@@ -2418,7 +2418,7 @@ function yukohai_array_rank(arraylist){
 
     const arraylistlength = arraylist.length
     //arraylist 捨て牌候補種類候補枚数候補牌　配列の数だけ繰り返す
-    console.log(arraylist)
+    //console.log(arraylist)
     for(var i=0;i<arraylistlength;i=(i+1)|0){
         if(arraylist[i] == void 0){console.log(arraylist); continue}
         max = 0
@@ -2427,6 +2427,11 @@ function yukohai_array_rank(arraylist){
         //捨て牌受入牌候補配列の、受入牌候補が、配列の前後の捨て牌を除いて同じなら、rankは同じになる
         if(i>0){
             if(arraylist[i].substring(3,8) == arraylist[i-1].substring(3,8)){
+                if(arraylist[i].substring(8) == arraylist[i-1].substring(8)){
+                    rank[arraylist[i].substr(0,2)] = rank[arraylist[i-1].substr(0,2)]
+                    console.log(arraylist[i].substring(0,2) + "is skipped! same mati")
+                    continue
+                }
                 var kohoarraythis = []
                 for(var j=0;j<arraylist[i].substring(8).length/2;j=(j+1)|0){
                     kohoarraythis.push(arraylist[i].substring(8+j*2,10+j*2))
@@ -2451,7 +2456,7 @@ function yukohai_array_rank(arraylist){
                 //console.log(kohoarraythis)
                 if(kohoarraythis.join() == kohoarrayprev.join()){
                     rank[arraylist[i].substr(0,2)] = rank[arraylist[i-1].substr(0,2)]
-                    console.log(arraylist[i].substring(0,2) + "is skipped!")
+                    console.log(arraylist[i].substring(0,2) + "is skipped! same exc sute")
                     continue
                 }
 
