@@ -63,6 +63,8 @@ function yuko_hyoji(){
     }
 }
 
+
+var glb_tehaishantencount = 0
 //シャンテン数shantenを返す
 function tehai_shanten(tehai){
 
@@ -360,6 +362,7 @@ function tehai_shanten(tehai){
         }
     }
 
+    glb_tehaishantencount = glb_tehaishantencount + 1
     //if(tehai == void 0){console.log("janto go3 "+mentsuA_num,mentsu_kohoA_num,mentsuB_num,mentsu_kohoB_num,yakuhai_num,naki_num,yakuhai_koho_num,janto_num+" shanten "+shanten)}
     return shanten    
 }
@@ -1557,7 +1560,7 @@ function yuko_toggle(it,id){
 
 //var glb_yukoarraycount = 0
 
-function yukohai_array(sakiyomi,uti,mati){
+function yukohai_array(sakiyomi,shanten){
 
     
     //手牌が14牌でなければFunctionを抜ける
@@ -1871,39 +1874,33 @@ function yukohai_array(sakiyomi,uti,mati){
     if(yakuhai_hai_count[5] > 0 && yamahai[32] < 4){yuko_hai_koho[32] = yuko_hai_koho[32]+1}
     if(yakuhai_hai_count[6] > 0 && yamahai[33] < 4){yuko_hai_koho[33] = yuko_hai_koho[33]+1}
 
-    
-    //現状のシャンテン数を保持する
-    var shanten_base = 8
-    var tszy = tehai_shanten(zenhai)
-    if(document.getElementById("titoi_calc").checked){}else{
-    //if($("#titoi_calc").is(':checked')){}else{
-        var ttszy = tehai_titoi_shanten(zenhai)
+    if(shanten == void 0){
+        //現状のシャンテン数を保持する
+        var shanten_base = 8
+        var tszy = tehai_shanten(zenhai)
+        if(document.getElementById("titoi_calc").checked){}else{
+        //if($("#titoi_calc").is(':checked')){}else{
+            var ttszy = tehai_titoi_shanten(zenhai)
+        }
+        if(document.getElementById("kokusi_calc").checked){}else{
+        //if($("#kokusi_calc").is(':checked')){}else{
+            var tkszy = tehai_kokusi_shanten(zenhai)
+        }
+        if(tszy == void 0){
+            tszy = 8
+        }
+        if(ttszy == void 0){
+            ttszy = 8
+        }
+        if(tkszy == void 0){
+            tkszy = 8
+        }
+        shanten_base = Math.min(tszy, ttszy, tkszy)
     }
-    if(document.getElementById("kokusi_calc").checked){}else{
-    //if($("#kokusi_calc").is(':checked')){}else{
-        var tkszy = tehai_kokusi_shanten(zenhai)
+    else{
+        var shanten_base = shanten
     }
-    if(tszy == void 0){
-        tszy = 8
-    }
-    if(ttszy == void 0){
-        ttszy = 8
-    }
-    if(tkszy == void 0){
-        tkszy = 8
-    }
-    shanten_base = Math.min(tszy, ttszy, tkszy)
-    /*
-    if(tszy < shanten_base){
-        shanten_base = tszy
-    }
-    if(ttszy < shanten_base){
-        shanten_base = ttszy
-    }
-    if(tkszy < shanten_base){
-        shanten_base = tkszy
-    }
-    */
+
 
 
     //if(sakiyomi != void 0){shanten_base = shanten_base - 1}
@@ -2091,6 +2088,7 @@ function old_yukohai_array_rank(arraylist){
 
                 ////一手進めた手牌で捨て牌受入牌候補配列を作成する
                 ////北を捨ててまず二万を受入した時の候補牌配列
+                //ここ直してない！
                 var yuko_arraynext = yukohai_array(zenhai,0,0)
 
                 let yukoarraynextlength = yuko_arraynext.length
@@ -2119,6 +2117,7 @@ function old_yukohai_array_rank(arraylist){
                         //console.log(countnum , (4 - zanmaisu(zenhainext,yuko_arraynext[k].substr(8+l*2,2))))
 
                         //發を打って4枚の三万を受け入れした時のテンパイ枚数　4*4 = 016
+                        //ここ直してない！
                         max = max *1 + yukohai_array(zenhainext,0,0)[0].substr(5,3) * countnum
                         //console.log(String(arraylist[i].substr(0,2)),String(yuko_arraynext[k].substr(0,2)),yukohai_array(zenhainext,0,0),zenhainext,max)
                         
@@ -2180,6 +2179,7 @@ function old_yukohai_array_rank(arraylist){
 
                 //console.log(zenhai)
                 var countnum = 4 - zanmaisu(zenhai_moto,arraylist[i].substr(8+j*2,2))
+                //ここ直してない！
                 max = max + yukohai_array(zenhai,0,0)[0].substr(5,3) * countnum
                 //console.log(countnum)
                 
@@ -2385,6 +2385,7 @@ function yukohai_array_rank(arraylist){
     //[43 005 017 31 32 34 35 45] = [南を打ち、5種、17枚、待ち牌は31,32,34,35,45]
     //の集まり
     const starttime = performance.now()
+    glb_tehaishantencount = 0
 
     var yukohaiarraysaved = {}
     var rank = {}
@@ -2394,7 +2395,8 @@ function yukohai_array_rank(arraylist){
     var zenhai_moto = $.merge($.merge([],S),A)
     var zenhai = []
 
-    //現状のシャンテン数を保持する
+    //ブラウザ表示牌のシャンテン数を保持する
+    //arraylistはシャンテン数が下がる候補しかないので次のシャンテン数は必ずマイナス1
     var shanten_base = 8
     var tszy = tehai_shanten()
     if($("#titoi_calc").is(':checked')){}else{
@@ -2416,9 +2418,48 @@ function yukohai_array_rank(arraylist){
 
     const arraylistlength = arraylist.length
     //arraylist 捨て牌候補種類候補枚数候補牌　配列の数だけ繰り返す
+    //console.log(arraylist)
     for(var i=0;i<arraylistlength;i=(i+1)|0){
         if(arraylist[i] == void 0){console.log(arraylist); continue}
         max = 0
+
+        
+        //捨て牌受入牌候補配列の、受入牌候補が、配列の前後の捨て牌を除いて同じなら、rankは同じになる
+        if(i>0){
+            if(arraylist[i].substring(3,6) == arraylist[i-1].substring(3,6)){
+                var kohoarraythis = []
+                for(var j=0;j<arraylist[i].substring(8).length/2;j=(j+1)|0){
+                    kohoarraythis.push(arraylist[i].substring(8+j*2,10+j*2))
+                }
+                kohoarraythis.sort()
+
+                var kohoarrayprev = []
+                for(var j=0;j<arraylist[i-1].substring(8).length/2;j=(j+1)|0){
+                    kohoarrayprev.push(arraylist[i-1].substring(8+j*2,10+j*2))
+                }
+                kohoarrayprev.sort()
+
+                
+                //console.log(arraylist[i])
+                //console.log(kohoarraythis)
+                //console.log(arraylist[i-1])
+                //console.log(kohoarrayprev)
+                //thisの候補牌から、前の捨て牌を除いて、thisの捨て牌を追加したもの
+                kohoarraythis.splice(kohoarraythis.indexOf(String(arraylist[i-1].substr(0,2))),1,arraylist[i].substring(0,2))
+                //kohoarraythis.push(arraylist[i].substring(0,2))
+                kohoarraythis.sort()
+                //console.log(kohoarraythis)
+                if(kohoarraythis.join() == kohoarrayprev.join()){
+                    rank[arraylist[i].substr(0,2)] = rank[arraylist[i-1].substr(0,2)]
+                    console.log(arraylist[i].substring(0,2) + "is skipped!")
+                    continue
+                }
+
+            }
+        }
+        
+
+
         //聴牌なら有効枚数順で並べる
         if(shanten_base == 0){
             max = arraylist[i].substr(5,3)*1
@@ -2442,7 +2483,7 @@ function yukohai_array_rank(arraylist){
                 ////一手進めた手牌で捨て牌受入牌候補配列を作成する
                 ////北を捨ててまず二万を受入した時の候補牌配列
                 if(yukohaiarraysaved[zenhai.sort()] == void 0){
-                    var yuko_arraynext = yukohai_array(zenhai,0,0)
+                    var yuko_arraynext = yukohai_array(zenhai,shanten_base - 1)
                     yukohaiarraysaved[zenhai.sort()] = yuko_arraynext
                 }
                 else{
@@ -2466,7 +2507,8 @@ function yukohai_array_rank(arraylist){
 
                         //發を打って4枚の三万を受け入れした時のテンパイ枚数　4*4 = 016
                         if(yukohaiarraysaved[zenhainext.sort()] == void 0){
-                            var temp = yukohai_array(zenhainext,0,0)
+                            //yukohai_arrayの省略可
+                            var temp = yukohai_array(zenhainext,shanten_base - 2)
                             yukohaiarraysaved[zenhainext.sort()] = temp
                             max = max *1 + temp[0].substr(5,3) * countnum
 
@@ -2513,7 +2555,7 @@ function yukohai_array_rank(arraylist){
                 zenhai.push(String(arraylist[i].substr(8+j*2,2)))
 
                 var countnum = 4 - zanmaisu(zenhai_moto,arraylist[i].substr(8+j*2,2))
-                max = max + yukohai_array(zenhai,0,0)[0].substr(5,3) * countnum
+                max = max + yukohai_array(zenhai,shanten_base - 1)[0].substr(5,3) * countnum
                 
             }
             
@@ -2529,7 +2571,8 @@ function yukohai_array_rank(arraylist){
     console.log(endtime - starttime)
 
     console.log(rank)
-    console.log(yukohaiarraysaved)
+    //console.log(yukohaiarraysaved)
+    console.log("number of shanten counted" + glb_tehaishantencount)
     return rank
 
 }
