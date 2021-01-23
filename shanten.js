@@ -2418,7 +2418,7 @@ function yukohai_array_rank(arraylist){
 
     const arraylistlength = arraylist.length
     //arraylist 捨て牌候補種類候補枚数候補牌　配列の数だけ繰り返す
-    //console.log(arraylist)
+    console.log(arraylist)
     for(var i=0;i<arraylistlength;i=(i+1)|0){
         if(arraylist[i] == void 0){console.log(arraylist); continue}
         max = 0
@@ -2426,7 +2426,7 @@ function yukohai_array_rank(arraylist){
         
         //捨て牌受入牌候補配列の、受入牌候補が、配列の前後の捨て牌を除いて同じなら、rankは同じになる
         if(i>0){
-            if(arraylist[i].substring(3,6) == arraylist[i-1].substring(3,6)){
+            if(arraylist[i].substring(3,8) == arraylist[i-1].substring(3,8)){
                 var kohoarraythis = []
                 for(var j=0;j<arraylist[i].substring(8).length/2;j=(j+1)|0){
                     kohoarraythis.push(arraylist[i].substring(8+j*2,10+j*2))
