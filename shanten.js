@@ -2470,7 +2470,7 @@ function yukohai_array_rank(arraylist){
             max = arraylist[i].substr(5,3)*1
             rank[arraylist[i].substr(0,2)] = max
         }
-        else if(shanten_base ==2){
+        else if(shanten_base ==2 || shanten_base == 3){
             var rank2 = {}
             var rank2max = 0
             
@@ -2493,11 +2493,60 @@ function yukohai_array_rank(arraylist){
                 }
                 else{
                     var yuko_arraynext = yukohaiarraysaved[zenhai.sort()]
+                    console.log("first yukohai_array skipped")
                 }
 
                 let yukoarraynextlength = yuko_arraynext.length
                 //北を捨ててまず二万を受け入れした時の候補牌配列の数だけ繰り返す（例だと3回）
                 for(var k=0;k<yukoarraynextlength;k=(k+1)|0){
+
+                    //
+                    //捨て牌受入牌候補配列の、受入牌候補が、配列の前後の捨て牌を除いて同じなら、rankは同じになる
+                    if(k>0){
+                        if(yuko_arraynext[k].substring(3,8) == yuko_arraynext[k-1].substring(3,8)){
+                            if(yuko_arraynext[k].substring(8) == yuko_arraynext[k-1].substring(8)){
+                                rank2[yuko_arraynext[k].substr(0,2)] = rank2[yuko_arraynext[k-1].substr(0,2)]
+                                //console.log(yuko_arraynext[k].substring(0,2) + "is skipped! same mati in rank2")
+                                continue
+                            }
+                            var kohoarraythis = []
+                            for(var m=0;m<yuko_arraynext[k].substring(8).length/2;m=(m+1)|0){
+                                kohoarraythis.push(yuko_arraynext[k].substring(8+m*2,10+m*2))
+                            }
+                            kohoarraythis.sort()
+
+                            var kohoarrayprev = []
+                            for(var m=0;m<yuko_arraynext[k-1].substring(8).length/2;m=(m+1)|0){
+                                kohoarrayprev.push(yuko_arraynext[k-1].substring(8+m*2,10+m*2))
+                            }
+                            kohoarrayprev.sort()
+
+                            
+                            //console.log(yuko_arraynext[k])
+                            //console.log(kohoarraythis)
+                            //console.log(yuko_arraynext[k-1])
+                            //console.log(kohoarrayprev)
+                            //thisの候補牌から、前の捨て牌を除いて、thisの捨て牌を追加したもの
+                            kohoarraythis.splice(kohoarraythis.indexOf(String(yuko_arraynext[k-1].substr(0,2))),1,yuko_arraynext[k].substring(0,2))
+                            //kohoarraythis.push(yuko_arraynext[k].substring(0,2))
+                            kohoarraythis.sort()
+                            //console.log(kohoarraythis)
+                            if(kohoarraythis.join() == kohoarrayprev.join()){
+                                rank2[yuko_arraynext[k].substr(0,2)] = rank2[yuko_arraynext[k-1].substr(0,2)]
+                                //console.log(yuko_arraynext[k].substring(0,2) + "is skipped! same exc sute in rank2")
+                                continue
+                            }
+
+                        }
+                    }
+
+
+
+
+
+
+                    //
+
                     if(yuko_arraynext[k] == void 0){continue}
                     //北を捨ててまず二万を受け入れした時の候補牌配列の受入候補種類の数だけ繰り返す
                     let yukoarraynextksubstr8length = yuko_arraynext[k].substr(8).length
@@ -2520,6 +2569,7 @@ function yukohai_array_rank(arraylist){
                         }
                         else{
                             max = max *1 + yukohaiarraysaved[zenhainext.sort()][0].substr(5,3) * countnum
+                            //console.log("second yukohai_array skipped")
                         }
                         //max = max *1 + yukohai_array(zenhainext,0,0)[0].substr(5,3) * countnum
                         
