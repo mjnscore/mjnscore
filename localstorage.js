@@ -325,11 +325,15 @@ function localstorage_reflect(){
     }
     shanten_hyoji()
     //setTimeout(function(){swal("loading...",{button: false,})},0)
-    yukohai()
+    //setTimeout(function(){loading()},1)
+    loading()
+    setTimeout(function(){yukohai();end_loading()},0)
+    //yukohai()
     yukohai13()
     yuko2_hyoji()
     agari_rekkyo()
     tensu()
+    $("#ls_div").hide()
 }
 
 function localstorage_toggle(){

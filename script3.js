@@ -156,7 +156,7 @@ $(function(){
   $('.hai_all td').on({'touchend mouseup': function(e) {
     $('.hai_all img').css("border","1px solid #eee")
     if(Math.abs(startY-endY)<10 && startObj == endObj){
-                      
+      
       //$(this).css({"background":""})
       $('.hai_all img').css("border","1px solid #eee")
       if($(this).css("transform")=="none"){
@@ -979,13 +979,14 @@ function select_hai(name,n){
     }
 
     
-    //setTimeout(function(){swal("loading...",{button: false,})},0)
-    
-    //document.body.style.backgroundColor = "black"
-    //setTimeout(function(){$("#shanten_text").text("読み込み中")},0)
     shanten_hyoji()
-    //setTimeout(function(){yukohai()},0)
-    yukohai()
+    if(S.length + A.length + NAKI.length*3 + ANKAN.length*3 == 14){
+      loading()
+      setTimeout(function(){yukohai();end_loading()},0)
+    }
+    else{
+      yukohai()
+    }
     yukohai13()
     yuko2_hyoji()
 
@@ -1143,6 +1144,8 @@ function select_erase(){
     }
     
     shanten_hyoji()
+    //loading()
+    //setTimeout(function(){yukohai();end_loading()},0)
     yukohai()
     yukohai13()
     yuko2_hyoji()
@@ -1517,7 +1520,9 @@ $(function(){
                             } else {
                                 $("input:checkbox",this).prop('checked', true);
                             }
-                            yukohai()
+                            loading()
+                            setTimeout(function(){yukohai();end_loading()},0)
+                            //yukohai()
                             yukohai13()
                        }
                        }})

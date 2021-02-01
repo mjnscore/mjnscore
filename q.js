@@ -52,6 +52,7 @@ function quiz_toggle() {
     else{
       $("#quiz_do").attr("disabled",false)
       $("#quiz_do").val("出題")
+      $("#quiz_img").html("")
       $("#quiz_ans").attr("disabled",false)
       //$("#quiz_ans2").attr("disabled",false)
       quiz()
@@ -103,8 +104,9 @@ function quiz_toggle() {
 function confirm_quizg_start(){
   $('body').animate({ scrollTop: 0 }, 0)
     swal({
+      type:"info",
          title:"Ready?",
-        text:"[全30問/1分間]"+"\n"+"(正答数×10,000)"+"\n"+"(残時間×1,000)"+"\n"+"(アガリ点×0.3)"+"\n"+"\n"+"[入力方法]"+"\n"+"ロン：3900→39"+"\n"+"親ツモ：4000オール→4"+"\n"+"子ツモ：2000,3900→239"
+        text:"[全30問/1分間]"+"\n"+"(正答数×10,000)"+"\n"+"(残時間×1,000)"+"\n"+"(アガリ点×0.3)"+"\n"+"\n"+"[入力方法]"+"\n"+"ロン：3900→39"+"\n"+"親ツモ：4000オール→4"+"\n"+"子ツモ：2000,3900→239",
          },
          function(){
             $("#quiz_do").attr("disabled",false)

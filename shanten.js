@@ -68,7 +68,6 @@ var glb_tehaishantencount = 0
 //シャンテン数shantenを返す
 function tehai_shanten(tehai){
 
-    
     //外から14牌の手配配列tehaiを持ってきてたらそれに上書きする
     if(tehai != void 0){
         var zenhai = tehai
@@ -81,6 +80,17 @@ function tehai_shanten(tehai){
         //zenhai=$.merge(zenhai,A)
     }
     
+    //const yukostarttime = performance.now()
+    const yukostarttime = performance.now()
+    
+    if(glb_shantensaved[zenhai.sort()+NAKI+ANKAN] != void 0){
+        const yukoendtime = performance.now()
+        glb_shantentime = glb_shantentime + (yukoendtime - yukostarttime)
+        glb_tehaishantencount = glb_tehaishantencount + 1
+        return glb_shantensaved[zenhai.sort()+NAKI+ANKAN]
+    }
+
+
     var man_hai_count=[0,0,0,0,0,0,0,0,0]
     var pin_hai_count=[0,0,0,0,0,0,0,0,0]
     var sou_hai_count=[0,0,0,0,0,0,0,0,0]
@@ -123,6 +133,8 @@ function tehai_shanten(tehai){
       else if(zenhai[i]==55){yakuhai_hai_count[6]=yakuhai_hai_count[6]+1;if(yakuhai_hai_count[6] > 4){return}}
     }
 
+    
+
     /*
     if(Math.max.apply(null,man_hai_count)>4 || Math.max.apply(null,pin_hai_count)>4 || Math.max.apply(null,sou_hai_count)>4 || Math.max.apply(null,yakuhai_hai_count)>4){
         return
@@ -150,87 +162,97 @@ function tehai_shanten(tehai){
         }
     }
     */
-
-    //雀頭を取らないときの萬子の牌数
-    var man_num = 0
-    for(var i=0;i<9;i=(i+1)|0){
-        //[i]が孤立牌の場合はスキップする
-        if(man_hai_count[i] == 1
-             && (man_hai_count[i-2] == 0 || man_hai_count[i-2] == void 0)
-             && (man_hai_count[i-1] == 0 || man_hai_count[i-1] == void 0)
-             && (man_hai_count[i+1] == 0 || man_hai_count[i+1] == void 0)
-             && (man_hai_count[i+2] == 0 || man_hai_count[i+2] == void 0)){
-        }else{
-            man_num = man_num + man_hai_count[i]*(10**(9-i))/10  
-        }
-    }
-    //man_hai_count[i]が二個以上あれば、雀頭を取り、配列に追加する
-    var man_janto_check ="000000000"
-    man_janto_check = ("000" + String(man_num)).slice(-9)
-    //雀頭を取るときの萬子の牌数連想配列
+    
     var man_janto_array = []
-    for(var i=0;i<9;i=(i+1)|0){
-        if(man_janto_check.substr(i,1)*1>1){
-            if(i == 0){
-                man_janto_array.push(String(man_janto_check.substr(0,1)*1-2) + man_janto_check.substr(1,8))
+    var man_str = "0000"
+    if(man_hai_count.join() != "0,0,0,0,0,0,0,0,0"){
+        //雀頭を取らないときの萬子の牌数
+        var man_num = 0
+        for(var i=0;i<9;i=(i+1)|0){
+            //[i]が孤立牌の場合はスキップする
+            if(man_hai_count[i] == 1
+                && (man_hai_count[i-2] == 0 || man_hai_count[i-2] == void 0)
+                && (man_hai_count[i-1] == 0 || man_hai_count[i-1] == void 0)
+                && (man_hai_count[i+1] == 0 || man_hai_count[i+1] == void 0)
+                && (man_hai_count[i+2] == 0 || man_hai_count[i+2] == void 0)){
             }else{
-                man_janto_array.push(man_janto_check.substr(0,i) + String(man_janto_check.substr(i,1)*1-2) + man_janto_check.substr(i+1,8-i))
-            }            
+                man_num = man_num + man_hai_count[i]*(10**(9-i))/10  
+            }
         }
+        //man_hai_count[i]が二個以上あれば、雀頭を取り、配列に追加する
+        var man_janto_check ="000000000"
+        man_janto_check = ("000" + String(man_num)).slice(-9)
+        //雀頭を取るときの萬子の牌数連想配列
+       
+        for(var i=0;i<9;i=(i+1)|0){
+            if(man_janto_check.substr(i,1)*1>1){
+                if(i == 0){
+                    man_janto_array.push(String(man_janto_check.substr(0,1)*1-2) + man_janto_check.substr(1,8))
+                }else{
+                    man_janto_array.push(man_janto_check.substr(0,i) + String(man_janto_check.substr(i,1)*1-2) + man_janto_check.substr(i+1,8-i))
+                }            
+            }
+        }
+        man_str = ("000" + ShantenTable[man_num]).slice(-4)
+    }
+
+    var pin_janto_array = []
+    var pin_str = "0000"
+    if(pin_hai_count.join() != "0,0,0,0,0,0,0,0,0"){
+        var pin_num = 0
+        for(var i=0;i<9;i=(i+1)|0){
+            if(pin_hai_count[i] == 1 && (pin_hai_count[i-2] == 0 || pin_hai_count[i-2] == void 0) && (pin_hai_count[i-1] == 0 || pin_hai_count[i-1] == void 0) && (pin_hai_count[i+1] == 0 || pin_hai_count[i+1] == void 0) && (pin_hai_count[i+2] == 0 || pin_hai_count[i+2] == void 0)){
+            }else{
+                pin_num = pin_num + pin_hai_count[i]*(10**(9-i))/10  
+            }
+        }
+        //man_hai_count[i]が二個以上あれば、雀頭を取り、配列に追加する
+        var pin_janto_check ="000000000"
+        pin_janto_check = ("000" + String(pin_num)).slice(-9)
+        //雀頭を取るときの萬子の牌数連想配列
+        
+        for(var i=0;i<9;i=(i+1)|0){
+            if(pin_janto_check.substr(i,1)*1>1){
+                if(i == 0){
+                    pin_janto_array.push(String(pin_janto_check.substr(0,1)*1-2) + pin_janto_check.substr(1,8))
+                }else{
+                    pin_janto_array.push(pin_janto_check.substr(0,i) + String(pin_janto_check.substr(i,1)*1-2) + pin_janto_check.substr(i+1,8-i))
+                }
+            }
+        }            
+        pin_str = ("000" + ShantenTable[pin_num]).slice(-4)
     }
     
-    var man_str = "0000"
-    man_str = ("000" + ShantenTable[man_num]).slice(-4)
 
-    var pin_num = 0
-    for(var i=0;i<9;i=(i+1)|0){
-        if(pin_hai_count[i] == 1 && (pin_hai_count[i-2] == 0 || pin_hai_count[i-2] == void 0) && (pin_hai_count[i-1] == 0 || pin_hai_count[i-1] == void 0) && (pin_hai_count[i+1] == 0 || pin_hai_count[i+1] == void 0) && (pin_hai_count[i+2] == 0 || pin_hai_count[i+2] == void 0)){
-        }else{
-            pin_num = pin_num + pin_hai_count[i]*(10**(9-i))/10  
-        }
-    }
-    //man_hai_count[i]が二個以上あれば、雀頭を取り、配列に追加する
-    var pin_janto_check ="000000000"
-    pin_janto_check = ("000" + String(pin_num)).slice(-9)
-    //雀頭を取るときの萬子の牌数連想配列
-    var pin_janto_array = []
-    for(var i=0;i<9;i=(i+1)|0){
-        if(pin_janto_check.substr(i,1)*1>1){
-            if(i == 0){
-                pin_janto_array.push(String(pin_janto_check.substr(0,1)*1-2) + pin_janto_check.substr(1,8))
-            }else{
-                pin_janto_array.push(pin_janto_check.substr(0,i) + String(pin_janto_check.substr(i,1)*1-2) + pin_janto_check.substr(i+1,8-i))
-            }
-        }
-    }    
 
-    var pin_str = "0000"
-    pin_str = ("000" + ShantenTable[pin_num]).slice(-4)
-
-    var sou_num = 0
-    for(var i=0;i<9;i=(i+1)|0){
-        if(sou_hai_count[i] == 1 && (sou_hai_count[i-2] == 0 || sou_hai_count[i-2] == void 0) && (sou_hai_count[i-1] == 0 || sou_hai_count[i-1] == void 0) && (sou_hai_count[i+1] == 0 || sou_hai_count[i+1] == void 0) && (sou_hai_count[i+2] == 0 || sou_hai_count[i+2] == void 0)){
-        }else{
-            sou_num = sou_num + sou_hai_count[i]*(10**(9-i))/10  
-        }
-    }
-
-    //man_hai_count[i]が二個以上あれば、雀頭を取り、配列に追加する
-    var sou_janto_check ="000000000"
-    sou_janto_check = ("000" + String(sou_num)).slice(-9)
-    //雀頭を取るときの萬子の牌数連想配列
     var sou_janto_array = []
-    for(var i=0;i<9;i=(i+1)|0){
-        if(sou_janto_check.substr(i,1)*1>1){
-            if(i == 0){
-                sou_janto_array.push(String(sou_janto_check.substr(0,1)*1-2) + sou_janto_check.substr(1,8))
+    var sou_str = "0000"
+    if(sou_hai_count.join() != "0,0,0,0,0,0,0,0,0"){
+        var sou_num = 0
+        for(var i=0;i<9;i=(i+1)|0){
+            if(sou_hai_count[i] == 1 && (sou_hai_count[i-2] == 0 || sou_hai_count[i-2] == void 0) && (sou_hai_count[i-1] == 0 || sou_hai_count[i-1] == void 0) && (sou_hai_count[i+1] == 0 || sou_hai_count[i+1] == void 0) && (sou_hai_count[i+2] == 0 || sou_hai_count[i+2] == void 0)){
             }else{
-                sou_janto_array.push(sou_janto_check.substr(0,i) + String(sou_janto_check.substr(i,1)*1-2) + sou_janto_check.substr(i+1,8-i))
+                sou_num = sou_num + sou_hai_count[i]*(10**(9-i))/10  
             }
         }
+        //man_hai_count[i]が二個以上あれば、雀頭を取り、配列に追加する
+        var sou_janto_check ="000000000"
+        sou_janto_check = ("000" + String(sou_num)).slice(-9)
+        //雀頭を取るときの萬子の牌数連想配列
+        
+        for(var i=0;i<9;i=(i+1)|0){
+            if(sou_janto_check.substr(i,1)*1>1){
+                if(i == 0){
+                    sou_janto_array.push(String(sou_janto_check.substr(0,1)*1-2) + sou_janto_check.substr(1,8))
+                }else{
+                    sou_janto_array.push(sou_janto_check.substr(0,i) + String(sou_janto_check.substr(i,1)*1-2) + sou_janto_check.substr(i+1,8-i))
+                }
+            }
+        }
+        sou_str = ("000" + ShantenTable[sou_num]).slice(-4)
     }
-    var sou_str = "0000"
-    sou_str = ("000" + ShantenTable[sou_num]).slice(-4)
+
+
 
     var yakuhai_num = 0
     var yakuhai_koho_num = 0
@@ -264,15 +286,32 @@ function tehai_shanten(tehai){
         mentsu_kohoB_num = mentsu_kohoB_num - (mentsuB_num + mentsu_kohoB_num + yakuhai_num + yakuhai_koho_num + naki_num - 4)
         if(yakuhai_janto_num == 1){jantoB_num = 1}
     }
+
+    
+
     shanten = Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num) - jantoA_num, 8 - (mentsuB_num)*2 - (mentsu_kohoB_num) - jantoB_num) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num
+    /*
+    if(8 - (mentsuA_num)*2 - (mentsu_kohoA_num) - jantoA_num > 8 - (mentsuB_num)*2 - (mentsu_kohoB_num) - jantoB_num){
+            shanten = 8 - (mentsuB_num)*2 - (mentsu_kohoB_num) - jantoB_num}
+        else{
+            shanten = 8 - (mentsuA_num)*2 - (mentsu_kohoA_num) - jantoA_num
+        }
+    shanten = shanten - (yakuhai_num + naki_num)*2 - yakuhai_koho_num
+    */
+
     //if(tehai == void 0){console.log("janto mae "+mentsuA_num,mentsu_kohoA_num,mentsuB_num,mentsu_kohoB_num,yakuhai_num,naki_num,yakuhai_koho_num,janto_num+" shanten "+shanten)}
     
     //雀頭を考慮した
-    for(var i=0;i<man_janto_array.length;i=(i+1)|0){
+    
+    var manjantoarraylength = man_janto_array.length
+    var jantoA_num = 0
+    var jantoB_num = 0
+    var man_janto_num = 0
+    for(var i=0;i<manjantoarraylength;i=(i+1)|0){
         janto_num = 0
-        var jantoA_num = 0
-        var jantoB_num = 0
-        var man_janto_num = 0
+        jantoA_num = 0
+        jantoB_num = 0
+        man_janto_num = 0
         for(var j=0;j<9;j=(j+1)|0){
             //[i]が孤立牌の場合はスキップする
             if(man_janto_array[i].charAt(j)*1 == 1 && (man_janto_array[i].charAt(j-2)*1 == 0 || man_janto_array[i].charAt(j-2)*1 == void 0) && (man_janto_array[i].charAt(j-1)*1 == 0 || man_janto_array[i].charAt(j-1)*1 == void 0) && (man_janto_array[i].charAt(j+1)*1 == 0 || man_janto_array[i].charAt(j+1)*1 == void 0) && (man_janto_array[i].charAt(j+2)*1 == 0 || man_janto_array[i].charAt(j+2)*1 == void 0)){
@@ -299,7 +338,7 @@ function tehai_shanten(tehai){
         }
     }
     //if(tehai == void 0){console.log("janto go1 "+mentsuA_num,mentsu_kohoA_num,mentsuB_num,mentsu_kohoB_num,yakuhai_num,naki_num,yakuhai_koho_num,janto_num+" shanten "+shanten)}
-
+    
     for(var i=0;i<pin_janto_array.length;i=(i+1)|0){
         janto_num = 0
         var jantoA_num = 0
@@ -330,6 +369,8 @@ function tehai_shanten(tehai){
             shanten = Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num) - jantoA_num, 8 - (mentsuB_num)*2 - (mentsu_kohoB_num) - jantoB_num) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - 1
         }
     }
+
+    
     //if(tehai == void 0){console.log("janto go2 "+mentsuA_num,mentsu_kohoA_num,mentsuB_num,mentsu_kohoB_num,yakuhai_num,naki_num,yakuhai_koho_num,janto_num+" shanten "+shanten)}
     for(var i=0;i<sou_janto_array.length;i=(i+1)|0){
         janto_num = 0
@@ -361,8 +402,18 @@ function tehai_shanten(tehai){
             shanten = Math.min(8 - (mentsuA_num)*2 - (mentsu_kohoA_num) - jantoA_num, 8 - (mentsuB_num)*2 - (mentsu_kohoB_num) - jantoB_num) - (yakuhai_num + naki_num)*2 - yakuhai_koho_num - 1
         }
     }
+    const yukoendtime = performance.now()
+    glb_shantentime = glb_shantentime + (yukoendtime - yukostarttime)
 
     glb_tehaishantencount = glb_tehaishantencount + 1
+
+    if(glb_shantensavedon == 1){
+        glb_shantensaved[zenhai.sort()+NAKI+ANKAN] = shanten
+    }
+    //const yukoendtime = performance.now()
+    //glb_shantentime = glb_shantentime + (yukoendtime - yukostarttime)
+    
+
     //if(tehai == void 0){console.log("janto go3 "+mentsuA_num,mentsu_kohoA_num,mentsuB_num,mentsu_kohoB_num,yakuhai_num,naki_num,yakuhai_koho_num,janto_num+" shanten "+shanten)}
     return shanten    
 }
@@ -373,6 +424,19 @@ var glb_uti_record = ""
 ////var glb_sakiyomi_kind = new Array()
 var glb_yuko_text2 = ""
 var glb_yuko_text2_array = []
+
+
+function loading(){
+
+$("body").append("<div id='loading'>" + "計算中..." + "</div>");
+    
+}
+
+function end_loading(){
+
+$("#loading").remove()
+    
+}
 
 
 function yukohai(sakiyomi,uti,mati){
@@ -574,6 +638,25 @@ function yukohai(sakiyomi,uti,mati){
     }
     */
 
+    //有効牌候補を羅列する
+    if(document.getElementById("kokusi_calc").checked){
+        var yuko_hai_koho = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    }else{
+        var yuko_hai_koho = [1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]
+    }
+    if(document.getElementById("titoi_calc").checked){
+    }else{
+        var titoi_kind = 0
+        for(var i=0;i<yamahai.length;i=(i+1)|0){
+            if(yamahai[i]>0){titoi_kind = titoi_kind + 1}
+        }
+        if(titoi_kind < 7){
+            for(var i=0;i<yamahai.length;i=(i+1)|0){
+                if(yamahai[i]==0){yuko_hai_koho[i] = yuko_hai_koho[i] + 1}
+            }
+        }
+    }
+
     //一人打ちモードなら、捨て牌を山牌から除く
     if(document.getElementById("game_show").style.display != "none"){
         for(var i=0;i<arrayHaiSute.length;i=(i+1)|0){
@@ -581,14 +664,347 @@ function yukohai(sakiyomi,uti,mati){
         }
     }
 
-    //有効牌候補を羅列する
-    if(document.getElementById("kokusi_calc").checked){
-        var yuko_hai_koho = new Array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
-    }else{
-        var yuko_hai_koho = new Array(1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1)
+    /*
+    //元のShantenTable用の牌数値表示
+    //man
+    var mannum_base = (
+        String(man_hai_count[8])
+        +String(man_hai_count[7])
+        +String(man_hai_count[6])
+        +String(man_hai_count[5])
+        +String(man_hai_count[4])
+        +String(man_hai_count[3])
+        +String(man_hai_count[2])
+        +String(man_hai_count[1])
+        +String(man_hai_count[0])
+    )*1
+    //元のShantenTableのValue
+    var man_num = 0
+    for(var i=0;i<9;i=(i+1)|0){
+        //[i]が孤立牌の場合はスキップする
+        if(man_hai_count[i] == 1
+                && (man_hai_count[i-2] == 0 || man_hai_count[i-2] == void 0)
+                && (man_hai_count[i-1] == 0 || man_hai_count[i-1] == void 0)
+                && (man_hai_count[i+1] == 0 || man_hai_count[i+1] == void 0)
+                && (man_hai_count[i+2] == 0 || man_hai_count[i+2] == void 0)){
+        }else{
+            man_num = man_num + man_hai_count[i]*(10**(9-i))/10  
+        }
+    }
+    var mnsb = String(("000" + ShantenTable[man_num]).slice(-4))
+
+    //置き換え後
+    var mannum = 0
+    var mannumstr = ""
+    var mns = ""
+
+    for(var i=0;i<9;i++){
+        if(man_hai_count[i]>0){
+            if(man_hai_count[i-2] != void 0 && yamahai[i-2]<4){
+                mannum = mannum_base + 1*10**(i-2)
+                mannumstr = String(("000000000" + mannum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(mannumstr[j] == 1
+                            && (mannumstr[j-2] == 0 || mannumstr[j-2] == void 0)
+                            && (mannumstr[j-1] == 0 || mannumstr[j-1] == void 0)
+                            && (mannumstr[j+1] == 0 || mannumstr[j+1] == void 0)
+                            && (mannumstr[j+2] == 0 || mannumstr[j+2] == void 0)){
+                                mannumstr = mannumstr.substr(0,j)+"0"+mannumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[mannumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i-2] = yuko_hai_koho[i-2]+1
+                }
+            }
+            if(man_hai_count[i-1] != void 0 && yamahai[i-1]<4){
+                mannum = mannum_base + 1*10**(i-1)
+                mannumstr = String(("000000000" + mannum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(mannumstr[j] == 1
+                            && (mannumstr[j-2] == 0 || mannumstr[j-2] == void 0)
+                            && (mannumstr[j-1] == 0 || mannumstr[j-1] == void 0)
+                            && (mannumstr[j+1] == 0 || mannumstr[j+1] == void 0)
+                            && (mannumstr[j+2] == 0 || mannumstr[j+2] == void 0)){
+                                mannumstr = mannumstr.substr(0,j)+"0"+mannumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[mannumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i-1] = yuko_hai_koho[i-1]+1
+                }
+            }
+            if(man_hai_count[i] != void 0 && yamahai[i]<4){
+                yuko_hai_koho[i] = yuko_hai_koho[i]+1
+            }
+            if(man_hai_count[i+1] != void 0 && yamahai[i+1]<4){
+                mannum = mannum_base + 1*10**(i+1)
+                mannumstr = String(("000000000" + mannum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(mannumstr[j] == 1
+                            && (mannumstr[j-2] == 0 || mannumstr[j-2] == void 0)
+                            && (mannumstr[j-1] == 0 || mannumstr[j-1] == void 0)
+                            && (mannumstr[j+1] == 0 || mannumstr[j+1] == void 0)
+                            && (mannumstr[j+2] == 0 || mannumstr[j+2] == void 0)){
+                                mannumstr = mannumstr.substr(0,j)+"0"+mannumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[mannumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i+1] = yuko_hai_koho[i+1]+1
+                }
+            }
+            if(man_hai_count[i+2] != void 0 && yamahai[i+2]<4){
+                mannum = mannum_base + 1*10**(i+2)
+                mannumstr = String(("000000000" + mannum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(mannumstr[j] == 1
+                            && (mannumstr[j-2] == 0 || mannumstr[j-2] == void 0)
+                            && (mannumstr[j-1] == 0 || mannumstr[j-1] == void 0)
+                            && (mannumstr[j+1] == 0 || mannumstr[j+1] == void 0)
+                            && (mannumstr[j+2] == 0 || mannumstr[j+2] == void 0)){
+                                mannumstr = mannumstr.substr(0,j)+"0"+mannumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[mannumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i+2] = yuko_hai_koho[i+2]+1
+                }
+            }
+        }
     }
 
+    //pin
+    var pinnum_base = (
+        String(pin_hai_count[8])
+        +String(pin_hai_count[7])
+        +String(pin_hai_count[6])
+        +String(pin_hai_count[5])
+        +String(pin_hai_count[4])
+        +String(pin_hai_count[3])
+        +String(pin_hai_count[2])
+        +String(pin_hai_count[1])
+        +String(pin_hai_count[0])
+    )*1
+    //元のShantenTableのValue
+    var pin_num = 0
+    for(var i=0;i<9;i=(i+1)|0){
+        //[i]が孤立牌の場合はスキップする
+        if(pin_hai_count[i] == 1
+                && (pin_hai_count[i-2] == 0 || pin_hai_count[i-2] == void 0)
+                && (pin_hai_count[i-1] == 0 || pin_hai_count[i-1] == void 0)
+                && (pin_hai_count[i+1] == 0 || pin_hai_count[i+1] == void 0)
+                && (pin_hai_count[i+2] == 0 || pin_hai_count[i+2] == void 0)){
+        }else{
+            pin_num = pin_num + pin_hai_count[i]*(10**(9-i))/10  
+        }
+    }
+    var mnsb = String(("000" + ShantenTable[pin_num]).slice(-4))
+
+    //置き換え後
+    var pinnum = 0
+    var pinnumstr = ""
+    var mns = ""
+
+    for(var i=0;i<9;i++){
+        if(pin_hai_count[i]>0){
+            if(pin_hai_count[i-2] != void 0 && yamahai[i-2+9]<4){
+                pinnum = pinnum_base + 1*10**(i-2)
+                pinnumstr = String(("000000000" + pinnum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(pinnumstr[j] == 1
+                            && (pinnumstr[j-2] == 0 || pinnumstr[j-2] == void 0)
+                            && (pinnumstr[j-1] == 0 || pinnumstr[j-1] == void 0)
+                            && (pinnumstr[j+1] == 0 || pinnumstr[j+1] == void 0)
+                            && (pinnumstr[j+2] == 0 || pinnumstr[j+2] == void 0)){
+                                pinnumstr = pinnumstr.substr(0,j)+"0"+pinnumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[pinnumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i-2+9] = yuko_hai_koho[i-2+9]+1
+                }
+            }
+            if(pin_hai_count[i-1] != void 0 && yamahai[i-1+9]<4){
+                pinnum = pinnum_base + 1*10**(i-1)
+                pinnumstr = String(("000000000" + pinnum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(pinnumstr[j] == 1
+                            && (pinnumstr[j-2] == 0 || pinnumstr[j-2] == void 0)
+                            && (pinnumstr[j-1] == 0 || pinnumstr[j-1] == void 0)
+                            && (pinnumstr[j+1] == 0 || pinnumstr[j+1] == void 0)
+                            && (pinnumstr[j+2] == 0 || pinnumstr[j+2] == void 0)){
+                                pinnumstr = pinnumstr.substr(0,j)+"0"+pinnumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[pinnumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i-1+9] = yuko_hai_koho[i-1+9]+1
+                }
+            }
+            if(pin_hai_count[i] != void 0 && yamahai[i+9]<4){  
+                yuko_hai_koho[i+9] = yuko_hai_koho[i+9]+1
+            }
+            if(pin_hai_count[i+1] != void 0 && yamahai[i+1+9]<4){
+                pinnum = pinnum_base + 1*10**(i+1)
+                pinnumstr = String(("000000000" + pinnum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(pinnumstr[j] == 1
+                            && (pinnumstr[j-2] == 0 || pinnumstr[j-2] == void 0)
+                            && (pinnumstr[j-1] == 0 || pinnumstr[j-1] == void 0)
+                            && (pinnumstr[j+1] == 0 || pinnumstr[j+1] == void 0)
+                            && (pinnumstr[j+2] == 0 || pinnumstr[j+2] == void 0)){
+                                pinnumstr = pinnumstr.substr(0,j)+"0"+pinnumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[pinnumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i+1+9] = yuko_hai_koho[i+1+9]+1
+                }
+            }
+            if(pin_hai_count[i+2] != void 0 && yamahai[i+2+9]<4){
+                pinnum = pinnum_base + 1*10**(i+2)
+                pinnumstr = String(("000000000" + pinnum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(pinnumstr[j] == 1
+                            && (pinnumstr[j-2] == 0 || pinnumstr[j-2] == void 0)
+                            && (pinnumstr[j-1] == 0 || pinnumstr[j-1] == void 0)
+                            && (pinnumstr[j+1] == 0 || pinnumstr[j+1] == void 0)
+                            && (pinnumstr[j+2] == 0 || pinnumstr[j+2] == void 0)){
+                                pinnumstr = pinnumstr.substr(0,j)+"0"+pinnumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[pinnumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i+2+9] = yuko_hai_koho[i+2+9]+1
+                }
+            }
+        }
+    }
+
+    //sou
+    var sounum_base = (
+        String(sou_hai_count[8])
+        +String(sou_hai_count[7])
+        +String(sou_hai_count[6])
+        +String(sou_hai_count[5])
+        +String(sou_hai_count[4])
+        +String(sou_hai_count[3])
+        +String(sou_hai_count[2])
+        +String(sou_hai_count[1])
+        +String(sou_hai_count[0])
+    )*1
+    //元のShantenTableのValue
+    var sou_num = 0
+    for(var i=0;i<9;i=(i+1)|0){
+        //[i]が孤立牌の場合はスキップする
+        if(sou_hai_count[i] == 1
+                && (sou_hai_count[i-2] == 0 || sou_hai_count[i-2] == void 0)
+                && (sou_hai_count[i-1] == 0 || sou_hai_count[i-1] == void 0)
+                && (sou_hai_count[i+1] == 0 || sou_hai_count[i+1] == void 0)
+                && (sou_hai_count[i+2] == 0 || sou_hai_count[i+2] == void 0)){
+        }else{
+            sou_num = sou_num + sou_hai_count[i]*(10**(9-i))/10  
+        }
+    }
+    var mnsb = String(("000" + ShantenTable[sou_num]).slice(-4))
+
+    //置き換え後
+    var sounum = 0
+    var sounumstr = ""
+    var mns = ""
+
+    for(var i=0;i<9;i++){
+        if(sou_hai_count[i]>0){
+            if(sou_hai_count[i-2] != void 0 && yamahai[i-2+18]<4){
+                sounum = sounum_base + 1*10**(i-2)
+                sounumstr = String(("000000000" + sounum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(sounumstr[j] == 1
+                            && (sounumstr[j-2] == 0 || sounumstr[j-2] == void 0)
+                            && (sounumstr[j-1] == 0 || sounumstr[j-1] == void 0)
+                            && (sounumstr[j+1] == 0 || sounumstr[j+1] == void 0)
+                            && (sounumstr[j+2] == 0 || sounumstr[j+2] == void 0)){
+                                sounumstr = sounumstr.substr(0,j)+"0"+sounumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[sounumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i-2+18] = yuko_hai_koho[i-2+18]+1
+                }
+            }
+            if(sou_hai_count[i-1] != void 0 && yamahai[i-1+18]<4){
+                sounum = sounum_base + 1*10**(i-1)
+                sounumstr = String(("000000000" + sounum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(sounumstr[j] == 1
+                            && (sounumstr[j-2] == 0 || sounumstr[j-2] == void 0)
+                            && (sounumstr[j-1] == 0 || sounumstr[j-1] == void 0)
+                            && (sounumstr[j+1] == 0 || sounumstr[j+1] == void 0)
+                            && (sounumstr[j+2] == 0 || sounumstr[j+2] == void 0)){
+                                sounumstr = sounumstr.substr(0,j)+"0"+sounumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[sounumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i-1+18] = yuko_hai_koho[i-1+18]+1
+                }
+            }
+            if(sou_hai_count[i] != void 0 && yamahai[i+18]<4){
+                yuko_hai_koho[i+18] = yuko_hai_koho[i+18]+1
+            }
+            if(sou_hai_count[i+1] != void 0 && yamahai[i+1+18]<4){
+                sounum = sounum_base + 1*10**(i+1)
+                sounumstr = String(("000000000" + sounum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(sounumstr[j] == 1
+                            && (sounumstr[j-2] == 0 || sounumstr[j-2] == void 0)
+                            && (sounumstr[j-1] == 0 || sounumstr[j-1] == void 0)
+                            && (sounumstr[j+1] == 0 || sounumstr[j+1] == void 0)
+                            && (sounumstr[j+2] == 0 || sounumstr[j+2] == void 0)){
+                                sounumstr = sounumstr.substr(0,j)+"0"+sounumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[sounumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i+1+18] = yuko_hai_koho[i+1+18]+1
+                }
+            }
+            if(sou_hai_count[i+2] != void 0 && yamahai[i+2+18]<4){
+                sounum = sounum_base + 1*10**(i+2)
+                sounumstr = String(("000000000" + sounum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(sounumstr[j] == 1
+                            && (sounumstr[j-2] == 0 || sounumstr[j-2] == void 0)
+                            && (sounumstr[j-1] == 0 || sounumstr[j-1] == void 0)
+                            && (sounumstr[j+1] == 0 || sounumstr[j+1] == void 0)
+                            && (sounumstr[j+2] == 0 || sounumstr[j+2] == void 0)){
+                                sounumstr = sounumstr.substr(0,j)+"0"+sounumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[sounumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i+2+18] = yuko_hai_koho[i+2+18]+1
+                }
+            }
+        }
+    }
+    */
+
     //各牌について有効牌候補を配列に挿入する
+    
     for(var i=0;i<man_hai_count.length;i=(i+1)|0){
         if(man_hai_count[i]>0){
             if(man_hai_count[i-2] != void 0 && yamahai[i-2]<4){yuko_hai_koho[i-2] = yuko_hai_koho[i-2]+1}
@@ -616,6 +1032,7 @@ function yukohai(sakiyomi,uti,mati){
             if(sou_hai_count[i+2] != void 0 && yamahai[i+2+18]<4){yuko_hai_koho[i+2+18] = yuko_hai_koho[i+2+18]+1}
         }
     }
+    
     if(yakuhai_hai_count[0] > 0 && yamahai[27] < 4){yuko_hai_koho[27] = yuko_hai_koho[27]+1}
     if(yakuhai_hai_count[1] > 0 && yamahai[28] < 4){yuko_hai_koho[28] = yuko_hai_koho[28]+1}
     if(yakuhai_hai_count[2] > 0 && yamahai[29] < 4){yuko_hai_koho[29] = yuko_hai_koho[29]+1}
@@ -772,6 +1189,8 @@ function yukohai(sakiyomi,uti,mati){
     //現状の手牌からシャンテン数が進む打牌（key）の受け入れ候補を牌番号順に配列する array2 = rank{12: "004007004008004011", 15: "004004008004"}
     if(Math.max(tszy, ttszy, tkszy) >= 0){
         //console.log(yuko_array)
+        
+
         var array2 = yukohai_array_rank(yukohai_array())
     }
 
@@ -1020,7 +1439,7 @@ function yukohai(sakiyomi,uti,mati){
 
 
 //七対子のシャンテン数を返す
-function tehai_titoi_shanten(tehai){
+function old_tehai_titoi_shanten(tehai){
     if(NAKI.length + ANKAN.length > 0){return}
 
     if(tehai != void 0){
@@ -1070,14 +1489,14 @@ function tehai_titoi_shanten(tehai){
         else if(zenhai[i]==55){hai_count[33]=hai_count[33]+1;if(hai_count[33]>1){titoi_count[zenhai[i]]=1}}
     }
 
-    var shanten_titoi = 6 - Object.keys(titoi_count).length
-
+    var shanten_titoi = 6 - Object.keys(titoi_count).length + (7-Object.keys(titoi_count).length)
+    //console.log(titoi_count)
     return shanten_titoi
 
 }
 
 //七対子のシャンテン数を返す
-function old_tehai_titoi_shanten(tehai){
+function tehai_titoi_shanten(tehai){
     if(NAKI.length + ANKAN.length > 0){return}
 
     if(tehai != void 0){
@@ -1085,6 +1504,10 @@ function old_tehai_titoi_shanten(tehai){
     }
     else{
         var zenhai=$.merge($.merge([],S),A)
+    }
+
+    if(glb_tshantensaved[zenhai.sort()+NAKI+ANKAN] != void 0){
+        return glb_tshantensaved[zenhai.sort()+NAKI+ANKAN]
     }
 
     var zenhai_length=zenhai.length
@@ -1127,11 +1550,21 @@ function old_tehai_titoi_shanten(tehai){
     }
 
     //チートイツ
-    titoi_check=0
+    titoi_toitu=0
+    titoi_tanki = 0
     for(i=0;i<34;i=(i+1)|0){
-        if(hai_count[i]>1){titoi_check=titoi_check+1}
+        if(hai_count[i]>1){titoi_toitu=titoi_toitu+1}
+        else if(hai_count[i] == 1){titoi_tanki = titoi_tanki + 1}
     }
-    var shanten_titoi = 6 - titoi_check
+    if(titoi_toitu + titoi_tanki < 7){
+        var shanten_titoi = 6 - titoi_toitu + (7 - titoi_toitu - titoi_tanki)
+    }else{
+        var shanten_titoi = 6 - titoi_toitu
+    }
+
+    if(glb_shantensavedon == 1){
+        glb_tshantensaved[zenhai.sort()+NAKI+ANKAN] = shanten_titoi
+    }
 
     return shanten_titoi
 
@@ -1630,6 +2063,8 @@ function yukohai_array(sakiyomi,shanten){
     }
 
 
+    
+
     for(var i=0;i<NAKI.length;i=(i+1)|0){
         for(var j=0;j<NAKI[i].length/2;j=(j+1)|0){
             var k = j * 2
@@ -1756,88 +2191,371 @@ function yukohai_array(sakiyomi,shanten){
         }
     }
 
+    
+
     //有効牌候補を羅列する
     //var yuko_hai_koho = new Array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
     //国士対応
     //var yuko_hai_koho = new Array(1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1)
     if(document.getElementById("kokusi_calc").checked){
-    //if($("#kokusi_calc").is(':checked')){
         var yuko_hai_koho = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     }else{
         var yuko_hai_koho = [1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]
     }
+    if(document.getElementById("titoi_calc").checked){
+    }else{
+        var titoi_kind = 0
+        for(var i=0;i<zenhai.length;i=(i+1)|0){
+            if(zenhai[i]>0){titoi_kind = titoi_kind + 1}
+        }
+        if(titoi_kind < 7){
+            for(var i=0;i<zenhai.length;i=(i+1)|0){
+                if(zenhai[i]==0){yuko_hai_koho[i] = yuko_hai_koho[i] + 1}
+            }
+        }
+    }
 
     //各牌について有効牌候補を配列に挿入する
-    /*
-    var mannum_base = (
-        String(man_hai_count[8])
-        +String(man_hai_count[7])
-        +String(man_hai_count[6])
-        +String(man_hai_count[5])
-        +String(man_hai_count[4])
-        +String(man_hai_count[3])
-        +String(man_hai_count[2])
-        +String(man_hai_count[1])
-        +String(man_hai_count[0])
-        )*1
-    var mannum = 0
     
-    var mnsb = String(("000" + ShantenTable[mannum]).slice(-4))
-    //var mannumshanten_base1 = String(mannumshanten_base.substr(0,2))
-    //var mannumshanten_base2 = String(mannumshanten_base.substr(2,2))
-    var mns = ""
-    */
     /*
-    for(var i=0;i<man_hai_count.length;i++){
+    //元のShantenTable用の牌数値表示
+    //man
+    var mannum_base = (
+            String(man_hai_count[8])
+            +String(man_hai_count[7])
+            +String(man_hai_count[6])
+            +String(man_hai_count[5])
+            +String(man_hai_count[4])
+            +String(man_hai_count[3])
+            +String(man_hai_count[2])
+            +String(man_hai_count[1])
+            +String(man_hai_count[0])
+        )*1
+    //元のShantenTableのValue
+    var man_num = 0
+    for(var i=0;i<9;i=(i+1)|0){
+        //[i]が孤立牌の場合はスキップする
+        if(man_hai_count[i] == 1
+                && (man_hai_count[i-2] == 0 || man_hai_count[i-2] == void 0)
+                && (man_hai_count[i-1] == 0 || man_hai_count[i-1] == void 0)
+                && (man_hai_count[i+1] == 0 || man_hai_count[i+1] == void 0)
+                && (man_hai_count[i+2] == 0 || man_hai_count[i+2] == void 0)){
+        }else{
+            man_num = man_num + man_hai_count[i]*(10**(9-i))/10  
+        }
+    }
+    var mnsb = String(("000" + ShantenTable[man_num]).slice(-4))
+    
+    //置き換え後
+    var mannum = 0
+    var mannumstr = ""
+    var mns = ""
+    
+    for(var i=0;i<9;i++){
         if(man_hai_count[i]>0){
             if(man_hai_count[i-2] != void 0 && yamahai[i-2]<4){
                 mannum = mannum_base + 1*10**(i-2)
-                mns = String(("000" + ShantenTable[mannum]).slice(-4))
-                //mannumshanten1 = String(mannumshanten.substr(0,2))
-                //mannumshanten2 = String(mannumshanten.substr(2,2))
-                if(mns[0]*1-mnsb[0]*1 > 0 || mns[1]*1-mnsb[1]*1 > 0 || mns[2]*1-mnsb[2]*1 > 0 || mns[3]*1-mnsb[3]*1 > 0){    
+                mannumstr = String(("000000000" + mannum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(mannumstr[j] == 1
+                            && (mannumstr[j-2] == 0 || mannumstr[j-2] == void 0)
+                            && (mannumstr[j-1] == 0 || mannumstr[j-1] == void 0)
+                            && (mannumstr[j+1] == 0 || mannumstr[j+1] == void 0)
+                            && (mannumstr[j+2] == 0 || mannumstr[j+2] == void 0)){
+                                mannumstr = mannumstr.substr(0,j)+"0"+mannumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[mannumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
                     yuko_hai_koho[i-2] = yuko_hai_koho[i-2]+1
                 }
             }
             if(man_hai_count[i-1] != void 0 && yamahai[i-1]<4){
                 mannum = mannum_base + 1*10**(i-1)
-                mns = String(("000" + ShantenTable[mannum]).slice(-4))
-                //mannumshanten1 = String(mannumshanten.substr(0,2))
-                //mannumshanten2 = String(mannumshanten.substr(2,2))
-                if(mns[0]*1-mnsb[0]*1 > 0 || mns[1]*1-mnsb[1]*1 > 0 || mns[2]*1-mnsb[2]*1 > 0 || mns[3]*1-mnsb[3]*1 > 0){    
+                mannumstr = String(("000000000" + mannum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(mannumstr[j] == 1
+                            && (mannumstr[j-2] == 0 || mannumstr[j-2] == void 0)
+                            && (mannumstr[j-1] == 0 || mannumstr[j-1] == void 0)
+                            && (mannumstr[j+1] == 0 || mannumstr[j+1] == void 0)
+                            && (mannumstr[j+2] == 0 || mannumstr[j+2] == void 0)){
+                                mannumstr = mannumstr.substr(0,j)+"0"+mannumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[mannumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
                     yuko_hai_koho[i-1] = yuko_hai_koho[i-1]+1
                 }
             }
             if(man_hai_count[i] != void 0 && yamahai[i]<4){
-                mannum = mannum_base + 1*10**(i)
-                mns = String(("000" + ShantenTable[mannum]).slice(-4))
-                //mannumshanten1 = String(mannumshanten.substr(0,2))
-                //mannumshanten2 = String(mannumshanten.substr(2,2))
-                if(mns[0]*1-mnsb[0]*1 > 0 || mns[1]*1-mnsb[1]*1 > 0 || mns[2]*1-mnsb[2]*1 > 0 || mns[3]*1-mnsb[3]*1 > 0){    
-                    yuko_hai_koho[i] = yuko_hai_koho[i]+1
-                }
+                yuko_hai_koho[i] = yuko_hai_koho[i]+1
             }
             if(man_hai_count[i+1] != void 0 && yamahai[i+1]<4){
                 mannum = mannum_base + 1*10**(i+1)
-                mns = String(("000" + ShantenTable[mannum]).slice(-4))
-                //mannumshanten1 = String(mannumshanten.substr(0,2))
-                //mannumshanten2 = String(mannumshanten.substr(2,2))
-                if(mns[0]*1-mnsb[0]*1 > 0 || mns[1]*1-mnsb[1]*1 > 0 || mns[2]*1-mnsb[2]*1 > 0 || mns[3]*1-mnsb[3]*1 > 0){    
+                mannumstr = String(("000000000" + mannum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(mannumstr[j] == 1
+                            && (mannumstr[j-2] == 0 || mannumstr[j-2] == void 0)
+                            && (mannumstr[j-1] == 0 || mannumstr[j-1] == void 0)
+                            && (mannumstr[j+1] == 0 || mannumstr[j+1] == void 0)
+                            && (mannumstr[j+2] == 0 || mannumstr[j+2] == void 0)){
+                                mannumstr = mannumstr.substr(0,j)+"0"+mannumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[mannumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
                     yuko_hai_koho[i+1] = yuko_hai_koho[i+1]+1
                 }
             }
             if(man_hai_count[i+2] != void 0 && yamahai[i+2]<4){
-                mannum = mannum_base + 1*10**(i+1)
-                mns = String(("000" + ShantenTable[mannum]).slice(-4))
-                //mannumshanten1 = String(mannumshanten.substr(0,2))
-                //mannumshanten2 = String(mannumshanten.substr(2,2))
-                if(mns[0]*1-mnsb[0]*1 > 0 || mns[1]*1-mnsb[1]*1 > 0 || mns[2]*1-mnsb[2]*1 > 0 || mns[3]*1-mnsb[3]*1 > 0){    
+                mannum = mannum_base + 1*10**(i+2)
+                mannumstr = String(("000000000" + mannum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(mannumstr[j] == 1
+                            && (mannumstr[j-2] == 0 || mannumstr[j-2] == void 0)
+                            && (mannumstr[j-1] == 0 || mannumstr[j-1] == void 0)
+                            && (mannumstr[j+1] == 0 || mannumstr[j+1] == void 0)
+                            && (mannumstr[j+2] == 0 || mannumstr[j+2] == void 0)){
+                                mannumstr = mannumstr.substr(0,j)+"0"+mannumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[mannumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
                     yuko_hai_koho[i+2] = yuko_hai_koho[i+2]+1
                 }
             }
         }
     }
+
+    //pin
+    var pinnum_base = (
+        String(pin_hai_count[8])
+        +String(pin_hai_count[7])
+        +String(pin_hai_count[6])
+        +String(pin_hai_count[5])
+        +String(pin_hai_count[4])
+        +String(pin_hai_count[3])
+        +String(pin_hai_count[2])
+        +String(pin_hai_count[1])
+        +String(pin_hai_count[0])
+    )*1
+    //元のShantenTableのValue
+    var pin_num = 0
+    for(var i=0;i<9;i=(i+1)|0){
+        //[i]が孤立牌の場合はスキップする
+        if(pin_hai_count[i] == 1
+                && (pin_hai_count[i-2] == 0 || pin_hai_count[i-2] == void 0)
+                && (pin_hai_count[i-1] == 0 || pin_hai_count[i-1] == void 0)
+                && (pin_hai_count[i+1] == 0 || pin_hai_count[i+1] == void 0)
+                && (pin_hai_count[i+2] == 0 || pin_hai_count[i+2] == void 0)){
+        }else{
+            pin_num = pin_num + pin_hai_count[i]*(10**(9-i))/10  
+        }
+    }
+    var mnsb = String(("000" + ShantenTable[pin_num]).slice(-4))
+
+    //置き換え後
+    var pinnum = 0
+    var pinnumstr = ""
+    var mns = ""
+
+    for(var i=0;i<9;i++){
+        if(pin_hai_count[i]>0){
+            if(pin_hai_count[i-2] != void 0 && yamahai[i-2+9]<4){
+                pinnum = pinnum_base + 1*10**(i-2)
+                pinnumstr = String(("000000000" + pinnum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(pinnumstr[j] == 1
+                            && (pinnumstr[j-2] == 0 || pinnumstr[j-2] == void 0)
+                            && (pinnumstr[j-1] == 0 || pinnumstr[j-1] == void 0)
+                            && (pinnumstr[j+1] == 0 || pinnumstr[j+1] == void 0)
+                            && (pinnumstr[j+2] == 0 || pinnumstr[j+2] == void 0)){
+                                pinnumstr = pinnumstr.substr(0,j)+"0"+pinnumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[pinnumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i-2+9] = yuko_hai_koho[i-2+9]+1
+                }
+            }
+            if(pin_hai_count[i-1] != void 0 && yamahai[i-1+9]<4){
+                pinnum = pinnum_base + 1*10**(i-1)
+                pinnumstr = String(("000000000" + pinnum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(pinnumstr[j] == 1
+                            && (pinnumstr[j-2] == 0 || pinnumstr[j-2] == void 0)
+                            && (pinnumstr[j-1] == 0 || pinnumstr[j-1] == void 0)
+                            && (pinnumstr[j+1] == 0 || pinnumstr[j+1] == void 0)
+                            && (pinnumstr[j+2] == 0 || pinnumstr[j+2] == void 0)){
+                                pinnumstr = pinnumstr.substr(0,j)+"0"+pinnumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[pinnumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i-1+9] = yuko_hai_koho[i-1+9]+1
+                }
+            }
+            if(pin_hai_count[i] != void 0 && yamahai[i+9]<4){
+                yuko_hai_koho[i+9] = yuko_hai_koho[i+9]+1
+            }
+            if(pin_hai_count[i+1] != void 0 && yamahai[i+1+9]<4){
+                pinnum = pinnum_base + 1*10**(i+1)
+                pinnumstr = String(("000000000" + pinnum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(pinnumstr[j] == 1
+                            && (pinnumstr[j-2] == 0 || pinnumstr[j-2] == void 0)
+                            && (pinnumstr[j-1] == 0 || pinnumstr[j-1] == void 0)
+                            && (pinnumstr[j+1] == 0 || pinnumstr[j+1] == void 0)
+                            && (pinnumstr[j+2] == 0 || pinnumstr[j+2] == void 0)){
+                                pinnumstr = pinnumstr.substr(0,j)+"0"+pinnumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[pinnumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i+1+9] = yuko_hai_koho[i+1+9]+1
+                }
+            }
+            if(pin_hai_count[i+2] != void 0 && yamahai[i+2+9]<4){
+                pinnum = pinnum_base + 1*10**(i+2)
+                pinnumstr = String(("000000000" + pinnum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(pinnumstr[j] == 1
+                            && (pinnumstr[j-2] == 0 || pinnumstr[j-2] == void 0)
+                            && (pinnumstr[j-1] == 0 || pinnumstr[j-1] == void 0)
+                            && (pinnumstr[j+1] == 0 || pinnumstr[j+1] == void 0)
+                            && (pinnumstr[j+2] == 0 || pinnumstr[j+2] == void 0)){
+                                pinnumstr = pinnumstr.substr(0,j)+"0"+pinnumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[pinnumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i+2+9] = yuko_hai_koho[i+2+9]+1
+                }
+            }
+        }
+    }
+
+    //sou
+    var sounum_base = (
+        String(sou_hai_count[8])
+        +String(sou_hai_count[7])
+        +String(sou_hai_count[6])
+        +String(sou_hai_count[5])
+        +String(sou_hai_count[4])
+        +String(sou_hai_count[3])
+        +String(sou_hai_count[2])
+        +String(sou_hai_count[1])
+        +String(sou_hai_count[0])
+    )*1
+    //元のShantenTableのValue
+    var sou_num = 0
+    for(var i=0;i<9;i=(i+1)|0){
+        //[i]が孤立牌の場合はスキップする
+        if(sou_hai_count[i] == 1
+                && (sou_hai_count[i-2] == 0 || sou_hai_count[i-2] == void 0)
+                && (sou_hai_count[i-1] == 0 || sou_hai_count[i-1] == void 0)
+                && (sou_hai_count[i+1] == 0 || sou_hai_count[i+1] == void 0)
+                && (sou_hai_count[i+2] == 0 || sou_hai_count[i+2] == void 0)){
+        }else{
+            sou_num = sou_num + sou_hai_count[i]*(10**(9-i))/10  
+        }
+    }
+    var mnsb = String(("000" + ShantenTable[sou_num]).slice(-4))
+
+    //置き換え後
+    var sounum = 0
+    var sounumstr = ""
+    var mns = ""
+
+    for(var i=0;i<9;i++){
+        if(sou_hai_count[i]>0){
+            if(sou_hai_count[i-2] != void 0 && yamahai[i-2+18]<4){
+                sounum = sounum_base + 1*10**(i-2)
+                sounumstr = String(("000000000" + sounum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(sounumstr[j] == 1
+                            && (sounumstr[j-2] == 0 || sounumstr[j-2] == void 0)
+                            && (sounumstr[j-1] == 0 || sounumstr[j-1] == void 0)
+                            && (sounumstr[j+1] == 0 || sounumstr[j+1] == void 0)
+                            && (sounumstr[j+2] == 0 || sounumstr[j+2] == void 0)){
+                                sounumstr = sounumstr.substr(0,j)+"0"+sounumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[sounumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i-2+18] = yuko_hai_koho[i-2+18]+1
+                }
+            }
+            if(sou_hai_count[i-1] != void 0 && yamahai[i-1+18]<4){
+                sounum = sounum_base + 1*10**(i-1)
+                sounumstr = String(("000000000" + sounum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(sounumstr[j] == 1
+                            && (sounumstr[j-2] == 0 || sounumstr[j-2] == void 0)
+                            && (sounumstr[j-1] == 0 || sounumstr[j-1] == void 0)
+                            && (sounumstr[j+1] == 0 || sounumstr[j+1] == void 0)
+                            && (sounumstr[j+2] == 0 || sounumstr[j+2] == void 0)){
+                                sounumstr = sounumstr.substr(0,j)+"0"+sounumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[sounumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i-1+18] = yuko_hai_koho[i-1+18]+1
+                }
+            }
+            if(sou_hai_count[i] != void 0 && yamahai[i+18]<4){
+                yuko_hai_koho[i+18] = yuko_hai_koho[i+18]+1
+            }
+            if(sou_hai_count[i+1] != void 0 && yamahai[i+1+18]<4){
+                sounum = sounum_base + 1*10**(i+1)
+                sounumstr = String(("000000000" + sounum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(sounumstr[j] == 1
+                            && (sounumstr[j-2] == 0 || sounumstr[j-2] == void 0)
+                            && (sounumstr[j-1] == 0 || sounumstr[j-1] == void 0)
+                            && (sounumstr[j+1] == 0 || sounumstr[j+1] == void 0)
+                            && (sounumstr[j+2] == 0 || sounumstr[j+2] == void 0)){
+                                sounumstr = sounumstr.substr(0,j)+"0"+sounumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[sounumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i+1+18] = yuko_hai_koho[i+1+18]+1
+                }
+            }
+            if(sou_hai_count[i+2] != void 0 && yamahai[i+2+18]<4){
+                sounum = sounum_base + 1*10**(i+2)
+                sounumstr = String(("000000000" + sounum).slice(-9))
+                for(var j=0;j<9;j=(j+1)|0){
+                    //[i]が孤立牌の場合はスキップする
+                    if(sounumstr[j] == 1
+                            && (sounumstr[j-2] == 0 || sounumstr[j-2] == void 0)
+                            && (sounumstr[j-1] == 0 || sounumstr[j-1] == void 0)
+                            && (sounumstr[j+1] == 0 || sounumstr[j+1] == void 0)
+                            && (sounumstr[j+2] == 0 || sounumstr[j+2] == void 0)){
+                                sounumstr = sounumstr.substr(0,j)+"0"+sounumstr.substr(j+1)
+                    }
+                }
+                mns = String(("000" + ShantenTable[sounumstr*1]).slice(-4))
+                if(mns[0]*1-mnsb[0]*1 >= 0 || mns[1]*1-mnsb[1]*1 >= 0 || mns[2]*1-mnsb[2]*1 >= 0 || mns[3]*1-mnsb[3]*1 >= 0){    
+                    yuko_hai_koho[i+2+18] = yuko_hai_koho[i+2+18]+1
+                }
+            }
+        }
+    }
     */
+    
     //有効牌候補を事前にShantenTableで調べるのは成功しない　雀頭候補かどうかと6ブロックかどうかは単体では評価できないので
     for(var i=0;i<9;i=(i+1)|0){
         if(man_hai_count[i]>0){
@@ -1848,6 +2566,7 @@ function yukohai_array(sakiyomi,shanten){
             if(man_hai_count[i+2] != void 0 && yamahai[i+2]<4){yuko_hai_koho[i+2] = yuko_hai_koho[i+2]+1}
         }
     }
+    
     for(var i=0;i<9;i=(i+1)|0){
         if(pin_hai_count[i]>0){
             if(pin_hai_count[i-2] != void 0 && yamahai[i-2+9]<4){yuko_hai_koho[i-2+9] = yuko_hai_koho[i-2+9]+1}
@@ -1866,6 +2585,7 @@ function yukohai_array(sakiyomi,shanten){
             if(sou_hai_count[i+2] != void 0 && yamahai[i+2+18]<4){yuko_hai_koho[i+2+18] = yuko_hai_koho[i+2+18]+1}
         }
     }
+    
     if(yakuhai_hai_count[0] > 0 && yamahai[27] < 4){yuko_hai_koho[27] = yuko_hai_koho[27]+1}
     if(yakuhai_hai_count[1] > 0 && yamahai[28] < 4){yuko_hai_koho[28] = yuko_hai_koho[28]+1}
     if(yakuhai_hai_count[2] > 0 && yamahai[29] < 4){yuko_hai_koho[29] = yuko_hai_koho[29]+1}
@@ -1877,6 +2597,13 @@ function yukohai_array(sakiyomi,shanten){
     if(shanten == void 0){
         //現状のシャンテン数を保持する
         var shanten_base = 8
+        /*
+        if(glb_shantensaved[zenhai.sort()] != void 0){
+            var tszy = glb_shantensaved[zenhai.sort()]
+        }else{
+            var tszy = tehai_shanten(zenhai)
+        }
+        */
         var tszy = tehai_shanten(zenhai)
         if(document.getElementById("titoi_calc").checked){}else{
         //if($("#titoi_calc").is(':checked')){}else{
@@ -1932,7 +2659,13 @@ function yukohai_array(sakiyomi,shanten){
                 zenhai_yuko = zenhai.concat()
                 //一牌ずつ有効牌候補に置き換える           
                 zenhai_yuko[i] = hai_count_map[j]
-
+                /*
+                if(glb_shantensaved[zenhai_yuko.sort()] != void 0){
+                    var tszy = glb_shantensaved[zenhai_yuko.sort()]
+                }else{
+                    var tszy = tehai_shanten(zenhai_yuko)
+                }
+                */
                 var tszy = tehai_shanten(zenhai_yuko)
                 if(document.getElementById("titoi_calc").checked){}else{
                     var ttszy = tehai_titoi_shanten(zenhai_yuko)
@@ -2024,189 +2757,17 @@ function yukohai_array(sakiyomi,shanten){
 
 }
 
-//候補牌に入れ替えたときに候補牌ごとの候補牌が何枚になるか
-function old_yukohai_array_rank(arraylist){
-
-    //arraylistは
-    //[43 005 017 31 32 34 35 45] = [南を打ち、5種、17枚、待ち牌は31,32,34,35,45]
-    //の集まり
+var glb_zenhaisaved = {}
+function zanmaisu(zenhai,hai){
 
     const starttime = performance.now()
 
-    var rank = new Object()
-    var max = ""
-    //var rank3 = new Object()
-    //[43 005 017 31 32 34 35 45] = [南を打ち、5種、17枚、待ち牌は31,32,34,35,45]
-    
-    var zenhai_moto = $.merge($.merge([],S),A)
-    var zenhai = new Array()
-
-    //現状のシャンテン数を保持する
-    var shanten_base = 8
-    var tszy = tehai_shanten()
-    if($("#titoi_calc").is(':checked')){}else{
-        var ttszy = tehai_titoi_shanten()
-    }
-    if($("#kokusi_calc").is(':checked')){}else{
-        var tkszy = tehai_kokusi_shanten()
-    }
-    if(tszy == void 0){
-        tszy = 8
-    }
-    if(ttszy == void 0){
-        ttszy = 8
-    }
-    if(tkszy == void 0){
-        tkszy = 8
-    }
-    shanten_base = Math.min(tszy, ttszy, tkszy)
-
-    const arraylistlength = arraylist.length
-    //arraylist 捨て牌候補種類候補枚数候補牌　配列の数だけ繰り返す
-    for(var i=0;i<arraylistlength;i=(i+1)|0){
-        if(arraylist[i] == void 0){console.log(arraylist); continue}
-        max = 0
-        //聴牌なら有効枚数順で並べる
-        if(shanten_base == 0){
-            max = arraylist[i].substr(5,3)*1
-            rank[arraylist[i].substr(0,2)] = max
-        }
-        else if(shanten_base == 2){
-            var rank2 = new Object()
-            var rank2max = 0
-            
-            let arraylistisubstr8length = arraylist[i].substr(8).length
-            ////元手牌の捨て牌受入牌候補配列の数だけ繰り返す
-            for(var j=0;j<arraylistisubstr8length/2;j=(j+1)|0){
-
-                ////zenhaiをいじくるのでいじくる前のHTML表示手牌に戻す
-                zenhai = zenhai_moto.concat()
-                ////元手牌の入替を一手進める
-                ////北を捨ててまず二万を受け入れする
-                zenhai.splice(zenhai.indexOf(String(arraylist[i].substr(0,2))),1)
-                zenhai.push(String(arraylist[i].substr(8+j*2,2)))
-
-                ////一手進めた手牌で捨て牌受入牌候補配列を作成する
-                ////北を捨ててまず二万を受入した時の候補牌配列
-                //ここ直してない！
-                var yuko_arraynext = yukohai_array(zenhai,0,0)
-
-                let yukoarraynextlength = yuko_arraynext.length
-                //北を捨ててまず二万を受け入れした時の候補牌配列の数だけ繰り返す（例だと3回）
-                for(var k=0;k<yukoarraynextlength;k=(k+1)|0){
-                    if(yuko_arraynext[k] == void 0){continue}
-                    //北を捨ててまず二万を受け入れした時の候補牌配列の受入候補種類の数だけ繰り返す
-                    let yukoarraynextksubstr8length = yuko_arraynext[k].substr(8).length
-                    for(var l=0;l<yukoarraynextksubstr8length/2;l=(l+1)|0){
-                        ////元手牌の入替を一手進めた状態　を保存する
-                        zenhainext = zenhai.concat()
-                        ////北を捨ててまず二万を受け入れした後で発を捨てて三万を受け入れする
-                        zenhainext.splice(zenhainext.indexOf(String(yuko_arraynext[k].substr(0,2))),1)
-                        zenhainext.push(String(yuko_arraynext[k].substr(8+l*2,2)))
-                        //選択基準はyukohai_arrayの中での並び替え方次第
-                        var countnum = 4 - zanmaisu(zenhainext,yuko_arraynext[k].substr(8+l*2,2))
-
-                        /*
-                        var countnum = 4
-                        for(var m=0;m<zenhainext.length;m++){
-                            if(zenhainext[m] == yuko_arraynext[k].substr(8+l*2,2)){
-                                countnum = countnum -1
-                            }
-                        }
-                        */
-                        //console.log(countnum , (4 - zanmaisu(zenhainext,yuko_arraynext[k].substr(8+l*2,2))))
-
-                        //發を打って4枚の三万を受け入れした時のテンパイ枚数　4*4 = 016
-                        //ここ直してない！
-                        max = max *1 + yukohai_array(zenhainext,0,0)[0].substr(5,3) * countnum
-                        //console.log(String(arraylist[i].substr(0,2)),String(yuko_arraynext[k].substr(0,2)),yukohai_array(zenhainext,0,0),zenhainext,max)
-                        
-                    }
-                    ////北を捨てて二万を受け入れして發を打った時の受入候補牌それぞれの聴牌時受入れ枚数最大値が納められる
-                    ////rank2[53] = （三万の時）016とか（五万の時）016とか（六万の時）004004004
-                    ////個別に評価値を持つ必要もないので単純に合計値にしてしまう
-                    rank2[String(yuko_arraynext[k].substr(0,2))] = max
-                    max = 0
-                    //console.log(Math.max(rank2))
-                    //console.log(String(arraylist[i].substr(0,2)),rank2)
-                }
-                ////北を捨てて二万を受け入れして發、五万、四万をそれぞれ打った時の受入候補牌それぞれの聴牌時受入れ枚数最大値が納められる
-                ////rank2[53] = 004002004004004, rank2[15] = , rank2[14] =,
-                ////北を打ってまず二万を受け入れした時の評価値最大
-                rank2max = Math.max.apply(null, Object.values(rank2));
-                //console.log(rank2max)
-
-                //rank[String(arraylist[i].substr(8+j*2,2))] = rank2max
-                var countnum = 4 - zanmaisu(zenhai_moto,arraylist[i].substr(8+j*2,2))
-
-                /*
-                var countnum = 4
-                for(var m=0;m<zenhai_moto.length;m++){
-                    if(zenhai_moto[m] == arraylist[i].substr(8+j*2,2)){
-                        countnum = countnum -1
-                    }
-                }
-                */
-
-                //console.log(countnum , (4 - zanmaisu(zenhai_moto,arraylist[i].substr(8+j*2,2))))
-                
-
-                //發を打って4枚の三万を受け入れした時のテンパイ枚数　4*4 = 016
-                //max = max *1 + yukohai_array(zenhainext,0,0)[0].substr(5,3) * countnum
-                if(rank[String(arraylist[i].substr(0,2))] == void 0){
-                    rank[String(arraylist[i].substr(0,2))] = rank2max * countnum
-                }
-                else{
-                    rank[String(arraylist[i].substr(0,2))] = rank[String(arraylist[i].substr(0,2))] *1 + rank2max * countnum
-                }
-                //console.log(rank)
-                //max = 0
-                rank2 = new Object()
-                rank2max = 0
-
-            }
-        }
-        //nシャンテンなら次シャンテンの有効枚数まで調べる（ので七対子の評価が過剰に高くなる）
-        else{
-            //候補牌　の数だけ繰り返す
-            let arraylistisubstr8length = arraylist[i].substr(8).length
-            for(var j=0;j<arraylistisubstr8length/2;j=(j+1)|0){
-                zenhai = zenhai_moto.concat()
-                //第一打を除く
-                zenhai.splice(zenhai.indexOf(String(arraylist[i].substr(0,2))),1)
-                //第一待ち牌を加える
-                zenhai.push(String(arraylist[i].substr(8+j*2,2)))
-
-                //console.log(zenhai)
-                var countnum = 4 - zanmaisu(zenhai_moto,arraylist[i].substr(8+j*2,2))
-                //ここ直してない！
-                max = max + yukohai_array(zenhai,0,0)[0].substr(5,3) * countnum
-                //console.log(countnum)
-                
-            }
-            
-            rank[String(arraylist[i].substr(0,2))] = max
-            max = 0
-        }
+    if(glb_zenhaisaved[zenhai.sort()+NAKI+ANKAN] != void 0){
+        const endtime = performance.now()
+        glb_zenhaitime = glb_zenhaitime + (endtime - starttime)
+        return glb_zenhaisaved[zenhai.sort()+NAKI+ANKAN][hai_count_map.indexOf(hai)]
     }
 
-    //{12: "004007004008004011", 15: "004004008004"}
-    console.log(rank)
-    //console.log(rank3)
-
-    
-    const endtime = performance.now()
-    console.log(endtime - starttime)
-
-
-    //console.log(glb_yukoarraycount)
-    //glb_yukoarraycount = 0
-    return rank
-    
-
-}
-
-function zanmaisu(zenhai,hai){
     var yamahai = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
     var zenhai_length=zenhai.length
@@ -2373,13 +2934,26 @@ function zanmaisu(zenhai,hai){
     }
 
 
-    
+    const endtime = performance.now()
+    glb_zenhaitime = glb_zenhaitime + (endtime - starttime)
+
+    if(glb_shantensavedon == 1){
+            glb_zenhaisaved[zenhai.sort()+NAKI+ANKAN] = yamahai.concat()
+    }
+
     return yamahai[hai_count_map.indexOf(hai)]
     
 
 }
 
+var glb_zenhaitime = 0
+var glb_shantentime = 0
+var glb_shantensaved = {}
+var glb_tshantensaved = {}
+var glb_shantensavedon = 0
+
 function yukohai_array_rank(arraylist){
+
 
     //arraylistは
     //[43 005 017 31 32 34 35 45] = [南を打ち、5種、17枚、待ち牌は31,32,34,35,45]
@@ -2387,7 +2961,12 @@ function yukohai_array_rank(arraylist){
     const starttime = performance.now()
     glb_tehaishantencount = 0
 
+    glb_shantentime = 0
+
+    glb_shantensavedon = 1
     var yukohaiarraysaved = {}
+    glb_zenhaisaved = {}
+    glb_zenhaitime = 0
     var rank = {}
     var max = ""
     //[43 005 017 31 32 34 35 45] = [南を打ち、5種、17枚、待ち牌は31,32,34,35,45]
@@ -2422,7 +3001,6 @@ function yukohai_array_rank(arraylist){
     for(var i=0;i<arraylistlength;i=(i+1)|0){
         if(arraylist[i] == void 0){console.log(arraylist); continue}
         max = 0
-
         
         //捨て牌受入牌候補配列の、受入牌候補が、配列の前後の捨て牌を除いて同じなら、rankは同じになる
         if(i>0){
@@ -2432,38 +3010,30 @@ function yukohai_array_rank(arraylist){
                     console.log(arraylist[i].substring(0,2) + "is skipped! same mati")
                     continue
                 }
-                var kohoarraythis = []
-                for(var j=0;j<arraylist[i].substring(8).length/2;j=(j+1)|0){
-                    kohoarraythis.push(arraylist[i].substring(8+j*2,10+j*2))
-                }
-                kohoarraythis.sort()
+                if(arraylist[i-1].substr(0,2) > 40 && arraylist[i].substr(0,2) > 40){
+                    var kohoarraythis = []
+                    for(var j=0;j<arraylist[i].substring(8).length/2;j=(j+1)|0){
+                        kohoarraythis.push(arraylist[i].substring(8+j*2,10+j*2))
+                    }
+                    kohoarraythis.sort()
 
-                var kohoarrayprev = []
-                for(var j=0;j<arraylist[i-1].substring(8).length/2;j=(j+1)|0){
-                    kohoarrayprev.push(arraylist[i-1].substring(8+j*2,10+j*2))
-                }
-                kohoarrayprev.sort()
+                    var kohoarrayprev = []
+                    for(var j=0;j<arraylist[i-1].substring(8).length/2;j=(j+1)|0){
+                        kohoarrayprev.push(arraylist[i-1].substring(8+j*2,10+j*2))
+                    }
+                    kohoarrayprev.sort()
 
-                
-                //console.log(arraylist[i])
-                //console.log(kohoarraythis)
-                //console.log(arraylist[i-1])
-                //console.log(kohoarrayprev)
-                //thisの候補牌から、前の捨て牌を除いて、thisの捨て牌を追加したもの
-                kohoarraythis.splice(kohoarraythis.indexOf(String(arraylist[i-1].substr(0,2))),1,arraylist[i].substring(0,2))
-                //kohoarraythis.push(arraylist[i].substring(0,2))
-                kohoarraythis.sort()
-                //console.log(kohoarraythis)
-                if(kohoarraythis.join() == kohoarrayprev.join()){
-                    rank[arraylist[i].substr(0,2)] = rank[arraylist[i-1].substr(0,2)]
-                    console.log(arraylist[i].substring(0,2) + "is skipped! same exc sute")
-                    continue
+                    //thisの候補牌から、前の捨て牌を除いて、thisの捨て牌を追加したもの
+                    kohoarraythis.splice(kohoarraythis.indexOf(String(arraylist[i-1].substr(0,2))),1,arraylist[i].substring(0,2))
+                    kohoarraythis.sort()
+                    if(kohoarraythis.join() == kohoarrayprev.join()){
+                        rank[arraylist[i].substr(0,2)] = rank[arraylist[i-1].substr(0,2)]
+                        console.log(arraylist[i].substring(0,2) + "is skipped! same exc sute")
+                        continue
+                    }
                 }
-
             }
         }
-        
-
 
         //聴牌なら有効枚数順で並べる
         if(shanten_base == 0){
@@ -2478,6 +3048,8 @@ function yukohai_array_rank(arraylist){
             ////元手牌の捨て牌受入牌候補配列の数だけ繰り返す
             for(var j=0;j<arraylistisubstr8length/2;j=(j+1)|0){
 
+                /*一回目の牌入替で、yuko_arraynextを作る*/
+
                 ////zenhaiをいじくるのでいじくる前のHTML表示手牌に戻す
                 zenhai = zenhai_moto.concat()
                 ////元手牌の入替を一手進める
@@ -2487,20 +3059,24 @@ function yukohai_array_rank(arraylist){
 
                 ////一手進めた手牌で捨て牌受入牌候補配列を作成する
                 ////北を捨ててまず二万を受入した時の候補牌配列
+
+                /*一回目の牌入替中・・・もし同じzenhaiが計算されていたらスキップする*/
+
                 if(yukohaiarraysaved[zenhai.sort()] == void 0){
                     var yuko_arraynext = yukohai_array(zenhai,shanten_base - 1)
-                    yukohaiarraysaved[zenhai.sort()] = yuko_arraynext
+                    yukohaiarraysaved[zenhai.sort()] = yuko_arraynext.concat()
                 }
                 else{
                     var yuko_arraynext = yukohaiarraysaved[zenhai.sort()]
                     console.log("first yukohai_array skipped")
                 }
 
+                /*一回目の牌入替でyuko_arraynextが出来上がったら、*/
+
                 let yukoarraynextlength = yuko_arraynext.length
                 //北を捨ててまず二万を受け入れした時の候補牌配列の数だけ繰り返す（例だと3回）
                 for(var k=0;k<yukoarraynextlength;k=(k+1)|0){
 
-                    //
                     //捨て牌受入牌候補配列の、受入牌候補が、配列の前後の捨て牌を除いて同じなら、rankは同じになる
                     if(k>0){
                         if(yuko_arraynext[k].substring(3,8) == yuko_arraynext[k-1].substring(3,8)){
@@ -2509,46 +3085,40 @@ function yukohai_array_rank(arraylist){
                                 //console.log(yuko_arraynext[k].substring(0,2) + "is skipped! same mati in rank2")
                                 continue
                             }
-                            var kohoarraythis = []
-                            for(var m=0;m<yuko_arraynext[k].substring(8).length/2;m=(m+1)|0){
-                                kohoarraythis.push(yuko_arraynext[k].substring(8+m*2,10+m*2))
-                            }
-                            kohoarraythis.sort()
+                            if(yuko_arraynext[k-1].substr(0,2) > 40 && yuko_arraynext[k].substr(0,2) > 40){
+                                var kohoarraythis = []
+                                for(var m=0;m<yuko_arraynext[k].substring(8).length/2;m=(m+1)|0){
+                                    kohoarraythis.push(yuko_arraynext[k].substring(8+m*2,10+m*2))
+                                }
+                                kohoarraythis.sort()
 
-                            var kohoarrayprev = []
-                            for(var m=0;m<yuko_arraynext[k-1].substring(8).length/2;m=(m+1)|0){
-                                kohoarrayprev.push(yuko_arraynext[k-1].substring(8+m*2,10+m*2))
-                            }
-                            kohoarrayprev.sort()
+                                var kohoarrayprev = []
+                                for(var m=0;m<yuko_arraynext[k-1].substring(8).length/2;m=(m+1)|0){
+                                    kohoarrayprev.push(yuko_arraynext[k-1].substring(8+m*2,10+m*2))
+                                }
+                                kohoarrayprev.sort()
 
-                            
-                            //console.log(yuko_arraynext[k])
-                            //console.log(kohoarraythis)
-                            //console.log(yuko_arraynext[k-1])
-                            //console.log(kohoarrayprev)
-                            //thisの候補牌から、前の捨て牌を除いて、thisの捨て牌を追加したもの
-                            kohoarraythis.splice(kohoarraythis.indexOf(String(yuko_arraynext[k-1].substr(0,2))),1,yuko_arraynext[k].substring(0,2))
-                            //kohoarraythis.push(yuko_arraynext[k].substring(0,2))
-                            kohoarraythis.sort()
-                            //console.log(kohoarraythis)
-                            if(kohoarraythis.join() == kohoarrayprev.join()){
-                                rank2[yuko_arraynext[k].substr(0,2)] = rank2[yuko_arraynext[k-1].substr(0,2)]
-                                //console.log(yuko_arraynext[k].substring(0,2) + "is skipped! same exc sute in rank2")
-                                continue
+                                //thisの候補牌から、前の捨て牌を除いて、thisの捨て牌を追加したもの
+                                kohoarraythis.splice(kohoarraythis.indexOf(String(yuko_arraynext[k-1].substr(0,2))),1,yuko_arraynext[k].substring(0,2))
+                                //kohoarraythis.push(yuko_arraynext[k].substring(0,2))
+                                kohoarraythis.sort()
+                                //console.log(kohoarraythis)
+                                if(kohoarraythis.join() == kohoarrayprev.join()){
+                                    rank2[yuko_arraynext[k].substr(0,2)] = rank2[yuko_arraynext[k-1].substr(0,2)]
+                                    //console.log(yuko_arraynext[k].substring(0,2) + "is skipped! same exc sute in rank2")
+                                    continue
+                                }
                             }
-
                         }
                     }
 
-
-
-
-
-
-                    //
-
                     if(yuko_arraynext[k] == void 0){continue}
                     //北を捨ててまず二万を受け入れした時の候補牌配列の受入候補種類の数だけ繰り返す
+
+                    /*yuko_arraynextの数だけ牌入替を繰り返して、
+                    2シャンテンからの一回目の入替→1シャンテンになる
+                    1シャンテンからの牌入替で聴牌に→点数の期待値を無視して一番枚数が多いのを選択する*/
+
                     let yukoarraynextksubstr8length = yuko_arraynext[k].substr(8).length
                     for(var l=0;l<yukoarraynextksubstr8length/2;l=(l+1)|0){
                         ////元手牌の入替を一手進めた状態　を保存する
@@ -2556,24 +3126,112 @@ function yukohai_array_rank(arraylist){
                         ////北を捨ててまず二万を受け入れした後で発を捨てて三万を受け入れする
                         zenhainext.splice(zenhainext.indexOf(String(yuko_arraynext[k].substr(0,2))),1)
                         zenhainext.push(String(yuko_arraynext[k].substr(8+l*2,2)))
-                        //選択基準はyukohai_arrayの中での並び替え方次第
-                        var countnum = 4 - zanmaisu(zenhainext,yuko_arraynext[k].substr(8+l*2,2))
 
-                        //發を打って4枚の三万を受け入れした時のテンパイ枚数　4*4 = 016
-                        if(yukohaiarraysaved[zenhainext.sort()] == void 0){
-                            //yukohai_arrayの省略可
-                            var temp = yukohai_array(zenhainext,shanten_base - 2)
-                            yukohaiarraysaved[zenhainext.sort()] = temp
-                            max = max *1 + temp[0].substr(5,3) * countnum
+                        if(shanten_base == 2){
+                            //選択基準はyukohai_arrayの中での並び替え方次第
+                            var countnum = 4 - zanmaisu(zenhainext,yuko_arraynext[k].substr(8+l*2,2))
 
+                            //發を打って4枚の三万を受け入れした時のテンパイ枚数　4*4 = 016
+                            if(yukohaiarraysaved[zenhainext.sort()] == void 0){
+                                //yukohai_arrayの省略可
+                                var temp = yukohai_array(zenhainext,shanten_base - 2)
+                                yukohaiarraysaved[zenhainext.sort()] = temp.concat()
+                                max = max *1 + temp[0].substr(5,3) * countnum
+                            }
+                            else{
+                                max = max *1 + yukohaiarraysaved[zenhainext.sort()][0].substr(5,3) * countnum
+                            }
                         }
-                        else{
-                            max = max *1 + yukohaiarraysaved[zenhainext.sort()][0].substr(5,3) * countnum
-                            //console.log("second yukohai_array skipped")
+                        else if(shanten_base == 3){
+                            if(yukohaiarraysaved[zenhainext.sort()] == void 0){
+                                //yukohai_arrayの省略可
+                                var temp = yukohai_array(zenhainext,shanten_base - 2)
+                                yukohaiarraysaved[zenhainext.sort()] = temp.concat()
+                            }
+                            else{
+                                var temp = yukohaiarraysaved[zenhainext.sort()]
+                            }
+
+                            //ここから貼り付け
+                            let templength = temp.length
+                            var max2 = 0
+                            var rank3 = {}
+                            //北を捨ててまず二万を受け入れした時の候補牌配列の数だけ繰り返す（例だと3回）
+                            for(var m=0;m<templength;m=(m+1)|0){
+                                //捨て牌受入牌候補配列の、受入牌候補が、配列の前後の捨て牌を除いて同じなら、rankは同じになる
+                                if(m>0){
+                                    if(temp[m].substring(3,8) == temp[m-1].substring(3,8)){
+                                        if(temp[m].substring(8) == temp[m-1].substring(8)){
+                                            rank3[temp[m].substr(0,2)] = rank3[temp[m-1].substr(0,2)]
+                                            continue
+                                        }
+                                        if(temp[m-1].substr(0,2) > 40 && temp[m].substr(0,2) > 40){
+                                            var kohoarraythis = []
+                                            for(var n=0;m<temp[m].substring(8).length/2;n=(n+1)|0){
+                                                kohoarraythis.push(temp[m].substring(8+n*2,10+n*2))
+                                            }
+                                            kohoarraythis.sort()
+
+                                            var kohoarrayprev = []
+                                            for(var n=0;n<temp[m-1].substring(8).length/2;n=(n+1)|0){
+                                                kohoarrayprev.push(temp[m-1].substring(8+n*2,10+n*2))
+                                            }
+                                            kohoarrayprev.sort()
+
+                                            //thisの候補牌から、前の捨て牌を除いて、thisの捨て牌を追加したもの
+                                            kohoarraythis.splice(kohoarraythis.indexOf(String(temp[m-1].substr(0,2))),1,temp[m].substring(0,2))
+                                            kohoarraythis.sort()
+                                            if(kohoarraythis.join() == kohoarrayprev.join()){
+                                                rank3[temp[m].substr(0,2)] = rank3[temp[m-1].substr(0,2)]
+                                                continue
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if(temp[m] == void 0){continue}
+                                //北を捨ててまず二万を受け入れした時の候補牌配列の受入候補種類の数だけ繰り返す
+
+                                /*yuko_arraynextの数だけ牌入替を繰り返して、
+                                2シャンテンからの一回目の入替→1シャンテンになる
+                                1シャンテンからの牌入替で聴牌に→点数の期待値を無視して一番枚数が多いのを選択する*/
+
+                                let tempmsubstr8length = temp[m].substr(8).length
+                                for(var n=0;n<tempmsubstr8length/2;n=(n+1)|0){
+                                    ////元手牌の入替を一手進めた状態　を保存する
+                                    zenhainext2 = zenhainext.concat()
+                                    ////北を捨ててまず二万を受け入れした後で発を捨てて三万を受け入れする
+                                    zenhainext2.splice(zenhainext2.indexOf(String(temp[m].substr(0,2))),1)
+                                    zenhainext2.push(String(temp[m].substr(8+n*2,2)))
+                                    //選択基準はyukohai_arrayの中での並び替え方次第
+                                    var countnum = 4 - zanmaisu(zenhainext2,temp[m].substr(8+n*2,2))
+
+                                    //發を打って4枚の三万を受け入れした時のテンパイ枚数　4*4 = 016
+                                    if(yukohaiarraysaved[zenhainext2.sort()] == void 0){
+                                        //yukohai_arrayの省略可
+                                        var tempnext = yukohai_array(zenhainext2,shanten_base - 3)
+                                        yukohaiarraysaved[zenhainext2.sort()] = tempnext.concat()
+                                        max2 = max2 *1 + tempnext[0].substr(5,3) * countnum
+                                    }
+                                    else{
+                                        max2 = max2 *1 + yukohaiarraysaved[zenhainext2.sort()][0].substr(5,3) * countnum
+                                    }
+                                }
+
+                                ////北を捨てて二万を受け入れして發を打った時の受入候補牌それぞれの聴牌時受入れ枚数最大値が納められる
+                                ////rank2[53] = （三万の時）016とか（五万の時）016とか（六万の時）004004004
+                                ////個別に評価値を持つ必要もないので単純に合計値にしてしまう
+                                rank3[String(temp[m].substr(0,2))] = max2
+                                max2 = 0
+                            }
+                            var countnum = 4 - zanmaisu(zenhainext,yuko_arraynext[k].substr(8+l*2,2))
+                            //console.log(countnum)
+                            max = max + Math.max.apply(null, Object.values(rank3)) * countnum
+                            //console.log(max)
+                            //ここまで
                         }
-                        //max = max *1 + yukohai_array(zenhainext,0,0)[0].substr(5,3) * countnum
-                        
                     }
+
                     ////北を捨てて二万を受け入れして發を打った時の受入候補牌それぞれの聴牌時受入れ枚数最大値が納められる
                     ////rank2[53] = （三万の時）016とか（五万の時）016とか（六万の時）004004004
                     ////個別に評価値を持つ必要もないので単純に合計値にしてしまう
@@ -2621,13 +3279,18 @@ function yukohai_array_rank(arraylist){
 
     //{12: "004007004008004011", 15: "004004008004"}
     
-    
     const endtime = performance.now()
     console.log(endtime - starttime)
+    console.log(glb_shantentime)
+    console.log(glb_zenhaitime)
 
     console.log(rank)
     //console.log(yukohaiarraysaved)
     console.log("number of shanten counted" + glb_tehaishantencount)
+    //console.log(glb_shantensaved)
+    //glb_shantensaved = {}
+    //glb_tshantensaved = {}
+    glb_shantensavedon = 0
     return rank
 
 }

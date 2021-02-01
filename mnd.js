@@ -80,8 +80,8 @@ yamahai = [
 	41,41,41,41,42,42,42,42,43,43,43,43,44,44,44,44,45,45,45,45,46,46,46,46,47,47,47,47
 ]
 
-yamahai_mt = new Array()
-glb_yamahai_mt = new Array()
+yamahai_mt = []
+glb_yamahai_mt = []
 
 function game_toggle() {
     startY=endY
@@ -318,7 +318,9 @@ function start_game(retry){
 	dora()
 	check_reach()
 	shanten_hyoji()
-	yukohai()
+	loading()
+    setTimeout(function(){yukohai();end_loading()},0)
+	//yukohai()
 	yuko2_hyoji()
 }
 
@@ -551,7 +553,7 @@ function mes(){
 } 
 
 function da_hai(){
-	console.log(yamahai_mt)
+	//console.log(yamahai_mt)
 	if(startY!=endY){return}
 	if($("#tensu").is(":visible")==true){
 		$("#guide_m").html("既にあがっています")
@@ -663,7 +665,9 @@ function da_hai(){
 		$("#guide_m").html("")
 		setTimeout(da_hai_check,0)
 		shanten_hyoji()
-		yukohai()
+		loading()
+	    setTimeout(function(){yukohai();end_loading()},0)
+		//yukohai()
 		yuko2_hyoji()
 	}
 }
