@@ -413,7 +413,6 @@ function tehai_shanten(tehai){
     //const yukoendtime = performance.now()
     //glb_shantentime = glb_shantentime + (yukoendtime - yukostarttime)
     
-
     //if(tehai == void 0){console.log("janto go3 "+mentsuA_num,mentsu_kohoA_num,mentsuB_num,mentsu_kohoB_num,yakuhai_num,naki_num,yakuhai_koho_num,janto_num+" shanten "+shanten)}
     return shanten    
 }
@@ -2954,7 +2953,7 @@ var glb_shantensavedon = 0
 
 function yukohai_array_rank(arraylist){
 
-
+    
     //arraylistは
     //[43 005 017 31 32 34 35 45] = [南を打ち、5種、17枚、待ち牌は31,32,34,35,45]
     //の集まり
@@ -2967,6 +2966,8 @@ function yukohai_array_rank(arraylist){
     var yukohaiarraysaved = {}
     glb_zenhaisaved = {}
     glb_zenhaitime = 0
+    //glb_shantensaved = {}
+    //glb_tshantensaved = {}
     var rank = {}
     var max = ""
     //[43 005 017 31 32 34 35 45] = [南を打ち、5種、17枚、待ち牌は31,32,34,35,45]
@@ -2998,7 +2999,9 @@ function yukohai_array_rank(arraylist){
     const arraylistlength = arraylist.length
     //arraylist 捨て牌候補種類候補枚数候補牌　配列の数だけ繰り返す
     //console.log(arraylist)
+    
     for(var i=0;i<arraylistlength;i=(i+1)|0){
+        
         if(arraylist[i] == void 0){console.log(arraylist); continue}
         max = 0
         
@@ -3022,18 +3025,21 @@ function yukohai_array_rank(arraylist){
                         kohoarrayprev.push(arraylist[i-1].substring(8+j*2,10+j*2))
                     }
                     kohoarrayprev.sort()
-
+                    
                     //thisの候補牌から、前の捨て牌を除いて、thisの捨て牌を追加したもの
                     kohoarraythis.splice(kohoarraythis.indexOf(String(arraylist[i-1].substr(0,2))),1,arraylist[i].substring(0,2))
                     kohoarraythis.sort()
+                    
                     if(kohoarraythis.join() == kohoarrayprev.join()){
                         rank[arraylist[i].substr(0,2)] = rank[arraylist[i-1].substr(0,2)]
                         console.log(arraylist[i].substring(0,2) + "is skipped! same exc sute")
                         continue
+                        
                     }
                 }
             }
         }
+        
 
         //聴牌なら有効枚数順で並べる
         if(shanten_base == 0){
@@ -3143,6 +3149,7 @@ function yukohai_array_rank(arraylist){
                             }
                         }
                         else if(shanten_base == 3){
+                            
                             if(yukohaiarraysaved[zenhainext.sort()] == void 0){
                                 //yukohai_arrayの省略可
                                 var temp = yukohai_array(zenhainext,shanten_base - 2)
@@ -3151,7 +3158,7 @@ function yukohai_array_rank(arraylist){
                             else{
                                 var temp = yukohaiarraysaved[zenhainext.sort()]
                             }
-
+                            
                             //ここから貼り付け
                             let templength = temp.length
                             var max2 = 0
@@ -3167,7 +3174,7 @@ function yukohai_array_rank(arraylist){
                                         }
                                         if(temp[m-1].substr(0,2) > 40 && temp[m].substr(0,2) > 40){
                                             var kohoarraythis = []
-                                            for(var n=0;m<temp[m].substring(8).length/2;n=(n+1)|0){
+                                            for(var n=0;n<temp[m].substring(8).length/2;n=(n+1)|0){
                                                 kohoarraythis.push(temp[m].substring(8+n*2,10+n*2))
                                             }
                                             kohoarraythis.sort()
@@ -3224,6 +3231,7 @@ function yukohai_array_rank(arraylist){
                                 rank3[String(temp[m].substr(0,2))] = max2
                                 max2 = 0
                             }
+                            
                             var countnum = 4 - zanmaisu(zenhainext,yuko_arraynext[k].substr(8+l*2,2))
                             //console.log(countnum)
                             max = max + Math.max.apply(null, Object.values(rank3)) * countnum

@@ -983,6 +983,7 @@ function select_hai(name,n){
     if(S.length + A.length + NAKI.length*3 + ANKAN.length*3 == 14){
       loading()
       setTimeout(function(){yukohai();end_loading()},0)
+      //yukohai()
     }
     else{
       yukohai()
