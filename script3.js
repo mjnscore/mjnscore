@@ -1369,7 +1369,6 @@ function t_dice(){
   }
   console.log(num + "," + num/10000)
   */
-  var mt = new MersenneTwister()
   var rand = mt.nextInt(6)
   $("#t_dice2").attr("src","./img2/1p"+(rand+1)+".png")
   /*

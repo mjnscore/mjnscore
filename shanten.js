@@ -73,7 +73,8 @@ function tehai_shanten(tehai){
         var zenhai = tehai
     }
     else{
-        var zenhai=$.merge($.merge([],S),A)
+        //var zenhai=$.merge($.merge([],S),A)
+        var zenhai = S.concat(A)
         //手配配列 Array S [ "11", "12", "13", "27", "28", "29", "33", "34", "35", "36", … ] をコピーする
         //var zenhai=$.merge([],S)
         //アガリ牌（14牌目）も加える
@@ -460,7 +461,7 @@ function yukohai(sakiyomi,uti,mati){
         $("#yuko_text").html("")
         //シャンテン数は減らないが有効牌は増えるの表示HTML
         //$("#yuko_text3").html("")
-        var zenhai=$.merge($.merge([],S),A)
+        var zenhai = S.concat(A)
         $("#yuko_text2").html("")
         //SとAをコピーしておく
         S_copy = S.concat()
@@ -1502,7 +1503,7 @@ function tehai_titoi_shanten(tehai){
         var zenhai = tehai
     }
     else{
-        var zenhai=$.merge($.merge([],S),A)
+        var zenhai = S.concat(A)
     }
 
     if(glb_tshantensaved[zenhai.sort()+NAKI+ANKAN] != void 0){
@@ -1577,7 +1578,7 @@ function tehai_kokusi_shanten(tehai){
         var zenhai = tehai
     }
     else{
-        var zenhai=$.merge($.merge([],S),A)
+        var zenhai = S.concat(A)
     }
 
     var zenhai_length=zenhai.length
@@ -1668,7 +1669,7 @@ function yukohai13(){
     $("#yuko_text").html("")
     //シャンテン数は減らないが有効牌は増えるの表示HTML
     $("#yuko_text3").html("")
-    var zenhai=$.merge($.merge([],S),A)
+    var zenhai = S.concat(A)
     $("#yuko_text2").html("")
     //SとAをコピーしておく
     S_copy = S.concat()
@@ -2008,7 +2009,7 @@ function yukohai_array(sakiyomi,shanten){
 
     //手牌と上がり牌を配列に収める
     if(sakiyomi == void 0){
-        var zenhai=$.merge($.merge([],S),A)
+        var zenhai = S.concat(A)
         //SとAをコピーしておく
         S_copy = S.concat()
         A_copy = A.concat()
@@ -2604,6 +2605,7 @@ function yukohai_array(sakiyomi,shanten){
         }
         */
         var tszy = tehai_shanten(zenhai)
+        
         if(document.getElementById("titoi_calc").checked){}else{
         //if($("#titoi_calc").is(':checked')){}else{
             var ttszy = tehai_titoi_shanten(zenhai)
@@ -2972,7 +2974,8 @@ function yukohai_array_rank(arraylist){
     var max = ""
     //[43 005 017 31 32 34 35 45] = [南を打ち、5種、17枚、待ち牌は31,32,34,35,45]
     
-    var zenhai_moto = $.merge($.merge([],S),A)
+    //var zenhai_moto = $.merge($.merge([],S),A)
+    var zenhai_moto = S.concat(A)
     var zenhai = []
 
     //ブラウザ表示牌のシャンテン数を保持する

@@ -554,9 +554,9 @@
 </div>
 
 <div style="line-height:5px"><br></div>
-  <input type="button" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){hutenimg_toggle('oya')}" onmouseup="if(endY==''){hutenimg_toggle('oya')}" value="点数表(親)">
-  <input type="button" id="hutenimg_ko" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){hutenimg_toggle('ko')}" onmouseup="if(endY==''){hutenimg_toggle('ko')}" value="点数表(子)">
-  <input type="button" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){hutenimg_toggle('hu')}" onmouseup="if(endY==''){hutenimg_toggle('hu')}" value="符表">
+  <input type="button" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){hutenimg_toggle('oya')}" onmouseup="if(endY==''){hutenimg_toggle('oya')}" value="点数(親)">
+  <input type="button" id="hutenimg_ko" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){hutenimg_toggle('ko')}" onmouseup="if(endY==''){hutenimg_toggle('ko')}" value="点数(子)">
+  <input type="button" class="button" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="if(startY==endY){hutenimg_toggle('hu')}" onmouseup="if(endY==''){hutenimg_toggle('hu')}" value="符">
   <!--
   <input type="button" onclick="quiz_hint()" id="quiz_hint" value="点数表">
   <input type="button" onclick="quiz_hinthu()" id="quiz_hinthu" value="符表">
@@ -796,8 +796,11 @@
 <div class="memo" onclick="$('#mjnrule').toggle()" style="text-decoration:underline;">配牌ルール</div>
 <div style="line-height:2px"><br></div>
 <a id="mjnrule" style="font-size: smaller;">
+  0. 牌山の作成：<br>
+  全ての牌を裏にして、17枚2段の牌山を作成する<br>
   1. 席順の決定：<br>
   東南西北の牌を伏せて混ぜ、東牌を引いた人が好きな席に座り、以下反時計回りで順番に座る<br>
+  [東西南北]<br>
 <input type="button" value="引く" style="height:34px;width:60px;vertical-align:middle;" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="t_bagime()" onmouseup="if(endY==''){t_bagime()}">
 <img src="img/1j9.png" id="t_bagime1" style="width:33px;vertical-align:middle;">
 <img src="img/1j9.png" id="t_bagime2" style="width:33px;vertical-align:middle;">
@@ -808,6 +811,7 @@
   2. 仮親の決定：<br>
   東牌を引いた人がサイコロ2個を振る<br>
   東（自分）を1として反時計回りにサイコロの目の人が仮親になる<br>
+  [6面ダイス*2個]<br>
   <input type="button" value="振る" style="height:34px;width:60px;vertical-align:middle;" ontouchstart="touch_start()" ontouchmove="touch_move()" ontouchend="t_dice()" onmouseup="if(endY==''){t_dice()}">
   <img src="img/1j9.png" id="t_dice1" style="width:33px;vertical-align:middle;">
   <img src="img/1j9.png" id="t_dice2" style="width:33px;vertical-align:middle;">

@@ -121,6 +121,7 @@ function game_toggle() {
 		erase_all()
 		start_game()
 	})
+
   }
   else{
   	swal({
@@ -164,7 +165,7 @@ function confirm_start_game(){
 
     swal({
          title:"麻雀点数計算機",
-         text:"配牌しますか？",
+		 text:"配牌しますか？",
          type:"warning",
          showCancelButton: true,
          confirmButtonColor: "#DD6B55",
@@ -1042,9 +1043,10 @@ function dora(){
 		//ドラ牌を引く
 
 		//ドラ表示牌
-		hai = yamahai_mt[0]
-		x = String(yamahai_mt[0]).charAt(0)*1
-		y = String(yamahai_mt[0]).charAt(1)*1
+		//hai = yamahai_mt[0]
+		hai = yamahai_mt.slice(-1)
+		x = String(hai).charAt(0)*1
+		y = String(hai).charAt(1)*1
 		if(x == 4){
 			if(y==3){
 				y2=1
@@ -1077,7 +1079,8 @@ function dora(){
 		DORA.push(haimap[hai2])
 
 		//1牌を削除
-		yamahai_mt.splice(0, 1)
+		//yamahai_mt.splice(0, 1)
+		yamahai_mt.splice(-1,1)
 	}
 }
 
